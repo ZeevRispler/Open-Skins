@@ -134,7 +134,7 @@ test("DJ controls operate the real coding workspace without a provider key", asy
     .getByRole("button", { name: "Tool selector", exact: true })
     .click();
   await expect(
-    page.getByRole("tabpanel", { name: "Files", exact: true }),
+    page.getByRole("tabpanel", { name: "Terminal", exact: true }),
   ).toBeVisible();
   await setChatInput(page, "Preserve this draft");
   for (const skin of ["Cockpit", "Retro console", "Cyberdeck", "DJ console"]) {
@@ -179,6 +179,16 @@ test("DJ controls operate the real coding workspace without a provider key", asy
         )
         .toBe("0s");
       await page.emulateMedia({ reducedMotion: "no-preference" });
+    }
+    // Pressing the hardware selector advances through all tools and wraps.
+    await console.getByRole("slider").press("Home");
+    for (const name of ["Terminal", "Commits", "Browser", "Files"]) {
+      await console
+        .getByRole("button", { name: "Tool selector", exact: true })
+        .click();
+      await expect(
+        page.getByRole("tabpanel", { name, exact: true }),
+      ).toBeVisible();
     }
     const chrome = await page.locator(".dj-controls").boundingBox();
     const workspace = await page.locator(".workspace-panels").boundingBox();

@@ -120,7 +120,7 @@ describe("interchangeable workspace interfaces", () => {
     fireEvent.click(
       screen.getByRole("button", { name: I18nKey.CONVERSATION$TOOL_SELECTOR }),
     );
-    expect(controller.commands.openTool).toHaveBeenCalledWith("files");
+    expect(controller.commands.openTool).toHaveBeenLastCalledWith("terminal");
     fireEvent.change(screen.getByRole("slider"), { target: { value: "3" } });
     expect(controller.commands.openTool).toHaveBeenCalledWith("browser");
     fireEvent.click(
