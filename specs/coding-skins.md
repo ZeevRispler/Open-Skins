@@ -10,3 +10,5 @@
 - CS-008: Themed controls occupy a compact strip; at a 1600×1000 desktop viewport the shared agent workspace retains at least 750 pixels of vertical space. Decorative motifs stay in the chrome, leaving conversation text unobscured.
 
 The current version retains one active conversation. Simultaneously live decks and external skin plugin loading are future work.
+
+- **CS-009**: Skin choices are hidden in a compact gallery; selection closes it, Escape restores focus to the trigger, and keyboard selection persists across refresh. Hardware controls keep real actions and support reduced motion.

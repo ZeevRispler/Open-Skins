@@ -89,6 +89,9 @@ describe("interchangeable workspace interfaces", () => {
     act(() => pushEvent("streamed response"));
     expect(screen.getByText("streamed response")).toBeInTheDocument();
     fireEvent.click(
+      screen.getByRole("button", { name: I18nKey.CONVERSATION$INTERFACE }),
+    );
+    fireEvent.click(
       screen.getByRole("button", {
         name: I18nKey.CONVERSATION$STANDARD_INTERFACE,
       }),

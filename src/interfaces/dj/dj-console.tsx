@@ -132,6 +132,7 @@ export function SkinConsole({
         title={t(I18nKey.CONVERSATION$TOOL_SELECTOR)}
         onClick={() => commands.openTool(TOOL_PADS[toolIndex].id)}
       >
+        <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
         <Files aria-hidden="true" />
       </button>
       <button

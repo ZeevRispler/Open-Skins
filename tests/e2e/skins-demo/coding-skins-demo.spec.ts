@@ -24,6 +24,7 @@ test("key-free demo creates and runs a real file", async ({ page }) => {
   await page.waitForURL(/\/conversations\/[^/?#]+/);
   if (await consent.isVisible())
     await consent.getByRole("button", { name: "Confirm preferences" }).click();
+  await page.getByRole("button", { name: "Interface", exact: true }).click();
   await page.getByRole("button", { name: "DJ console", exact: true }).click();
   await expect(
     page.getByText("Local demo complete.", { exact: false }),
@@ -41,6 +42,7 @@ test("key-free demo creates and runs a real file", async ({ page }) => {
   });
 });
 
+// @spec CS-009 — Gallery dismissal and keyboard selection preserve focus.
 // @spec CS-007 — Home, settings, sidebar and dialogs share the selected skin.
 test("skins cover the app and survive route navigation", async ({ page }) => {
   await page.addInitScript(() => {
@@ -58,7 +60,11 @@ test("skins cover the app and survive route navigation", async ({ page }) => {
     ["DJ console", "dj"],
     ["Standard", "standard"],
   ]) {
+    await page.getByRole("button", { name: "Interface", exact: true }).click();
     await page.getByRole("button", { name, exact: true }).click();
+    await expect(
+      page.getByRole("group", { name: "Interface", exact: true }),
+    ).not.toBeVisible();
     await expect(page.locator("body")).toHaveAttribute("data-coding-skin", id);
     const background = await page
       .locator('[data-testid="root-layout"] > aside')
@@ -80,15 +86,24 @@ test("skins cover the app and survive route navigation", async ({ page }) => {
     await page.reload();
     await expect(page.locator("body")).toHaveAttribute("data-coding-skin", id);
     // Keyboard users can reach and activate the same skin controls.
+    await page.getByRole("button", { name: "Interface", exact: true }).click();
     const selectedSkin = page.getByRole("button", { name, exact: true });
     await selectedSkin.focus();
     await expect(selectedSkin).toBeFocused();
     await page.keyboard.press("Enter");
     await page.goto("/settings");
+    await page.getByRole("button", { name: "Interface", exact: true }).click();
     await expect(
       page.getByRole("button", { name, exact: true }),
     ).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator("body")).toHaveAttribute("data-coding-skin", id);
+    await page.keyboard.press("Escape");
+    await expect(
+      page.getByRole("button", { name: "Interface", exact: true }),
+    ).toBeFocused();
+    await expect(
+      page.getByRole("group", { name: "Interface", exact: true }),
+    ).not.toBeVisible();
     await page.screenshot({
       path: `test-results-skins-demo/settings-${id}.png`,
       mask: [page.locator('input[type="password"]')],

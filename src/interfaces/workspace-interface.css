@@ -355,3 +355,326 @@
 .workspace-interface[data-interface="cyberdeck"] .dj-console .skin-history {
   border-radius: 50%;
 }
+
+/* A tucked-away skin gallery, shared by home and the workspace. */
+.interface-switcher {
+  justify-content: flex-end;
+  position: relative;
+  z-index: 30;
+}
+.interface-switcher details {
+  position: relative;
+}
+.interface-switcher summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border: 1px solid var(--oh-border);
+  border-radius: 20px;
+  background: var(--oh-surface);
+  font-size: 12px;
+  list-style: none;
+}
+.interface-switcher summary::-webkit-details-marker {
+  display: none;
+}
+.interface-switcher svg {
+  width: 14px;
+  height: 14px;
+}
+.interface-switcher summary:focus-visible {
+  outline: 2px solid var(--oh-focus);
+  outline-offset: 2px;
+}
+.interface-switcher details[open] > summary > svg:last-child {
+  transform: rotate(180deg);
+}
+.interface-switcher [role="group"] {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 260px;
+  max-width: calc(100vw - 24px);
+  display: grid;
+  padding: 8px;
+  border: 1px solid var(--oh-border);
+  border-radius: 12px;
+  background: var(--oh-surface);
+  box-shadow: 0 15px 45px #0008;
+  overflow: visible;
+}
+.interface-switcher [data-skin-option] {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  text-align: left;
+}
+.interface-switcher [data-skin-option] svg {
+  margin-left: auto;
+}
+.interface-switcher [data-skin-preview] {
+  width: 48px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  border: 1px solid #ffffff30;
+  background: linear-gradient(90deg, #293242 25%, #111827 25%);
+}
+.interface-switcher [data-skin-preview="dj"] {
+  background:
+    radial-gradient(
+      circle at 25% 50%,
+      #18202a 17%,
+      #54deef 18% 22%,
+      transparent 23%
+    ),
+    radial-gradient(
+      circle at 75% 50%,
+      #18202a 17%,
+      #cb7cde 18% 22%,
+      #111922 23%
+    );
+}
+.interface-switcher [data-skin-preview="cockpit"] {
+  background: radial-gradient(
+    circle at 50% 50%,
+    #56adc2 0 25%,
+    #c09952 26% 40%,
+    #263b34 41%
+  );
+}
+.interface-switcher [data-skin-preview="retro"] {
+  background: repeating-linear-gradient(0deg, #111127 0 3px, #302340 3px 4px);
+  border: 2px solid #bd79dd;
+}
+.interface-switcher [data-skin-preview="cyberdeck"] {
+  background: linear-gradient(
+    135deg,
+    #073638 20%,
+    #16bfbf 21% 24%,
+    #121427 25% 70%,
+    #ce62cd 71% 74%,
+    #121427 75%
+  );
+}
+
+/* Hardware stays above the screens rather than covering their content. */
+.workspace-interface:not([data-interface="standard"]) .dj-controls {
+  background:
+    repeating-linear-gradient(110deg, #ffffff02 0 1px, transparent 1px 4px),
+    linear-gradient(var(--skin-raised), var(--skin-panel));
+  box-shadow:
+    inset 0 1px #ffffff20,
+    inset 0 -4px #0006,
+    0 4px 10px #0005;
+}
+.dj-console {
+  min-height: 128px;
+  padding: 12px 18px;
+  gap: 12px;
+}
+.dj-console .skin-history,
+.dj-console .skin-tool-wheel {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  padding: 0;
+  border: 2px solid var(--skin-line);
+  box-shadow:
+    0 4px 0 #0008,
+    0 8px 15px #0007;
+}
+.skin-tool-wheel img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.skin-tool-wheel svg {
+  position: relative;
+  color: var(--skin-secondary);
+}
+.dj-console .skin-history svg,
+.dj-console .skin-tool-wheel svg {
+  width: 22px;
+  height: 22px;
+}
+.dj-console .dj-settings {
+  width: 42px;
+  height: 42px;
+  background:
+    repeating-conic-gradient(#ffffff15 0 3deg, transparent 3deg 15deg),
+    radial-gradient(circle, var(--skin-raised) 55%, #070b12 56%);
+}
+.dj-pads {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+.dj-pads button {
+  min-height: 42px;
+  min-width: 92px;
+  border-bottom-width: 4px;
+}
+.dj-pads button:nth-child(2) {
+  border-color: color-mix(in srgb, var(--skin-accent) 55%, var(--skin-line));
+}
+.dj-pads button:nth-child(3) {
+  border-color: color-mix(in srgb, var(--skin-secondary) 55%, var(--skin-line));
+}
+.dj-transport {
+  flex-direction: column;
+}
+.dj-tool-selector input {
+  appearance: none;
+  width: 76px;
+  height: 8px;
+  border: 1px solid var(--skin-line);
+  background: #050a10;
+  border-radius: 2px;
+}
+.dj-tool-selector input::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 28px;
+  border: 2px solid #161d23;
+  border-radius: 2px;
+  background: linear-gradient(
+    #889ca8 0 40%,
+    var(--skin-accent) 41% 55%,
+    #526775 56%
+  );
+  box-shadow: 0 3px 5px #0009;
+}
+.dj-tool-selector input::-moz-range-thumb {
+  width: 10px;
+  height: 24px;
+  border: 2px solid #161d23;
+  border-radius: 2px;
+  background: #829ba8;
+  box-shadow: 0 3px 5px #0009;
+}
+.dj-console button {
+  transition:
+    transform 100ms ease,
+    box-shadow 100ms ease,
+    border-color 150ms ease;
+}
+.dj-console button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 6px #0008;
+}
+.skin-history img {
+  transition: transform 240ms ease;
+}
+.skin-history[aria-pressed="false"] img {
+  transform: rotate(-25deg);
+}
+.workspace-interface[data-interface="dj"] .skin-tool-wheel img {
+  filter: hue-rotate(85deg);
+}
+.workspace-interface[data-interface="cockpit"] .skin-tool-wheel img,
+.workspace-interface[data-interface="retro"] .skin-tool-wheel img,
+.workspace-interface[data-interface="cyberdeck"] .skin-tool-wheel img {
+  display: none;
+}
+.workspace-interface[data-interface="cockpit"] .dj-console .skin-tool-wheel {
+  background:
+    repeating-conic-gradient(
+      from -120deg,
+      #d2c69180 0 2deg,
+      transparent 2deg 30deg
+    ),
+    radial-gradient(circle, #142724 58%, #080d0b 59%);
+  border: 6px ridge #54665b;
+}
+.workspace-interface[data-interface="cockpit"] .skin-tool-wheel::before {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 30px;
+  background: #efd18a;
+  transform: translateY(-12px) rotate(35deg);
+  transform-origin: bottom;
+}
+.workspace-interface[data-interface="retro"] .dj-console .skin-history {
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, transparent 33%, #818092 34% 66%, transparent 67%),
+    linear-gradient(transparent 33%, #818092 34% 66%, transparent 67%), #21182b;
+  border: 5px ridge #574961;
+}
+.workspace-interface[data-interface="retro"] .dj-console .skin-tool-wheel {
+  background: radial-gradient(circle at 40% 35%, #875fa6, #41234e 70%);
+  border: 5px ridge #9265a8;
+}
+.workspace-interface[data-interface="cyberdeck"] .dj-console .skin-tool-wheel {
+  border: 3px double var(--skin-secondary);
+  background: repeating-radial-gradient(
+    circle,
+    #69e9df14 0 9px,
+    #69e9df70 10px 11px
+  );
+  box-shadow: 0 0 18px #69e9df30;
+}
+@media (max-width: 1200px) {
+  .dj-console {
+    min-height: 106px;
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  .dj-console .skin-history,
+  .dj-console .skin-tool-wheel {
+    width: 76px;
+    height: 76px;
+  }
+  .dj-pads button {
+    min-width: 38px;
+    min-height: 36px;
+  }
+  .dj-tool-selector input {
+    width: 50px;
+  }
+}
+@media (max-width: 620px) {
+  .dj-console {
+    min-height: 96px;
+    padding: 6px;
+    gap: 6px;
+  }
+  .dj-console .skin-history,
+  .dj-console .skin-tool-wheel {
+    width: 48px;
+    height: 48px;
+  }
+  .dj-console .skin-history svg,
+  .dj-console .skin-tool-wheel svg {
+    width: 16px;
+    height: 16px;
+  }
+  .dj-transport {
+    flex-direction: row;
+  }
+  .dj-pads {
+    display: flex;
+  }
+  .dj-pads button {
+    min-width: 30px;
+  }
+  .dj-console .dj-settings {
+    width: 32px;
+    height: 32px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dj-console button,
+  .skin-history img {
+    transition: none;
+  }
+}

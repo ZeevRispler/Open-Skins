@@ -49,3 +49,5 @@ The DJ skin uses a small jog wheel and ambient hardware artwork, preserving scre
 ## Google AI Pro sign-in
 
 See [Google sign-in without API keys](GOOGLE_SIGN_IN.md). `scripts/google-login.sh` authenticates Google’s official Antigravity ACP agent. `scripts/start-coding-skins.sh` launches the live OpenHands stack on localhost:8000. Google AI Pro authentication and a real response through the DJ interface were verified. The active Google profile defaults to Gemini 3.8 Flash (Low); the scripted demo on port 5173 remains separate.
+
+The current skin is shown in a compact picker. Open it for preview tiles; selection, Escape, or moving focus outside closes the gallery. The workspace hardware strip uses twin DJ platters, cockpit instruments, retro controls or cyberdeck rings, with tactile presses and a real tool-selection fader. Reduced-motion users receive immediate state changes.

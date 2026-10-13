@@ -52,6 +52,7 @@ test("DJ controls operate the real coding workspace without a provider key", asy
   await setChatInput(page, "Run the scripted terminal command and reply.");
   await page.getByTestId("chat-input").press("Enter");
   await page.waitForURL(/\/conversations\/[^/?#]+/);
+  await page.getByRole("button", { name: "Interface", exact: true }).click();
   await page.getByRole("button", { name: "DJ console", exact: true }).click();
   const id = getConversationIdFromURL(page);
   await waitForNonUserMessageText(page, REPLY_TOKEN);
@@ -137,13 +138,14 @@ test("DJ controls operate the real coding workspace without a provider key", asy
   ).toBeVisible();
   await setChatInput(page, "Preserve this draft");
   for (const skin of ["Cockpit", "Retro console", "Cyberdeck", "DJ console"]) {
+    await page.getByRole("button", { name: "Interface", exact: true }).click();
     await page.getByRole("button", { name: skin, exact: true }).click();
     await expect(page.getByTestId("chat-input")).toContainText(
       "Preserve this draft",
     );
     const chrome = await page.locator(".dj-controls").boundingBox();
     const workspace = await page.locator(".workspace-panels").boundingBox();
-    expect(chrome!.height).toBeLessThan(100);
+    expect(chrome!.height).toBeLessThan(155);
     expect(workspace!.height).toBeGreaterThan(750);
     // Every skin must expose the actual tool panel, not only a lit control.
     for (const name of ["Files", "Terminal", "Changes", "Browser"]) {
@@ -193,10 +195,12 @@ test("DJ controls operate the real coding workspace without a provider key", asy
       path: `test-results-mock-llm/skin-${skin.replaceAll(" ", "-").toLowerCase()}.png`,
     });
   }
+  await page.getByRole("button", { name: "Interface", exact: true }).click();
   await page.getByRole("button", { name: "Standard", exact: true }).click();
   await expect(page.getByTestId("chat-input")).toContainText(
     "Preserve this draft",
   );
+  await page.getByRole("button", { name: "Interface", exact: true }).click();
   await page.getByRole("button", { name: "DJ console", exact: true }).click();
   await expect(page.getByTestId("chat-input")).toContainText(
     "Preserve this draft",

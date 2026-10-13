@@ -1,3 +1,5 @@
+import { useRef, type KeyboardEvent } from "react";
+import { ChevronDown, Check, Palette } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
 import "./workspace-interface.css";
@@ -16,25 +18,62 @@ const SKIN_LABELS: Record<WorkspaceInterface, I18nKey> = {
   cyberdeck: I18nKey.CONVERSATION$CYBERDECK_INTERFACE,
 };
 
+// @spec CS-009 — The skin gallery stays hidden until requested.
 // @spec CS-007 — One skin preference controls every app surface.
 export function SkinSwitcher() {
   const { t } = useTranslation("openhands");
   const { interfaceId, setInterface } = useInterfaceStore();
+  const picker = useRef<HTMLDetailsElement>(null);
+  const closeOnEscape = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === "Escape" && picker.current) {
+      picker.current.open = false;
+      picker.current.querySelector("summary")?.focus();
+    }
+  };
   return (
     <header className="interface-switcher">
-      <span>{t(I18nKey.CONVERSATION$INTERFACE)}</span>
-      <div role="group" aria-label={t(I18nKey.CONVERSATION$INTERFACE)}>
-        {WORKSPACE_INTERFACES.map((id) => (
-          <button
-            key={id}
-            type="button"
-            aria-pressed={interfaceId === id}
-            onClick={() => setInterface(id)}
-          >
-            {t(SKIN_LABELS[id])}
-          </button>
-        ))}
-      </div>
+      <details
+        ref={picker}
+        onBlur={(event) => {
+          if (
+            !event.currentTarget.contains(event.relatedTarget as Node | null) &&
+            picker.current
+          )
+            picker.current.open = false;
+        }}
+      >
+        <summary
+          role="button"
+          aria-label={t(I18nKey.CONVERSATION$INTERFACE)}
+          onKeyDown={closeOnEscape}
+        >
+          <Palette aria-hidden="true" />
+          <span>{t(SKIN_LABELS[interfaceId])}</span>
+          <ChevronDown aria-hidden="true" />
+        </summary>
+        <div role="group" aria-label={t(I18nKey.CONVERSATION$INTERFACE)}>
+          {WORKSPACE_INTERFACES.map((id) => (
+            <button
+              key={id}
+              type="button"
+              onKeyDown={closeOnEscape}
+              aria-pressed={interfaceId === id}
+              data-skin-option={id}
+              onClick={() => {
+                setInterface(id);
+                if (picker.current) {
+                  picker.current.open = false;
+                  picker.current.querySelector("summary")?.focus();
+                }
+              }}
+            >
+              <span aria-hidden="true" data-skin-preview={id} />
+              {t(SKIN_LABELS[id])}
+              {interfaceId === id && <Check aria-hidden="true" />}
+            </button>
+          ))}
+        </div>
+      </details>
     </header>
   );
 }
