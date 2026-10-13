@@ -1,13 +1,26 @@
-import { useChatInputModelState } from "#/hooks/use-chat-input-model-state";
-import { ChatInputModel } from "#/components/features/chat/components/chat-input-model";
-import { ChatInputLlmProfilePicker } from "#/components/features/chat/components/chat-input-llm-profile-picker";
-
-/** ACP agents select their own models; native agents switch saved LLM profiles. */
+import { createContext, useContext } from "react";
+import type { WorkspaceController } from "#/workspace-core/use-workspace-controller";
+export const ControllerContext = createContext<WorkspaceController | null>(
+  null,
+);
 export function SkinModelControl() {
-  const { isAcpContext } = useChatInputModelState();
-  return isAcpContext ? (
-    <ChatInputModel position="bottom" />
-  ) : (
-    <ChatInputLlmProfilePicker position="bottom" />
+  const c = useContext(ControllerContext);
+  if (!c) return null;
+  return (
+    <select
+      aria-label={c.state.backend === "openhands" ? "Agent profile" : "Model"}
+      value={c.state.model}
+      disabled={
+        c.state.busy || (!!c.state.session && c.state.backend === "openhands")
+      }
+      onChange={(e) => c.commands.setModel(e.target.value)}
+    >
+      <option value="">Backend default</option>
+      {c.state.models.map((m) => (
+        <option key={m.id} value={m.id}>
+          {m.label}
+        </option>
+      ))}
+    </select>
   );
 }

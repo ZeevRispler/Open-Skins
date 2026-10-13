@@ -24,7 +24,7 @@ const SKIN_LABELS: Record<WorkspaceInterface, I18nKey> = {
 // @spec CS-009 — The skin gallery stays hidden until requested.
 // @spec CS-007 — One skin preference controls every app surface.
 export function SkinSwitcher() {
-  const { t } = useTranslation("openhands");
+  const { t } = useTranslation("open-skins");
   const { interfaceId, setInterface, soundsEnabled, setSoundsEnabled } =
     useInterfaceStore();
   const picker = useRef<HTMLDetailsElement>(null);

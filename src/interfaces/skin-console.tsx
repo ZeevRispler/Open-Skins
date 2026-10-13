@@ -11,7 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
 import type { WorkspaceController } from "#/workspace-core/use-workspace-controller";
-import type { ConversationTab } from "#/stores/conversation-store";
+import type { ToolTab } from "#/core/types";
 import { SkinModelControl } from "./skin-model-control";
 import { AgentState } from "#/types/agent-state";
 import jogWheel from "./dj/assets/jog-wheel-v1.png";
@@ -23,13 +23,12 @@ const STATUS_LABELS: Partial<Record<AgentState, I18nKey>> = {
   [AgentState.PAUSED]: I18nKey.AGENT_STATUS$AGENT_STOPPED,
   [AgentState.ERROR]: I18nKey.AGENT_STATUS$ERROR_OCCURRED,
 };
-const TOOL_PADS: { id: ConversationTab; label: I18nKey; icon: typeof Files }[] =
-  [
-    { id: "files", label: I18nKey.COMMON$FILES, icon: Files },
-    { id: "terminal", label: I18nKey.COMMON$TERMINAL, icon: Terminal },
-    { id: "commits", label: I18nKey.COMMON$CHANGES, icon: GitCompare },
-    { id: "browser", label: I18nKey.COMMON$BROWSER, icon: Globe },
-  ];
+const TOOL_PADS: { id: ToolTab; label: I18nKey; icon: typeof Files }[] = [
+  { id: "files", label: I18nKey.COMMON$FILES, icon: Files },
+  { id: "terminal", label: I18nKey.COMMON$TERMINAL, icon: Terminal },
+  { id: "changes", label: I18nKey.COMMON$CHANGES, icon: GitCompare },
+  { id: "browser", label: I18nKey.COMMON$BROWSER, icon: Globe },
+];
 
 // @spec CS-010 — Hardware indicators derive from shared history and tool state.
 // @spec CS-008 — Compact controls keep the agent workspace dominant.
@@ -38,7 +37,7 @@ export function SkinConsole({
 }: {
   controller: WorkspaceController;
 }) {
-  const { t } = useTranslation("openhands");
+  const { t } = useTranslation("open-skins");
   const { state, commands } = controller;
   const toolIndex = Math.max(
     0,
@@ -108,7 +107,7 @@ export function SkinConsole({
             aria-label={t(label)}
             aria-pressed={state.toolsOpen && state.selectedTool === id}
             onClick={() =>
-              id === "commits" ? commands.openChanges() : commands.openTool(id)
+              id === "changes" ? commands.openChanges() : commands.openTool(id)
             }
             title={t(label)}
           >

@@ -1,0 +1,293 @@
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #e8e8ee;
+  background: #11131a;
+  --ui-base: #11131a;
+  --ui-surface: #20242e;
+  --ui-border: #414655;
+  --ui-muted: #a3a9b8;
+  --ui-foreground: #e8e8ee;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  padding: 8px;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+button:active {
+  transform: translateY(2px);
+}
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #67dfee;
+  outline-offset: 2px;
+}
+svg {
+  width: 18px;
+  height: 18px;
+}
+h1,
+h2 {
+  font-size: 16px;
+  margin: 0 0 12px;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    13px/1.6 ui-monospace,
+    monospace;
+}
+p {
+  line-height: 1.6;
+}
+small {
+  color: var(--ui-muted);
+}
+.app {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  flex-shrink: 0;
+}
+.brand strong {
+  letter-spacing: 3px;
+}
+.brand span {
+  flex: 1;
+  color: var(--ui-muted);
+  font-size: 12px;
+}
+.workspace-interface {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+.interface-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 4px 12px;
+}
+.workspace-interface-body,
+.workspace-panels {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.dj-controls {
+  flex-shrink: 0;
+}
+.dj-console {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+}
+.dj-transport,
+.dj-pads {
+  display: flex;
+  gap: 6px;
+}
+.dj-status {
+  font-size: 12px;
+}
+.dj-led {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #68cfc1;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.skin-history,
+.skin-tool-wheel {
+  position: relative;
+}
+.skin-history img,
+.skin-tool-wheel img {
+  width: 52px;
+}
+.workarea {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.agent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  background: var(--ui-base);
+}
+.agent-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.agent-heading span {
+  font-size: 11px;
+  color: var(--ui-muted);
+}
+.messages {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 8px;
+}
+.welcome {
+  max-width: 600px;
+  margin: 7vh auto;
+  color: var(--ui-muted);
+}
+article {
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+}
+article[data-role="user"] {
+  background: var(--ui-surface);
+}
+article[data-role="tool"] {
+  opacity: 0.8;
+}
+.composer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.composer textarea {
+  resize: vertical;
+  min-height: 70px;
+  max-height: 160px;
+}
+.composer > div {
+  display: flex;
+  gap: 8px;
+}
+.composer select {
+  min-width: 0;
+  max-width: 50%;
+  margin-right: auto;
+}
+.history,
+.tools {
+  width: 30%;
+  min-width: 220px;
+  max-width: 460px;
+  padding: 14px;
+  overflow: auto;
+  background: var(--ui-surface);
+  border-right: 1px solid var(--ui-border);
+}
+.history button,
+.tools > button {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+}
+.tools header {
+  display: flex;
+  justify-content: space-between;
+}
+.tools input {
+  width: 100%;
+}
+.settings {
+  position: fixed;
+  z-index: 20;
+  inset: 15% auto auto 50%;
+  transform: translateX(-50%);
+  max-width: 550px;
+  width: 90%;
+  background: var(--ui-surface);
+  color: inherit;
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 0 0 100vmax #0008;
+}
+.settings button {
+  margin: 8px 4px;
+}
+.settings label {
+  display: block;
+}
+.settings input {
+  width: 100%;
+  margin: 8px 0;
+}
+.approval {
+  padding: 12px;
+  background: var(--ui-surface);
+}
+[role="alert"] {
+  color: #ff9d9d;
+}
+@media (max-width: 700px) {
+  .brand span {
+    display: none;
+  }
+  .brand {
+    gap: 5px;
+    padding: 6px;
+    font-size: 11px;
+  }
+  .brand button {
+    padding: 5px;
+  }
+  .agent {
+    padding: 10px;
+  }
+  .history,
+  .tools {
+    position: absolute;
+    z-index: 5;
+    inset: 0 0 0 auto;
+    width: 85%;
+    max-width: none;
+  }
+  .workarea {
+    position: relative;
+  }
+  .composer > div {
+    flex-wrap: wrap;
+  }
+  .dj-model {
+    max-width: 180px;
+  }
+  .dj-console {
+    gap: 4px;
+  }
+}

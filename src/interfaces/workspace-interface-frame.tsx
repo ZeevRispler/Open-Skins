@@ -16,11 +16,21 @@ export function WorkspaceInterfaceFrame({
   const interfaceId = useInterfaceStore((state) => state.interfaceId);
   const soundsEnabled = useInterfaceStore((state) => state.soundsEnabled);
   const previous = useRef(controller.state.agentState);
+  const previousSession = useRef(controller.state.session?.id);
   useEffect(() => {
-    const cue = agentSoundCue(previous.current, controller.state.agentState);
+    const cue =
+      previousSession.current === controller.state.session?.id
+        ? agentSoundCue(previous.current, controller.state.agentState)
+        : null;
+    previousSession.current = controller.state.session?.id;
     previous.current = controller.state.agentState;
     if (soundsEnabled && cue) playSkinSound(interfaceId, cue);
-  }, [controller.state.agentState, interfaceId, soundsEnabled]);
+  }, [
+    controller.state.agentState,
+    controller.state.session?.id,
+    interfaceId,
+    soundsEnabled,
+  ]);
   return (
     <section
       className="workspace-interface"

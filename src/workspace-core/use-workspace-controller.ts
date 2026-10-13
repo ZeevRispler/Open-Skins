@@ -1,81 +1,202 @@
-import { useState } from "react";
-import { useEventStore } from "#/stores/use-event-store";
-import { useContextWindowUsage } from "#/hooks/use-context-window-usage";
-import { useMainWebSocketStatus } from "#/hooks/use-unified-websocket-status";
-import { useNavigation } from "#/context/navigation-context";
-import type { ConversationTab } from "#/stores/conversation-store";
-import { useOptionalSidebarMobileNav } from "#/components/features/sidebar/sidebar-mobile-nav-context";
+import { useEffect, useRef, useState } from "react";
+import { DemoAdapter } from "#/adapters/demo";
+import { OpenHandsAdapter } from "#/adapters/openhands";
+import { OpenCodeAdapter } from "#/adapters/opencode";
 import {
-  useBreakpoint,
-  SIDEBAR_RAIL_COLLAPSE_MAX_WIDTH,
-} from "#/hooks/use-breakpoint";
-import { useSettings } from "#/hooks/query/use-settings";
-import { getLockedCloudHost } from "#/api/agent-server-config";
-import { useSelectConversationTab } from "#/hooks/use-select-conversation-tab";
-import { useAgentState } from "#/hooks/use-agent-state";
-import { useSessionControls } from "./use-session-controls";
-import { useSidebarStore } from "#/stores/sidebar-store";
+  emptySnapshot,
+  type AgentAdapter,
+  type BackendKind,
+  type Session,
+  type ToolTab,
+  type ModelChoice,
+  type Approval,
+} from "#/core/types";
 import { AgentState } from "#/types/agent-state";
-
-/** The UI-facing contract; interfaces consume commands, never server clients. */
-// @spec CS-003 — Adapt shared panels to desktop and mobile navigation.
 export function useWorkspaceController() {
-  const tools = useSelectConversationTab();
-  const eventCount = useEventStore((store) => store.events.length);
-  const context = useContextWindowUsage();
-  const connectionOpen = useMainWebSocketStatus() === "OPEN";
-  const contextUsage = context
-    ? Math.min(
-        100,
-        Math.max(0, (context.perTurnToken / context.contextWindow) * 100),
-      )
-    : null;
-  const { navigate, conversationId } = useNavigation();
-  const isMobilePanel = useBreakpoint();
-  const revealPanel = () => {
-    if (isMobilePanel && conversationId)
-      navigate(`/conversations/${conversationId}/panel`);
-  };
-  const openTool = (tab: ConversationTab) => {
-    if (tab === "commits") tools.navigateToChanges();
-    else tools.navigateToTab(tab);
-    revealPanel();
-  };
-  const mobileNav = useOptionalSidebarMobileNav();
-  const isMobileSidebar = useBreakpoint(SIDEBAR_RAIL_COLLAPSE_MAX_WIDTH);
-  const { data: settings } = useSettings();
-  const session = useSessionControls();
-  const { curAgentState } = useAgentState();
-  const toggleHistory = useSidebarStore((state) => state.toggleCollapsed);
-  const historyOpen = useSidebarStore((state) => !state.collapsed);
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const adapter = useRef<AgentAdapter>(new DemoAdapter());
+  const epoch = useRef(0);
+  const [backend, setBackend] = useState<BackendKind>("demo");
+  const [models, setModels] = useState<ModelChoice[]>([]);
+  const [model, setModel] = useState("");
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [session, setSession] = useState<Session>();
+  const [snapshot, setSnapshot] = useState(emptySnapshot);
+  const [connectionOpen, setConnected] = useState(false);
+  const [error, setError] = useState("");
+  const [pollError, setPollError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [historyOpen, setHistory] = useState(false);
+  const [settingsOpen, setSettings] = useState(false);
+  const [toolsOpen, setTools] = useState(false);
+  const [selectedTool, setTool] = useState<ToolTab>("files");
+  const [file, setFile] = useState("");
+  const [directory, setDirectory] = useState("");
+  async function connect(kind: BackendKind) {
+    const generation = ++epoch.current;
+    setConnected(false);
+    setFile("");
+    setPollError("");
+    setBusy(true);
+    setError("");
+    adapter.current.dispose();
+    const next =
+      kind === "openhands"
+        ? new OpenHandsAdapter(location.origin + "/bridge/openhands")
+        : kind === "opencode"
+          ? new OpenCodeAdapter(location.origin + "/bridge/opencode")
+          : new DemoAdapter();
+    adapter.current = next;
+    setBackend(kind);
+    setSession(undefined);
+    setSnapshot(emptySnapshot());
+    try {
+      const choices = await next.connect();
+      const list = await next.sessions();
+      if (epoch.current !== generation) return;
+      setModels(choices);
+      setModel("");
+      setSessions(list);
+      setConnected(true);
+      setSettings(false);
+    } catch (e) {
+      if (epoch.current === generation)
+        setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      if (epoch.current === generation) setBusy(false);
+    }
+  }
+  useEffect(() => {
+    void connect("demo");
+    return () => {
+      epoch.current++;
+      adapter.current.dispose();
+    };
+  }, []);
+  useEffect(() => {
+    if (!session || !connectionOpen) return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const current = adapter.current;
+    async function poll() {
+      try {
+        const data = await current.snapshot(session!);
+        if (!cancelled) {
+          setSnapshot(data);
+          setPollError("");
+        }
+      } catch (e) {
+        if (!cancelled)
+          setPollError(e instanceof Error ? e.message : String(e));
+      }
+      if (!cancelled) timer = setTimeout(poll, 900);
+    }
+    void poll();
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [session, connectionOpen]);
+  async function perform(action: () => Promise<void>) {
+    if (busy) return;
+    setBusy(true);
+    setError("");
+    try {
+      await action();
+      return true;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+      return false;
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function newSession() {
+    const next = await adapter.current.create(model, directory || undefined);
+    setSession(next);
+    setSnapshot(emptySnapshot());
+    setSessions(await adapter.current.sessions());
+    setHistory(false);
+    return next;
+  }
+  useEffect(() => {
+    setFile("");
+  }, [session?.id]);
+  const running = snapshot.state === AgentState.RUNNING;
+  const canResume =
+    !!session &&
+    adapter.current.capabilities.resume &&
+    snapshot.state === AgentState.PAUSED;
   return {
     state: {
-      eventCount,
-      contextUsage,
+      backend,
+      models,
+      model,
+      sessions,
+      session,
+      snapshot,
       connectionOpen,
-      agentState: curAgentState,
-      canConfigure: Boolean(settings) && getLockedCloudHost() === null,
-      running: curAgentState === AgentState.RUNNING,
-      canResume: curAgentState === AgentState.PAUSED,
-      isStopping: session.isStopping,
-      isResuming: session.isResuming,
-      selectedTool: tools.selectedTab,
-      toolsOpen: tools.isRightPanelShown,
-      historyOpen: isMobileSidebar
-        ? (mobileNav?.isOpen ?? historyOpen)
-        : historyOpen,
+      error: error || pollError,
+      busy,
+      historyOpen,
       settingsOpen,
+      toolsOpen,
+      selectedTool,
+      file,
+      directory,
+      running,
+      canResume,
+      isResuming: busy,
+      isStopping: busy,
+      canConfigure: true,
+      agentState: snapshot.state,
     },
     commands: {
-      stop: session.stop,
-      resume: session.resume,
-      openTool,
-      openChanges: () => openTool("commits"),
-      toggleHistory:
-        isMobileSidebar && mobileNav ? mobileNav.toggle : toggleHistory,
-      openSettings: () => setSettingsOpen(true),
-      closeSettings: () => setSettingsOpen(false),
+      connect,
+      setModel,
+      setDirectory,
+      toggleHistory: () => setHistory((v) => !v),
+      openSettings: () => setSettings(true),
+      closeSettings: () => setSettings(false),
+      closeTools: () => setTools(false),
+      openTool: (tool: ToolTab) => {
+        setTool(tool);
+        setTools(true);
+      },
+      openChanges: () => {
+        setTool("changes");
+        setTools(true);
+      },
+      selectSession: (next: Session) => {
+        setSession(next);
+        setSnapshot(emptySnapshot());
+        setHistory(false);
+      },
+      newSession: () =>
+        perform(async () => {
+          await newSession();
+        }),
+      send: (text: string) =>
+        perform(async () => {
+          const current = session ?? (await newSession());
+          await adapter.current.send(current, text, model);
+        }),
+      stop: () =>
+        perform(async () => {
+          if (session) await adapter.current.stop(session);
+        }),
+      resume: () =>
+        perform(async () => {
+          if (session && canResume) await adapter.current.resume(session);
+        }),
+      readFile: (path: string) =>
+        perform(async () => {
+          if (session) setFile(await adapter.current.readFile(session, path));
+        }),
+      respond: (approval: Approval, accept: boolean, answers?: string[]) =>
+        perform(async () => {
+          if (session)
+            await adapter.current.respond(session, approval, accept, answers);
+        }),
     },
   };
 }
