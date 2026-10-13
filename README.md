@@ -6,17 +6,22 @@ The agent conversation stays central. Moving handles, switches, tool pads and op
 
 ![DJ workspace](docs/screenshots/open-skins/dj.png)
 
-## Start
+## Quick start
 
-Requires Node.js 24 or newer. Open Skins contains the interface and adapters; it does not bundle a coding agent, Docker image or model runtime.
+Requires [Node.js 24 or newer](https://nodejs.org/en/download) and Git. Open Skins contains the interface and adapters; it does not bundle a coding agent, Docker image or model runtime.
 
 ```sh
+git clone --depth 1 --single-branch https://github.com/ZeevRispler/Open-Skins.git
+cd Open-Skins
 npm ci
-cp .env.example .env
 npm run dev
 ```
 
 Open **http://127.0.0.1:5180**. The initial **simulated demo** works without an account or API key. It demonstrates controls and virtual files; connect a real backend for actual coding.
+
+Click the palette button to choose a skin, then send **Build a demo**. Send **slow demo** to see the DJ discs rotate and try Stop/Resume. The speaker button enables sound. This first run needs no `.env` file or installed agent.
+
+The shallow clone downloads the current app without the inherited OpenHands Git history.
 
 For a production build:
 
@@ -27,9 +32,17 @@ npm start
 
 ## Connect your agent
 
+After the free demo works, create a local configuration file:
+
+```sh
+cp .env.example .env
+```
+
+Set the URL for your installed agent, restart Open Skins, and click **Connection**. Keep account sign-in and model setup in the agent itself. The working directory is a path on the machine running the agent server.
+
 ### OpenHands
 
-Start your existing **OpenHands Agent Server** and configure its URL in `.env`. This adapter targets the Agent Server REST API used by the TypeScript client, rather than the older OpenHands web application's API.
+Start your existing **OpenHands Agent Server** and configure its URL in `.env`. See the official [Agent Server setup guide](https://github.com/OpenHands/docs/blob/main/sdk/arch/agent-server.mdx) if you have not installed it. This adapter targets the Agent Server REST API used by the TypeScript client, rather than the older OpenHands web application's API.
 
 ```dotenv
 OPENHANDS_URL=http://127.0.0.1:8000
@@ -83,6 +96,18 @@ The palette button opens a compact skin gallery. Sounds are **off by default**; 
 
 Screenshots above are captured from this app's browser regression tests, using the clearly labeled simulated demo.
 
+## Troubleshooting
+
+| Symptom                               | What to check                                                                                |
+| ------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Node or npm is missing                | Install Node.js 24 or newer, then reopen the terminal.                                       |
+| Port 5180 is busy                     | Run with a different `PORT` in `.env` and open that port.                                    |
+| Agent connection fails                | Start the agent server and check its URL in `.env`; restart Open Skins after editing it.     |
+| OpenHands returns 401                 | Set the server session token or token-file path in `.env`.                                   |
+| OpenHands cannot create a session     | Set an absolute working directory in Connection and configure an agent profile in OpenHands. |
+| No OpenCode models appear             | Connect a provider in OpenCode first; restart or reconnect the companion.                    |
+| Sound is quiet or animation is static | Enable the speaker button; check browser/OS volume and reduced-motion preferences.           |
+
 ## Architecture
 
 ```text
@@ -99,9 +124,7 @@ Skins never import an agent SDK. Add another backend by implementing `AgentAdapt
 ## Tests
 
 ```sh
-npm test
-npm run lint
-npm run build
+npm run check
 npx playwright install chromium
 npm run test:e2e
 ```
