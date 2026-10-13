@@ -42,3 +42,7 @@ Tests cover command routing, disabled transport states, persisted layout selecti
 ## AI-generated hardware visuals
 
 The DJ layout uses two large decks around a central mixer. `src/interfaces/dj/assets/jog-wheel-v1.png` was generated with the built-in image_gen tool from a user-supplied style reference. See the adjacent asset README for the generation prompt. All labels, pads, transport, and selectors remain functional HTML, separate from the decorative image.
+
+## Google AI Pro sign-in
+
+See [Google sign-in without API keys](GOOGLE_SIGN_IN.md). `scripts/google-login.sh` launches the official Gemini CLI; `scripts/start-coding-skins.sh` launches the live OpenHands stack on localhost:8000 with the CLI available to its backend. The live stack was checked through `/ready`; Google sign-in and a real model response remain pending user authentication.
