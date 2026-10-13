@@ -3,7 +3,7 @@ import { ChatInputModel } from "#/components/features/chat/components/chat-input
 import { ChatInputLlmProfilePicker } from "#/components/features/chat/components/chat-input-llm-profile-picker";
 
 /** ACP agents select their own models; native agents switch saved LLM profiles. */
-export function DjModelControl() {
+export function SkinModelControl() {
   const { isAcpContext } = useChatInputModelState();
   return isAcpContext ? (
     <ChatInputModel position="bottom" />

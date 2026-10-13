@@ -1,19 +1,4 @@
-# Open Skins
-
-An OpenHands Agent Canvas fork with interchangeable functional interfaces. Standard, DJ console, Cockpit, Retro console, and Cyberdeck share the same conversation, tools, and agent backend. A single skin preference applies across the home screen, sidebar, settings, dialogs, and workspace.
-
-## Run
-
-Requires Node 24+ and npm. Install the pinned dependencies with `npm ci`.
-
-- `npm run dev`: launch the OpenHands local stack and frontend. Follow the normal agent/provider onboarding. This may download the Python agent server and automation runtime.
-- `npm run dev:mock`: frontend preview using OpenHands fixtures; no live coding agent. Open `/conversations/canvas-demo`, skip initial onboarding, and choose **DJ console** in the interface switcher.
-- `npm run build`: standalone production frontend.
-- `npm run build:lib`: embeddable component library.
-- `node scripts/start-demo.mjs`: real coding backend with a local scripted model at http://127.0.0.1:5173. Requires Node 24+, uv, and a production build. Send any message to create and run `demo.py`; send **slow demo** to exercise Stop and Resume. No account or provider key required. This demonstrates execution and UI behavior; the scripted model does not answer general questions or perform arbitrary coding tasks. State lives under `.runtime/demo`, separate from your live provider stack. Execution uses the normal OpenHands workspace for each demo conversation.
-- `npm run build:mock` followed by `npm start -- --port 5173`: static mock preview. Set `VITE_SESSION_API_KEY=mock-preview` while building to seed a local backend for the fixtures. This is a dummy preview key, not a provider credential.
-
-The UI may show disconnected or unconfigured-agent messages in static mock mode because there is no real WebSocket agent server. File and conversation fixtures still demonstrate the layout.
+# Architecture and skin development
 
 ## Architecture
 
@@ -23,7 +8,7 @@ OpenHands Agent Server → `@openhands/typescript-client` → existing services/
 - `src/workspace-core/use-workspace-controller.ts` exposes state and semantic commands for tools, changes, history, settings, and transport. It adapts desktop drawers and mobile panel navigation.
 - `src/interfaces/workspace-interface.tsx` binds runtime state to presentation and lazy settings.
 - `src/interfaces/workspace-interface-frame.tsx` changes presentation without replacing the shared conversation child or the providers above it.
-- `src/interfaces/dj/dj-console.tsx` contains the compact shared control strip. History, transport, model selection, tool pads, the stepped tool slider, and settings invoke the same controller in every skin. Toolbar model menus open downward; composer menus retain their upward placement.
+- `src/interfaces/skin-console.tsx` contains the compact shared control strip. History, transport, model selection, tool pads, the stepped tool slider, and settings invoke the same controller in every skin. Toolbar model menus open downward; composer menus retain their upward placement.
 - `src/interfaces/interface-store.ts` owns the persisted skin preference only. It validates every supported skin and restores Standard for unknown ids. It does not persist conversation data or secrets.
 - `src/interfaces/app-skin-applier.tsx` applies standalone app styling to the body so portals and navigation share the selected skin. `app-skins.css` uses explicit Agent Canvas scope markers to preserve the repository’s scoped CSS build.
 - `src/interfaces/skin-switcher.tsx` provides the same chooser on home/settings and in the conversation.
@@ -46,10 +31,24 @@ Tests cover command routing, disabled transport states, persisted layout selecti
 
 The DJ skin uses a small jog wheel and ambient hardware artwork, preserving screen space for the agent. Cockpit, Retro console and Cyberdeck use CSS instrument, game-console and circuit motifs rather than extra bitmap assets. `src/interfaces/dj/assets/jog-wheel-v1.png` was generated with the built-in image_gen tool from a user-supplied style reference. See the adjacent asset README for the generation prompt. All labels, pads, transport, and selectors remain functional HTML, separate from the decorative image.
 
-## Google AI Pro sign-in
+## Hardware and presentation
 
-See [Google sign-in without API keys](GOOGLE_SIGN_IN.md). `scripts/google-login.sh` authenticates Google’s official Antigravity ACP agent. `scripts/start-coding-skins.sh` launches the live OpenHands stack on localhost:8000. Google AI Pro authentication and a real response through the DJ interface were verified. The active Google profile defaults to Gemini 3.8 Flash (Low); the scripted demo on port 5173 remains separate.
+The compact picker shows the current skin and opens a preview gallery. The hardware strip is separate from the agent workspace. `theme-hardware.css` defines cockpit instruments, retro controls and cyberdeck rings; `workspace-interface.css` defines layout and shared controls; `app-skins.css` styles the app shell and dialogs. History switches derive from `historyOpen`; needles, joystick positions and selector rings derive from the selected tool. Reduced-motion disables transitions.
 
-The current skin is shown in a compact picker. Open it for preview tiles; selection, Escape, or moving focus outside closes the gallery. The workspace hardware strip uses twin DJ platters, cockpit instruments, retro controls or cyberdeck rings, with tactile presses and a real tool-selection fader. Reduced-motion users receive immediate state changes.
+The themed workspace is a constrained flex column so a long conversation cannot push the mobile composer out of view. Browser coverage checks the send button bounds, rendered mechanism movement and live tool panels.
 
-Cockpit, Retro console and Cyberdeck hardware is styled in `src/interfaces/theme-hardware.css`. History switches derive from `historyOpen`; instrument needles, joystick positions and selector rings derive from the selected tool. The native slider keeps pointer and keyboard support. Browser tests verify rendered movement, reduced-motion transitions, live panels, and unobstructed chat on desktop and mobile, and capture each skin for visual review.
+## Repository layout
+
+| Path                           | Purpose                                                 |
+| ------------------------------ | ------------------------------------------------------- |
+| `src/interfaces/`              | Skin picker, shared hardware controls and visual styles |
+| `src/interfaces/dj/assets/`    | DJ artwork and its provenance                           |
+| `src/workspace-core/`          | Shared coding commands and state adapter                |
+| `docs/open-skins/`             | Setup, agents and architecture guides                   |
+| `docs/screenshots/open-skins/` | Current application screenshots                         |
+| `specs/coding-skins.md`        | Stable behavior specifications                          |
+| `tests/e2e/`                   | Real backend and browser regression tests               |
+| `scripts/providers/`           | Optional provider-specific helpers                      |
+| `.runtime/`                    | Ignored local runtimes, connection state and test notes |
+
+Upstream frontend, server integration, build, Docker and desktop tooling remain in their existing locations to preserve compatibility.

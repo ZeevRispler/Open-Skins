@@ -2,7 +2,8 @@
 
 ## General
 
-- This repository is the OpenHands Agent Canvas React/TypeScript frontend.
+- This repository is Open Skins, a modular fork of the OpenHands Agent Canvas React/TypeScript frontend.
+- Fork-specific setup, agent connections, and skin architecture are documented in `docs/open-skins/`. Skin components belong in `src/interfaces/`; shared coding commands belong in `src/workspace-core/`.
 
 ## i18n workflow
 - After editing `src/i18n/translation.json`, run `npm run make-i18n` to

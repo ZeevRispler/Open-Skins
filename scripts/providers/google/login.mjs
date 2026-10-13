@@ -5,7 +5,7 @@ import { createInterface } from "node:readline";
 import { fileURLToPath } from "node:url";
 
 const command = fileURLToPath(
-  new URL("../.runtime/antigravity/agy_acp_server.par", import.meta.url),
+  new URL("../../../.runtime/antigravity/agy_acp_server.par", import.meta.url),
 );
 const child = spawn(command, [], { stdio: ["pipe", "pipe", "inherit"] });
 const input = createInterface({ input: child.stdout });
@@ -46,7 +46,7 @@ try {
   const initialized = await request("initialize", {
     protocolVersion: 1,
     clientCapabilities: {},
-    clientInfo: { name: "coding-skins-login", version: "0.1.0" },
+    clientInfo: { name: "open-skins-login", version: "0.1.0" },
   });
   if (
     !initialized.authMethods?.some((method) => method.id === "oauth-personal")

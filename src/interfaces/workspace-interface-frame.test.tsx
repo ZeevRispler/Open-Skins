@@ -7,8 +7,8 @@ import type { WorkspaceController } from "#/workspace-core/use-workspace-control
 import { AgentState } from "#/types/agent-state";
 import { I18nKey } from "#/i18n/declaration";
 
-vi.mock("./dj/dj-model-control", () => ({
-  DjModelControl: () => null,
+vi.mock("./skin-model-control", () => ({
+  SkinModelControl: () => null,
 }));
 
 function makeController(): WorkspaceController {

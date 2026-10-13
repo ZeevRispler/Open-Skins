@@ -8,7 +8,7 @@ if ! command -v node >/dev/null 2>&1; then
   exit 1
 fi
 if [ ! -x "$skin_root/.runtime/antigravity/agy_acp_server.par" ]; then
-  echo 'Install Google’s official Antigravity ACP runtime first. See GOOGLE_SIGN_IN.md.' >&2
+  echo 'Install Google’s official Antigravity ACP runtime first. See docs/open-skins/agents.md.' >&2
   exit 1
 fi
-exec node "$skin_root/scripts/google-account-login.mjs"
+exec node "$skin_root/scripts/providers/google/login.mjs"

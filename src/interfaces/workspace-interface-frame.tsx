@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { WorkspaceController } from "#/workspace-core/use-workspace-controller";
 import { useInterfaceStore } from "./interface-store";
-import { SkinConsole } from "./dj/dj-console";
+import { SkinConsole } from "./skin-console";
 import { SkinSwitcher } from "./skin-switcher";
 
 // @spec CS-001 — Keep shared panels mounted while presentation changes.

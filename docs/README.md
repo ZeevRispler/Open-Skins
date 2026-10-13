@@ -1,6 +1,12 @@
-# Agent Canvas docs
+# Open Skins documentation
 
-This directory contains the project documentation.
+- [Getting started](open-skins/getting-started.md)
+- [Agents and accounts](open-skins/agents.md)
+- [Architecture and skin development](open-skins/architecture.md)
+
+## OpenHands foundation
+
+The guides below describe the shared OpenHands runtime and frontend.
 
 - [Architecture](./architecture.md): system boundaries, runtime modes, and quality gates.
 - [Using ACP agents](./ACP_AGENTS.md): onboard and configure external agents (Claude Code, Codex, Gemini CLI, Pi, OpenCode).

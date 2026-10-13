@@ -12,9 +12,9 @@ import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
 import type { WorkspaceController } from "#/workspace-core/use-workspace-controller";
 import type { ConversationTab } from "#/stores/conversation-store";
-import { DjModelControl } from "./dj-model-control";
+import { SkinModelControl } from "./skin-model-control";
 import { AgentState } from "#/types/agent-state";
-import jogWheel from "./assets/jog-wheel-v1.png";
+import jogWheel from "./dj/assets/jog-wheel-v1.png";
 
 const STATUS_LABELS: Partial<Record<AgentState, I18nKey>> = {
   [AgentState.RUNNING]: I18nKey.AGENT_STATUS$RUNNING_TASK,
@@ -85,7 +85,7 @@ export function SkinConsole({
         </button>
       </div>
       <div className="dj-model">
-        <DjModelControl />
+        <SkinModelControl />
       </div>
       <div className="dj-status" role="status">
         <span
