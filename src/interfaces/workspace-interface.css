@@ -38,6 +38,8 @@
   gap: 6px;
 }
 .workspace-interface:not([data-interface="standard"]) .workspace-panels {
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--skin-line);
   border-radius: 8px;
   overflow: hidden;

@@ -143,6 +143,43 @@ test("DJ controls operate the real coding workspace without a provider key", asy
     await expect(page.getByTestId("chat-input")).toContainText(
       "Preserve this draft",
     );
+    // @spec CS-010 — Visible mechanisms move with real state, without replacing the panels.
+    if (skin !== "DJ console") {
+      const history = console.getByRole("button", {
+        name: "Conversation history",
+        exact: true,
+      });
+      const mechanism = history.locator("[data-hardware-switch]");
+      const initial = await mechanism.evaluate(
+        (el) => getComputedStyle(el, "::after").transform,
+      );
+      await history.click();
+      await expect
+        .poll(() =>
+          mechanism.evaluate((el) => getComputedStyle(el, "::after").transform),
+        )
+        .not.toBe(initial);
+      await history.click();
+      await console.getByRole("slider").press("Home");
+      const handle = console.locator("[data-hardware-handle]");
+      const handleStart = await handle.evaluate(
+        (el) => getComputedStyle(el).transform,
+      );
+      await console.getByRole("slider").press("End");
+      await expect
+        .poll(() => handle.evaluate((el) => getComputedStyle(el).transform))
+        .not.toBe(handleStart);
+      await expect(
+        page.getByRole("tabpanel", { name: "Browser", exact: true }),
+      ).toBeVisible();
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await expect
+        .poll(() =>
+          handle.evaluate((el) => getComputedStyle(el).transitionDuration),
+        )
+        .toBe("0s");
+      await page.emulateMedia({ reducedMotion: "no-preference" });
+    }
     const chrome = await page.locator(".dj-controls").boundingBox();
     const workspace = await page.locator(".workspace-panels").boundingBox();
     expect(chrome!.height).toBeLessThan(155);
@@ -269,4 +306,23 @@ test("DJ controls operate the real coding workspace without a provider key", asy
   await page.screenshot({
     path: "test-results-mock-llm/coding-skins-mobile.png",
   });
+  for (const skin of ["Cockpit", "Retro console", "Cyberdeck"]) {
+    await page.getByRole("button", { name: "Interface", exact: true }).click();
+    await page.getByRole("button", { name: skin, exact: true }).click();
+    await expect(page.getByTestId("chat-input")).toBeVisible();
+    await expect
+      .poll(async () => {
+        const send = await page.getByTestId("submit-button").boundingBox();
+        return send ? send.y + send.height : Infinity;
+      })
+      .toBeLessThanOrEqual(844);
+    const consoleBox = await console.boundingBox();
+    expect(consoleBox!.x + consoleBox!.width).toBeLessThanOrEqual(390);
+    expect(
+      (await page.locator(".workspace-panels").boundingBox())!.height,
+    ).toBeGreaterThan(550);
+    await page.screenshot({
+      path: `test-results-mock-llm/mobile-${skin.replaceAll(" ", "-").toLowerCase()}.png`,
+    });
+  }
 });

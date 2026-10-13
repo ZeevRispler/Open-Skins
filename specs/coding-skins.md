@@ -12,3 +12,5 @@
 The current version retains one active conversation. Simultaneously live decks and external skin plugin loading are future work.
 
 - **CS-009**: Skin choices are hidden in a compact gallery; selection closes it, Escape restores focus to the trigger, and keyboard selection persists across refresh. Hardware controls keep real actions and support reduced motion.
+
+- CS-010: Cockpit, retro and cyberdeck physical indicators change with actual history and tool selection. Handles animate between states, reduced-motion disables transitions, and the chat remains usable on desktop and mobile.

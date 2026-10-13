@@ -31,6 +31,7 @@ const TOOL_PADS: { id: ConversationTab; label: I18nKey; icon: typeof Files }[] =
     { id: "browser", label: I18nKey.COMMON$BROWSER, icon: Globe },
   ];
 
+// @spec CS-010 — Hardware indicators derive from shared history and tool state.
 // @spec CS-008 — Compact controls keep the agent workspace dominant.
 export function SkinConsole({
   controller,
@@ -44,7 +45,11 @@ export function SkinConsole({
     TOOL_PADS.findIndex((pad) => pad.id === state.selectedTool),
   );
   return (
-    <div className="dj-console">
+    <div
+      className="dj-console"
+      data-tool-index={toolIndex}
+      data-running={state.running}
+    >
       <button
         className="skin-history"
         type="button"
@@ -55,6 +60,7 @@ export function SkinConsole({
       >
         <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
         <History aria-hidden="true" />
+        <span data-hardware-switch aria-hidden="true" />
       </button>
       <div className="dj-transport">
         <button
@@ -134,6 +140,7 @@ export function SkinConsole({
       >
         <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
         <Files aria-hidden="true" />
+        <span data-hardware-handle aria-hidden="true" />
       </button>
       <button
         className="dj-settings"

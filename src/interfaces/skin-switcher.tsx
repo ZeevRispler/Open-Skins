@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
 import "./workspace-interface.css";
 import "./app-skins.css";
+import "./theme-hardware.css";
 import {
   WORKSPACE_INTERFACES,
   useInterfaceStore,
