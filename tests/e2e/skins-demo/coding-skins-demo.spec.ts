@@ -49,6 +49,7 @@ test("skins cover the app and survive route navigation", async ({ page }) => {
     localStorage.setItem("openhands-telemetry-consent", "denied");
   });
   await page.goto("/");
+  await expect(page).toHaveTitle("Open Skins");
   const backgrounds = new Set<string>();
   for (const [name, id] of [
     ["Cockpit", "cockpit"],
@@ -75,6 +76,14 @@ test("skins cover the app and survive route navigation", async ({ page }) => {
         .toBeLessThan(250);
     }
     await page.screenshot({ path: `test-results-skins-demo/home-${id}.png` });
+    // Reload checks persisted preference, rather than only the in-memory store.
+    await page.reload();
+    await expect(page.locator("body")).toHaveAttribute("data-coding-skin", id);
+    // Keyboard users can reach and activate the same skin controls.
+    const selectedSkin = page.getByRole("button", { name, exact: true });
+    await selectedSkin.focus();
+    await expect(selectedSkin).toBeFocused();
+    await page.keyboard.press("Enter");
     await page.goto("/settings");
     await expect(
       page.getByRole("button", { name, exact: true }),

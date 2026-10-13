@@ -1,6 +1,6 @@
-# Coding Skins
+# Open Skins
 
-Interchangeable coding-agent interfaces built on OpenHands. Start with Standard or DJ console, backed by the same agent connections and coding functions. See [setup and architecture](CODING_SKINS.md).
+Interchangeable coding-agent interfaces built on OpenHands. Choose Standard, DJ console, Cockpit, Retro console, or Cyberdeck, backed by the same agent connections and coding functions. See [setup and architecture](CODING_SKINS.md).
 
 ---
 

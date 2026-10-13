@@ -1,4 +1,4 @@
-# Coding Skins
+# Open Skins
 
 An OpenHands Agent Canvas fork with interchangeable functional interfaces. Standard, DJ console, Cockpit, Retro console, and Cyberdeck share the same conversation, tools, and agent backend. A single skin preference applies across the home screen, sidebar, settings, dialogs, and workspace.
 
@@ -38,9 +38,9 @@ The initial implementation is a modular fork, not a third-party skin plugin SDK.
 
 ## Upstream and validation
 
-Based on OpenHands revision `5a8635a3f983503d1e384656ee05b686030b581b`, Agent Canvas 1.27.1, MIT licensed. The `upstream` remote points to OpenHands/OpenHands. No GitHub repository has been published by this setup.
+Based on OpenHands revision `5a8635a3f983503d1e384656ee05b686030b581b`, Agent Canvas 1.27.1, MIT licensed. The `upstream` remote points to OpenHands/OpenHands. The fork is [ZeevRispler/Open-Skins](https://github.com/ZeevRispler/Open-Skins), configured as `origin`.
 
-Tests cover command routing, disabled transport states, persisted layout selection, and preserving draft DOM/focus and a session subscription during skin changes. The dedicated Playwright suite runs the real Agent Server against a local scripted model, verifies successful terminal output, and exercises controls across every skin, native profile switching, interrupt/resume, draft retention, laptop/mobile navigation, and a desktop workspace height above 750px at 1600×1000. The persistent-demo suite separately checks home/settings skin persistence and sidebar width. These checks use local scripted models, not paid Google calls. Run `npx playwright test --config=playwright.coding-skins.config.ts` after a production build. Real provider authentication and model quality are separate from these key-free execution tests.
+Tests cover command routing, disabled transport states, persisted layout selection, and preserving draft DOM/focus and a session subscription during skin changes. The dedicated Playwright suite runs the real Agent Server against a local scripted model, verifies successful terminal output, and exercises controls across every skin, native profile switching, interrupt/resume, draft retention, laptop/mobile navigation, and a desktop workspace height above 750px at 1600×1000. The persistent-demo suite separately checks home/settings skin persistence after refresh, keyboard activation, distinct rendered palettes, and sidebar width. These checks use local scripted models, not paid Google calls. Run `npx playwright test --config=playwright.coding-skins.config.ts` after a production build. Real provider authentication and model quality are separate from these key-free execution tests.
 
 ## AI-generated hardware visuals
 

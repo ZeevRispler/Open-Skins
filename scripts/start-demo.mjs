@@ -111,7 +111,7 @@ try {
   profiles.close();
   agents.close();
   console.log(
-    "\nCoding Skins demo ready: " +
+    "\nOpen Skins demo ready: " +
       host +
       "\nSend any message to run the scripted file + terminal demo. Send 'slow demo' to test Stop / Resume. No provider key or account required.\n",
   );

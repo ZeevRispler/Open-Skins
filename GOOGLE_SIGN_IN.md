@@ -1,6 +1,6 @@
 # Connect Google AI Pro without an API key
 
-Use Google's official **Antigravity ACP agent**, with Google account sign-in. Coding Skins connects through OpenHands' existing custom ACP support. Credentials stay in Google's local runtime storage; the frontend never receives your Google tokens.
+Use Google's official **Antigravity ACP agent**, with Google account sign-in. Open Skins connects through OpenHands' existing custom ACP support. Credentials stay in Google's local runtime storage; the frontend never receives your Google tokens.
 
 ## This machine
 

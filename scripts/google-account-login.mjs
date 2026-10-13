@@ -58,7 +58,7 @@ try {
   );
   await request("authenticate", { methodId: "oauth-personal" });
   console.log(
-    "Google Antigravity sign-in completed. Verify a real response in Coding Skins.",
+    "Google Antigravity sign-in completed. Verify a real response in Open Skins.",
   );
 } catch (error) {
   console.error("Google sign-in failed: " + error.message);

@@ -229,7 +229,7 @@ export const links: LinksFunction = () => [
 ];
 
 export const meta: MetaFunction = () => [
-  { title: "OpenHands" },
+  { title: "Open Skins" },
   { name: "description", content: "Let's Start Building!" },
 ];
 

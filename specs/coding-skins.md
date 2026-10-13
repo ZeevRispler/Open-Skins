@@ -1,4 +1,4 @@
-# Coding Skins interfaces
+# Open Skins interfaces
 
 - CS-001: Standard and DJ layouts share the same mounted conversation panels and session providers. Switching layouts preserves composer DOM, drafts, and active subscriptions.
 - CS-002: DJ transport and standard composer use shared stop/resume commands with existing backend semantics. Controls disable during their pending operation and when the agent state does not permit them.

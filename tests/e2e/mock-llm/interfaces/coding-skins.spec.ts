@@ -145,9 +145,23 @@ test("DJ controls operate the real coding workspace without a provider key", asy
     const workspace = await page.locator(".workspace-panels").boundingBox();
     expect(chrome!.height).toBeLessThan(100);
     expect(workspace!.height).toBeGreaterThan(750);
-    await console
-      .getByRole("button", { name: "Terminal", exact: true })
-      .click();
+    // Every skin must expose the actual tool panel, not only a lit control.
+    for (const name of ["Files", "Terminal", "Changes", "Browser"]) {
+      const pad = console.getByRole("button", { name, exact: true });
+      await pad.click();
+      await expect(pad).toHaveAttribute("aria-pressed", "true");
+      await expect(
+        page.getByRole("tabpanel", {
+          name: name === "Changes" ? "Commits" : name,
+          exact: true,
+        }),
+      ).toBeVisible();
+    }
+    await console.getByRole("slider").press("Home");
+    await console.getByRole("slider").press("ArrowRight");
+    await expect(
+      page.getByRole("tabpanel", { name: "Terminal", exact: true }),
+    ).toBeVisible();
     await console.getByRole("button", { name: "Files", exact: true }).click();
     await console
       .getByRole("button", { name: "Settings", exact: true })
@@ -172,6 +186,9 @@ test("DJ controls operate the real coding workspace without a provider key", asy
     await page
       .getByRole("button", { name: "coding-skins-demo.txt", exact: true })
       .click({ timeout: 10000 });
+    await expect(
+      page.getByRole("tabpanel", { name: "Files", exact: true }),
+    ).toContainText("Coding Skins file test");
     await page.screenshot({
       path: `test-results-mock-llm/skin-${skin.replaceAll(" ", "-").toLowerCase()}.png`,
     });
