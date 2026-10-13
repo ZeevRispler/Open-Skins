@@ -14,6 +14,7 @@ import type { WorkspaceController } from "#/workspace-core/use-workspace-control
 import type { ConversationTab } from "#/stores/conversation-store";
 import { ChatInputModel } from "#/components/features/chat/components/chat-input-model";
 
+import jogWheel from "./assets/jog-wheel-v1.png";
 import { AgentState } from "#/types/agent-state";
 
 const STATUS_LABELS: Partial<Record<AgentState, I18nKey>> = {
@@ -43,93 +44,126 @@ export function DjConsole({ controller }: { controller: WorkspaceController }) {
   );
   return (
     <div className="dj-console">
-      <div className="dj-console-heading">
-        {t(I18nKey.CONVERSATION$DJ_INTERFACE)}
-      </div>
-      <button
-        type="button"
-        className="dj-platter"
-        aria-label={t(I18nKey.CONVERSATION$HISTORY_CONTROL)}
-        aria-pressed={state.historyOpen}
-        onClick={commands.toggleHistory}
-      >
-        <span className="dj-platter-label">
+      <section data-dj-part="deck" data-deck="history">
+        <header data-dj-part="deck-heading">
           <History aria-hidden="true" />
-          <span>{t(I18nKey.CONVERSATION$HISTORY_CONTROL)}</span>
-        </span>
-      </button>
-      <div className="dj-status" role="status">
-        <span
-          className="dj-led"
-          data-active={state.running}
-          aria-hidden="true"
-        />
-        {t(
-          STATUS_LABELS[state.agentState] ??
-            I18nKey.AGENT_STATUS$WAITING_FOR_TASK,
-        )}
-      </div>
-      <div className="dj-transport">
+          {t(I18nKey.CONVERSATION$HISTORY_CONTROL)}
+        </header>
         <button
           type="button"
-          disabled={!state.running || state.isStopping}
-          onClick={commands.stop}
-          aria-label={t(I18nKey.BUTTON$STOP)}
+          className="dj-platter"
+          aria-label={t(I18nKey.CONVERSATION$HISTORY_CONTROL)}
+          aria-pressed={state.historyOpen}
+          onClick={commands.toggleHistory}
         >
-          <Pause aria-hidden="true" />
-          {t(I18nKey.BUTTON$STOP)}
+          <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
+          <span className="dj-platter-label">
+            <History aria-hidden="true" />
+            <span>{t(I18nKey.CONVERSATION$HISTORY_CONTROL)}</span>
+          </span>
         </button>
-        <button
-          type="button"
-          disabled={!state.canResume || state.isResuming}
-          onClick={commands.resume}
-          aria-label={t(I18nKey.ACTION_BUTTON$RESUME)}
-        >
-          <Play aria-hidden="true" />
-          {t(I18nKey.GOAL$RESUME)}
-        </button>
-      </div>
-      <label className="dj-tool-selector">
-        <span>{t(I18nKey.CONVERSATION$TOOL_SELECTOR)}</span>
-        <input
-          type="range"
-          min={0}
-          max={TOOL_PADS.length - 1}
-          step={1}
-          value={toolIndex}
-          aria-valuetext={t(TOOL_PADS[toolIndex].label)}
-          onChange={(event) =>
-            commands.openTool(TOOL_PADS[Number(event.target.value)].id)
-          }
-        />
-      </label>
-      <div className="dj-pads">
-        {TOOL_PADS.map(({ id, label, icon: Icon }) => (
+        <div className="dj-transport">
           <button
-            key={id}
             type="button"
-            aria-pressed={state.toolsOpen && state.selectedTool === id}
-            onClick={() =>
-              id === "commits" ? commands.openChanges() : commands.openTool(id)
-            }
+            disabled={!state.canResume || state.isResuming}
+            onClick={commands.resume}
+            aria-label={t(I18nKey.ACTION_BUTTON$RESUME)}
           >
-            <Icon aria-hidden="true" />
-            {t(label)}
+            <Play aria-hidden="true" />
+            {t(I18nKey.GOAL$RESUME)}
           </button>
-        ))}
-      </div>
-      <div className="dj-model">
-        <ChatInputModel />
-      </div>
-      <button
-        type="button"
-        className="dj-settings"
-        disabled={!state.canConfigure}
-        onClick={commands.openSettings}
-      >
-        <Settings aria-hidden="true" />
-        {t(I18nKey.SETTINGS$TITLE)}
-      </button>
+          <button
+            type="button"
+            disabled={!state.running || state.isStopping}
+            onClick={commands.stop}
+            aria-label={t(I18nKey.BUTTON$STOP)}
+          >
+            <Pause aria-hidden="true" />
+            {t(I18nKey.BUTTON$STOP)}
+          </button>
+        </div>
+      </section>
+      <section data-dj-part="mixer">
+        <div className="dj-console-heading">
+          {t(I18nKey.CONVERSATION$DJ_INTERFACE)}
+        </div>
+        <div className="dj-status" role="status">
+          <span
+            className="dj-led"
+            data-active={state.running}
+            aria-hidden="true"
+          />
+          {t(
+            STATUS_LABELS[state.agentState] ??
+              I18nKey.AGENT_STATUS$WAITING_FOR_TASK,
+          )}
+        </div>
+        <div className="dj-model">
+          <ChatInputModel />
+        </div>
+        <div data-dj-part="mixer-controls">
+          <button
+            type="button"
+            className="dj-settings"
+            disabled={!state.canConfigure}
+            onClick={commands.openSettings}
+          >
+            <span data-dj-part="knob">
+              <Settings aria-hidden="true" />
+            </span>
+            {t(I18nKey.SETTINGS$TITLE)}
+          </button>
+          <label className="dj-tool-selector">
+            <span>{t(I18nKey.CONVERSATION$TOOL_SELECTOR)}</span>
+            <input
+              type="range"
+              min={0}
+              max={TOOL_PADS.length - 1}
+              step={1}
+              value={toolIndex}
+              aria-valuetext={t(TOOL_PADS[toolIndex].label)}
+              onChange={(event) =>
+                commands.openTool(TOOL_PADS[Number(event.target.value)].id)
+              }
+            />
+          </label>
+        </div>
+      </section>
+      <section data-dj-part="deck" data-deck="tools">
+        <header data-dj-part="deck-heading">
+          <Files aria-hidden="true" />
+          {t(I18nKey.CONVERSATION$TOOL_SELECTOR)}
+        </header>
+        <button
+          type="button"
+          className="dj-platter"
+          aria-label={t(I18nKey.CONVERSATION$TOOL_SELECTOR)}
+          onClick={() => commands.openTool(TOOL_PADS[toolIndex].id)}
+        >
+          <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
+          <span className="dj-platter-label">
+            <Files aria-hidden="true" />
+            <span>{t(TOOL_PADS[toolIndex].label)}</span>
+          </span>
+        </button>
+        <div className="dj-pads">
+          {TOOL_PADS.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              type="button"
+              aria-pressed={state.toolsOpen && state.selectedTool === id}
+              onClick={() =>
+                id === "commits"
+                  ? commands.openChanges()
+                  : commands.openTool(id)
+              }
+            >
+              <Icon aria-hidden="true" />
+              {t(label)}
+            </button>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

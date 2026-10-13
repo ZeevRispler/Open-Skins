@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { renderWithProviders } from "test-utils";
 import { SettingsModal } from "#/components/shared/modals/settings/settings-modal";
@@ -23,5 +23,18 @@ describe("SettingsModal", () => {
     expect(linkElement).toHaveAttribute("href", "/settings");
     expect(linkElement).toHaveAttribute("target", "_blank");
     expect(linkElement).toHaveAttribute("rel", "noreferrer noopener");
+  });
+  it("closes on Escape without saving provider settings", () => {
+    const onClose = vi.fn();
+    renderWithProviders(
+      <MemoryRouter>
+        <SettingsModal
+          onClose={onClose}
+          settings={MOCK_DEFAULT_USER_SETTINGS}
+        />
+      </MemoryRouter>,
+    );
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(onClose).toHaveBeenCalledOnce();
   });
 });

@@ -12,17 +12,16 @@
   color: var(--foreground);
   box-shadow: inset 0 0 0 1px var(--oh-border);
 }
-
 .dj-controls[hidden] {
   display: none;
 }
 .workspace-interface[data-interface="dj"] {
-  background: #111319;
-  color: #f3f4f6;
+  background: #0b0f14;
+  color: #eef4fa;
 }
 .workspace-interface[data-interface="dj"] .interface-switcher {
-  background: #1b1e26;
-  border-color: #363c4a;
+  background: #171d25;
+  border-color: #374250;
 }
 .workspace-interface[data-interface="dj"] .interface-switcher button {
   color: #c4cbd8;
@@ -30,154 +29,274 @@
 .workspace-interface[data-interface="dj"]
   .interface-switcher
   button[aria-pressed="true"] {
-  background: #333a48;
+  background: #2d3848;
   color: #ffffff;
 }
 .workspace-interface[data-interface="dj"] .workspace-interface-body {
-  padding: 14px;
-  gap: 14px;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
 }
 .workspace-interface[data-interface="dj"] .workspace-panels {
-  border: 1px solid #3a4253;
-  border-radius: 16px;
+  border: 1px solid #374250;
+  border-radius: 9px;
   overflow: hidden;
-  box-shadow: 0 12px 32px #0006;
+  box-shadow: 0 10px 24px #0005;
 }
-
+.dj-controls {
+  width: 100%;
+  border: 1px solid #394553;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #202730, #10151b);
+  max-height: 44vh;
+}
+.dj-console [data-dj-part="deck"] {
+  min-width: 0;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: repeating-linear-gradient(
+    0deg,
+    #ffffff02 0px,
+    #ffffff02 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+.dj-console [data-dj-part="deck-heading"] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b4d6e7;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 10px;
+}
+.dj-console [data-dj-part="deck-heading"] svg {
+  width: 14px;
+  height: 14px;
+}
+.dj-platter img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.dj-console [data-deck="tools"] .dj-platter img {
+  filter: hue-rotate(105deg);
+}
+.dj-console [data-deck="tools"] .dj-platter-label {
+  color: #ecc5ff;
+}
+.dj-platter-label svg {
+  width: 20px;
+  height: 20px;
+}
+.dj-platter[aria-pressed="true"] {
+  box-shadow: 0 0 24px #34d3e522;
+}
+.dj-console [data-dj-part="mixer"] {
+  min-width: 0;
+  padding: 16px 20px;
+  border-left: 1px solid #394553;
+  border-right: 1px solid #394553;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+  background: linear-gradient(90deg, #0a1016, #1a222b 40%, #0a1016);
+}
+.dj-console [data-dj-part="mixer-controls"] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  flex: 1;
+}
+.dj-console [data-dj-part="knob"] {
+  display: grid;
+  place-items: center;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  border: 5px solid #111820;
+  outline: 2px solid #485563;
+  background: radial-gradient(circle at 35% 30%, #4a5563, #1d2731 65%);
+  box-shadow:
+    0 6px 8px #0008,
+    inset 0 1px 2px #ffffff55;
+  color: #74dffa;
+}
+.dj-console [data-dj-part="knob"] svg {
+  width: 24px;
+  height: 24px;
+}
+.dj-tool-selector input {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 28px;
+  height: 140px;
+  accent-color: #6ee7b7;
+  cursor: pointer;
+}
 .dj-led[data-active="true"] {
   background: #6ee7b7;
   box-shadow: 0 0 10px #6ee7b777;
 }
-
 .dj-transport button,
-.dj-pads button,
-.dj-settings {
+.dj-pads button {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 8px;
-  border: 1px solid #515b70;
-  border-radius: 8px;
-  background: #2d3341;
-  color: #eef2fa;
-  font-size: 12px;
-  box-shadow: 0 3px 0 #0b0d12;
+  padding: 10px 8px;
+  border: 1px solid #59667a;
+  border-radius: 5px;
+  background: linear-gradient(#364352, #202936);
+  color: #e7f2fa;
+  font-size: 11px;
+  box-shadow:
+    0 3px 0 #080c12,
+    inset 0 1px 0 #ffffff20;
+}
+.dj-transport button:first-child {
+  border-color: #488f72;
+  color: #a2f9c9;
+}
+.dj-transport button:last-child {
+  border-color: #956561;
+  color: #ffc8bf;
 }
 .dj-transport button svg,
-.dj-settings svg,
-.dj-pads svg {
+.dj-pads button svg {
   width: 16px;
   height: 16px;
+  flex-shrink: 0;
 }
-.dj-transport button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
 .dj-pads button {
   flex-direction: column;
-  min-height: 72px;
+  min-height: 52px;
+  background: linear-gradient(#474068, #29253e);
+  border-color: #796d9d;
 }
 .dj-pads button[aria-pressed="true"] {
-  border-color: #6ee7b7;
-  background: #24483e;
+  border-color: #d795ff;
+  background: linear-gradient(#6d488b, #3f2857);
   box-shadow:
-    0 3px 0 #10271f,
-    0 0 12px #6ee7b722;
+    0 3px 0 #181024,
+    0 0 15px #d795ff22;
 }
-
-.dj-tool-selector input {
-  width: 100%;
-  accent-color: #6ee7b7;
-  cursor: pointer;
-}
-
-.dj-settings {
-  width: 100%;
+.dj-transport button:disabled,
+.dj-settings:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 .workspace-interface button:focus-visible,
 .dj-tool-selector input:focus-visible {
   outline: 2px solid #60a5fa;
   outline-offset: 4px;
 }
-@media (min-width: 1400px) {
-  .workspace-interface[data-interface="dj"] [data-workspace-split] {
-    padding: 12px;
-    gap: 10px;
-  }
-  .workspace-interface[data-interface="dj"]
-    [data-testid="conversation-chat-panel"],
-  .workspace-interface[data-interface="dj"]
-    [data-testid="conversation-right-panel"] {
-    border-radius: 10px;
-    border: 1px solid #3a4253;
-  }
-}
-@media (max-width: 900px) {
-  .workspace-interface[data-interface="dj"] .workspace-interface-body {
-    flex-direction: column;
-    padding: 8px;
-    gap: 8px;
-  }
-  .dj-controls {
-    width: 100%;
-    max-height: 240px;
-  }
+@media (max-width: 1100px) {
   .dj-console {
-    display: grid;
-    grid-template-columns: 100px 1fr 1fr;
-    gap: 10px;
-    padding: 12px;
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr) 170px minmax(0, 1fr);
   }
-  .dj-console-heading,
-  .dj-status,
-  .dj-model {
-    display: none;
+  .dj-console [data-dj-part="deck"] {
+    padding: 10px;
+  }
+  .dj-console [data-dj-part="mixer"] {
+    padding: 12px;
   }
   .dj-platter {
-    grid-row: span 2;
+    width: 140px;
   }
-  .dj-platter-label {
-    width: 70px;
-    height: 70px;
-    font-size: 9px;
+  .dj-tool-selector input {
+    height: 90px;
   }
-  .dj-pads {
-    grid-row: span 2;
-  }
-  .dj-pads button {
-    min-height: 48px;
-    padding: 6px;
-  }
-  .dj-settings {
-    grid-column: 2;
-  }
-}
-@media (max-width: 520px) {
-  .dj-console {
-    grid-template-columns: 70px 1fr;
-  }
-  .dj-tool-selector {
-    display: none;
+  .dj-console [data-dj-part="knob"] {
+    width: 48px;
+    height: 48px;
   }
   .dj-pads {
-    grid-column: 1 / -1;
-    display: flex;
+    grid-template-columns: repeat(2, 1fr);
   }
   .dj-pads button {
-    flex: 1;
+    min-height: 38px;
+    padding: 5px;
   }
   .dj-controls {
-    max-height: 230px;
+    max-height: 340px;
+  }
+}
+@media (max-width: 620px) {
+  .dj-console {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dj-console [data-dj-part="mixer"] {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    border-top: 1px solid #394553;
+    border-left: 0;
+    border-right: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .dj-console [data-dj-part="mixer-controls"] {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1fr;
+  }
+  .dj-console-heading {
+    font-size: 10px;
+  }
+  .dj-status {
+    font-size: 10px;
+  }
+  .dj-tool-selector input {
+    writing-mode: horizontal-tb;
+    direction: ltr;
+    width: 100%;
+    height: 24px;
+  }
+  .dj-settings {
+    flex-direction: row;
+  }
+  .dj-console [data-dj-part="knob"] {
+    width: 34px;
+    height: 34px;
+    border-width: 3px;
+  }
+  .dj-console [data-dj-part="knob"] svg {
+    width: 16px;
+    height: 16px;
+  }
+  .dj-model {
+    grid-column: 1 / -1;
+  }
+  .dj-platter {
+    width: 110px;
   }
   .dj-platter-label {
-    width: 52px;
-    height: 52px;
-    border-width: 4px;
+    font-size: 8px;
   }
   .dj-platter-label svg {
     width: 14px;
+    height: 14px;
+  }
+  .dj-console [data-dj-part="deck-heading"] {
+    font-size: 8px;
+    letter-spacing: 0.04em;
+  }
+  .dj-transport {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .dj-transport button {
+    padding: 7px;
+  }
+  .dj-controls {
+    max-height: 330px;
   }
 }

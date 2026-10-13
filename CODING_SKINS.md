@@ -22,7 +22,7 @@ OpenHands Agent Server → `@openhands/typescript-client` → existing services/
 - `src/workspace-core/use-workspace-controller.ts` exposes state and semantic commands for tools, changes, history, settings, and transport. It adapts desktop drawers and mobile panel navigation.
 - `src/interfaces/workspace-interface.tsx` binds runtime state to presentation and lazy settings.
 - `src/interfaces/workspace-interface-frame.tsx` changes presentation without replacing the shared conversation child or the providers above it.
-- `src/interfaces/dj/dj-console.tsx` contains the first control surface. The platter toggles history; pads and slider select tools; transport stops/resumes eligible runs. Model selection reuses OpenHands' existing picker.
+- `src/interfaces/dj/dj-console.tsx` contains the first control surface. The left platter toggles history; the right platter opens the selected tool; pads and a mixer fader select tools; transport stops/resumes eligible runs. Model selection reuses OpenHands' existing picker.
 - `src/interfaces/interface-store.ts` owns the persisted layout preference only. It does not persist conversation data or secrets.
 
 Server APIs, credentials, authentication, execution, approvals, file operations, and event reconnection retain their OpenHands owners. Skin components must not add server clients or endpoints. Composer submission and approval UI continue through the shared OpenHands panels.
@@ -38,3 +38,7 @@ The initial implementation is a modular fork, not a third-party skin plugin SDK.
 Based on OpenHands revision `5a8635a3f983503d1e384656ee05b686030b581b`, Agent Canvas 1.27.1, MIT licensed. The `upstream` remote points to OpenHands/OpenHands. No GitHub repository has been published by this setup.
 
 Tests cover command routing, disabled transport states, persisted layout selection, and preserving draft DOM/focus and a session subscription during skin changes. Existing backend-switch and WebSocket behavior suites are also run. A live agent run requires a configured backend and has not been verified during this initial build.
+
+## AI-generated hardware visuals
+
+The DJ layout uses two large decks around a central mixer. `src/interfaces/dj/assets/jog-wheel-v1.png` was generated with the built-in image_gen tool from a user-supplied style reference. See the adjacent asset README for the generation prompt. All labels, pads, transport, and selectors remain functional HTML, separate from the decorative image.

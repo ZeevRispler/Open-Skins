@@ -700,7 +700,7 @@ button.extension-module-card-interactive {
   -webkit-app-region: drag;
 }
 
-/* Interface-pack base utilities; layout variants live in interfaces/workspace-interface.css. */
+/* Interface-pack base utilities; variants live in interfaces/workspace-interface.css. */
 @utility workspace-interface {
   display: flex;
   flex-direction: column;
@@ -729,72 +729,56 @@ button.extension-module-card-interactive {
   min-height: 0;
 }
 @utility dj-controls {
-  width: 252px;
   flex-shrink: 0;
   overflow: auto;
-  border: 1px solid #363c4a;
-  border-radius: 16px;
-  background: linear-gradient(145deg, #262a35, #161920);
 }
 @utility dj-console {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.65fr) minmax(0, 1fr);
 }
 @utility dj-console-heading {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-weight: 700;
-  color: #e9edf5;
+  color: #d8ebf5;
 }
 @utility dj-platter {
-  max-width: 170px;
-  align-self: center;
+  position: relative;
   aspect-ratio: 1;
-  width: 100%;
-  border: 6px solid #414755;
-  border-radius: 50%;
-  background: repeating-radial-gradient(
-    circle,
-    #171920 0px,
-    #171920 3px,
-    #2a2e38 4px,
-    #171920 5px
-  );
-  box-shadow:
-    0 8px 18px #0008,
-    inset 0 0 0 2px #8991a8;
+  width: clamp(140px, 18vw, 250px);
   display: grid;
   place-items: center;
+  margin: 0 auto;
+  border-radius: 50%;
 }
 @utility dj-platter-label {
-  width: 92px;
-  height: 92px;
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 8px;
-  border-radius: 50%;
-  background: #a7f3d0;
-  color: #102b22;
+  gap: 6px;
+  width: 38%;
+  aspect-ratio: 1;
+  color: #c6faff;
   font-size: 11px;
-  font-weight: 700;
-  border: 8px solid #233c33;
+  font-weight: 600;
+  text-align: center;
 }
 @utility dj-status {
   display: flex;
   gap: 8px;
   align-items: center;
+  justify-content: center;
   color: #c9d2e3;
   font-size: 11px;
-  min-height: 30px;
+  min-height: 24px;
 }
 @utility dj-led {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   flex-shrink: 0;
   border-radius: 50%;
   background: #5a6476;
@@ -806,34 +790,31 @@ button.extension-module-card-interactive {
 }
 @utility dj-pads {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
 }
 @utility dj-tool-selector {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  font-size: 11px;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
   color: #c9d2e3;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
 }
 @utility dj-model {
-  padding: 10px;
-  border: 1px solid #414755;
-  border-radius: 8px;
-  background: #151820;
+  padding: 8px;
+  border: 1px solid #394553;
+  border-radius: 6px;
+  background: #10151b;
 }
 @utility dj-settings {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px 8px;
-  border: 1px solid #515b70;
-  border-radius: 8px;
-  background: #2d3341;
-  color: #eef2fa;
-  font-size: 12px;
-  box-shadow: 0 3px 0 #0b0d12;
+  gap: 10px;
+  color: #d8ebf5;
+  font-size: 11px;
 }

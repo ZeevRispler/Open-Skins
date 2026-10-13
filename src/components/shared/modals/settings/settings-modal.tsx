@@ -19,7 +19,7 @@ export function SettingsModal({ onClose, settings }: SettingsModalProps) {
   const { t } = useTranslation("openhands");
 
   return (
-    <ModalBackdrop>
+    <ModalBackdrop onClose={onClose}>
       <div
         data-testid="ai-config-modal"
         className={cn(

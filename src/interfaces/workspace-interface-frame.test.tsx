@@ -104,6 +104,10 @@ describe("interchangeable workspace interfaces", () => {
       screen.getByRole("button", { name: I18nKey.COMMON$CHANGES }),
     );
     expect(controller.commands.openChanges).toHaveBeenCalledOnce();
+    fireEvent.click(
+      screen.getByRole("button", { name: I18nKey.CONVERSATION$TOOL_SELECTOR }),
+    );
+    expect(controller.commands.openTool).toHaveBeenCalledWith("files");
     fireEvent.change(screen.getByRole("slider"), { target: { value: "3" } });
     expect(controller.commands.openTool).toHaveBeenCalledWith("browser");
     fireEvent.click(
