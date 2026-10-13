@@ -2,6 +2,26 @@
 
 Interchangeable coding-agent interfaces built on OpenHands. Choose Standard, DJ console, Cockpit, Retro console, or Cyberdeck, backed by the same agent connections and coding functions. See [setup and architecture](CODING_SKINS.md).
 
+## Screenshots
+
+Actual screenshots from the running application, captured during browser tests with the real OpenHands Agent Server and a local scripted model. The controls operate the shared coding workspace; these are not design mockups.
+
+| DJ console | Cockpit |
+| --- | --- |
+| ![DJ console with twin platters, tool pads and the agent workspace](docs/screenshots/open-skins/dj-console.png) | ![Cockpit with instruments, switches and the agent workspace](docs/screenshots/open-skins/cockpit.png) |
+
+| Retro console | Cyberdeck |
+| --- | --- |
+| ![Retro console with joystick, controller buttons and the agent workspace](docs/screenshots/open-skins/retro-console.png) | ![Cyberdeck with neon controls, selector rings and the agent workspace](docs/screenshots/open-skins/cyberdeck.png) |
+
+The agent screen stays central. Switches, joystick positions, instrument needles and selector rings reflect the actual history and tool state. Choose a skin from the compact picker; keyboard controls and reduced-motion preferences are supported.
+
+See [setup and architecture](CODING_SKINS.md) and [Google account sign-in](GOOGLE_SIGN_IN.md).
+
+## OpenHands foundation
+
+The documentation below describes the upstream OpenHands Agent Canvas that Open Skins builds on. To run this fork, clone this repository and follow the Open Skins setup linked above.
+
 ---
 
 <a name="readme-top"></a>
@@ -31,9 +51,6 @@ Interchangeable coding-agent interfaces built on OpenHands. Choose Standard, DJ 
   <a href="https://docs.openhands.dev/openhands/usage/agent-canvas/prebuilt-automations">Automations</a> |
   <a href="https://go.openhands.dev/slack">Slack</a>
 </div>
-<p align="center">
-  <img src="https://assets.openhands.dev/screenshot/automation-preview.png" alt="Agent Canvas automation preview" width="100%">
-</p>
 <hr>
 
 OpenHands Agent Canvas turns your coding agents into a self-hosted, always-on engineering team. It's a developer control center for starting conversations and automating everyday tasks — like generating reports that publish to Slack or automatically decomposing GitHub issues into tasks.
