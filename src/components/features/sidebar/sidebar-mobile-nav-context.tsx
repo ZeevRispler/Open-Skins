@@ -38,8 +38,12 @@ export function SidebarMobileNavProvider({
   );
 }
 
+export function useOptionalSidebarMobileNav() {
+  return React.useContext(SidebarMobileNavContext);
+}
+
 export function useSidebarMobileNav(): SidebarMobileNavContextValue {
-  const context = React.useContext(SidebarMobileNavContext);
+  const context = useOptionalSidebarMobileNav();
   if (!context) {
     throw new Error(
       "useSidebarMobileNav must be used within SidebarMobileNavProvider",

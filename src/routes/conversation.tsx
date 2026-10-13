@@ -1,4 +1,5 @@
 import React from "react";
+import { WorkspaceInterface } from "#/interfaces/workspace-interface";
 import { useNavigate, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 
@@ -214,7 +215,9 @@ function AppContent() {
               }
             />
           ) : (
-            <ConversationMain />
+            <WorkspaceInterface>
+              <ConversationMain />
+            </WorkspaceInterface>
           )}
         </div>
       </ConversationOverviewDrawerProvider>

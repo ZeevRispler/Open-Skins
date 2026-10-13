@@ -67,7 +67,7 @@
   --color-warning: var(--oh-warning);
 
   /* Cool Grey scale */
-  --color-cool-grey-50:  var(--cool-grey-50);
+  --color-cool-grey-50: var(--cool-grey-50);
   --color-cool-grey-100: var(--cool-grey-100);
   --color-cool-grey-200: var(--cool-grey-200);
   --color-cool-grey-300: var(--cool-grey-300);
@@ -104,24 +104,36 @@
   --oh-contrast-foreground: #000000;
   --oh-surface: var(--cool-grey-925);
   --oh-surface-foreground: var(--cool-grey-100);
-  --oh-surface-raised: var(--cool-grey-900);  /* elevated within a panel */
-  --oh-surface-deep: var(--cool-grey-975);    /* deep inset, context menus */
+  --oh-surface-raised: var(--cool-grey-900); /* elevated within a panel */
+  --oh-surface-deep: var(--cool-grey-975); /* deep inset, context menus */
   --oh-overlay: var(--cool-grey-925);
   --oh-overlay-foreground: var(--cool-grey-100);
   --oh-modal-title-foreground: #ffffff;
   --oh-muted: var(--cool-grey-400);
-  --oh-text-secondary: var(--cool-grey-300);  /* readable secondary text */
-  --oh-text-tertiary: var(--cool-grey-200);   /* tertiary, slightly dimmer */
-  --oh-text-dim: var(--cool-grey-500);        /* placeholders, very muted */
-  --oh-text-subtle: var(--cool-grey-600);     /* subtle labels, breadcrumbs */
-  --oh-interactive-hover: var(--cool-grey-700);      /* hover on mid surfaces (800 bg) */
-  --oh-interactive-hover-low: var(--cool-grey-900);  /* hover on dark base (950 bg) */
-  --oh-interactive-active: var(--cool-grey-800);     /* selected/active on dark base */
-  --oh-interactive-selected: var(--cool-grey-600);   /* selected within a panel (on 800/925 bg) */
+  --oh-text-secondary: var(--cool-grey-300); /* readable secondary text */
+  --oh-text-tertiary: var(--cool-grey-200); /* tertiary, slightly dimmer */
+  --oh-text-dim: var(--cool-grey-500); /* placeholders, very muted */
+  --oh-text-subtle: var(--cool-grey-600); /* subtle labels, breadcrumbs */
+  --oh-interactive-hover: var(
+    --cool-grey-700
+  ); /* hover on mid surfaces (800 bg) */
+  --oh-interactive-hover-low: var(
+    --cool-grey-900
+  ); /* hover on dark base (950 bg) */
+  --oh-interactive-active: var(
+    --cool-grey-800
+  ); /* selected/active on dark base */
+  --oh-interactive-selected: var(
+    --cool-grey-600
+  ); /* selected within a panel (on 800/925 bg) */
   --oh-context-window-foreground: var(--oh-foreground);
   --oh-context-window-track-weight: 42%;
   --oh-scrollbar: color-mix(in srgb, var(--cool-grey-400) 30%, transparent);
-  --oh-scrollbar-hover: color-mix(in srgb, var(--cool-grey-400) 50%, transparent);
+  --oh-scrollbar-hover: color-mix(
+    in srgb,
+    var(--cool-grey-400) 50%,
+    transparent
+  );
   --oh-default: var(--cool-grey-800);
   --oh-default-foreground: var(--cool-grey-100);
   --oh-accent: #c9b974;
@@ -139,12 +151,16 @@
   --oh-border-width: 1px;
   --oh-field-border-width: 1px;
   --oh-border: var(--cool-grey-700);
-  --oh-border-input: var(--cool-grey-700);   /* unified with --oh-border; same stroke weight everywhere */
-  --oh-border-subtle: var(--cool-grey-800);  /* within-panel separators, list dividers */
+  --oh-border-input: var(
+    --cool-grey-700
+  ); /* unified with --oh-border; same stroke weight everywhere */
+  --oh-border-subtle: var(
+    --cool-grey-800
+  ); /* within-panel separators, list dividers */
   --oh-separator: rgba(113, 120, 136, 0.5);
   --oh-focus: #ffffff;
-  --oh-status-success: #1FBD53;
-  --oh-status-error: #FF684E;
+  --oh-status-success: #1fbd53;
+  --oh-status-error: #ff684e;
   --oh-link: var(--cool-grey-100);
   --oh-radius: 8px;
   --oh-field-radius: 8px;
@@ -602,7 +618,11 @@ button.extension-module-card-interactive {
 }
 
 .git-external-link-icon {
-  background: linear-gradient(90deg, rgba(69, 69, 69, 0) 0.35%, var(--cool-grey-800) 41.39%);
+  background: linear-gradient(
+    90deg,
+    rgba(69, 69, 69, 0) 0.35%,
+    var(--cool-grey-800) 41.39%
+  );
 }
 
 .api-configuration-modal {
@@ -678,4 +698,142 @@ button.extension-module-card-interactive {
 /* Window drag handle for the macOS desktop app's hidden title bar. */
 @utility app-region-drag {
   -webkit-app-region: drag;
+}
+
+/* Interface-pack base utilities; layout variants live in interfaces/workspace-interface.css. */
+@utility workspace-interface {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+@utility interface-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--oh-border);
+  font-size: 12px;
+}
+@utility workspace-interface-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+@utility workspace-panels {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+@utility dj-controls {
+  width: 252px;
+  flex-shrink: 0;
+  overflow: auto;
+  border: 1px solid #363c4a;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #262a35, #161920);
+}
+@utility dj-console {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+}
+@utility dj-console-heading {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: #e9edf5;
+}
+@utility dj-platter {
+  max-width: 170px;
+  align-self: center;
+  aspect-ratio: 1;
+  width: 100%;
+  border: 6px solid #414755;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle,
+    #171920 0px,
+    #171920 3px,
+    #2a2e38 4px,
+    #171920 5px
+  );
+  box-shadow:
+    0 8px 18px #0008,
+    inset 0 0 0 2px #8991a8;
+  display: grid;
+  place-items: center;
+}
+@utility dj-platter-label {
+  width: 92px;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 50%;
+  background: #a7f3d0;
+  color: #102b22;
+  font-size: 11px;
+  font-weight: 700;
+  border: 8px solid #233c33;
+}
+@utility dj-status {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #c9d2e3;
+  font-size: 11px;
+  min-height: 30px;
+}
+@utility dj-led {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #5a6476;
+}
+@utility dj-transport {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+@utility dj-pads {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+@utility dj-tool-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 11px;
+  color: #c9d2e3;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+@utility dj-model {
+  padding: 10px;
+  border: 1px solid #414755;
+  border-radius: 8px;
+  background: #151820;
+}
+@utility dj-settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 8px;
+  border: 1px solid #515b70;
+  border-radius: 8px;
+  background: #2d3341;
+  color: #eef2fa;
+  font-size: 12px;
+  box-shadow: 0 3px 0 #0b0d12;
 }

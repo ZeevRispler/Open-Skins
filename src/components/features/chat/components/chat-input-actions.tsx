@@ -20,8 +20,7 @@ import ThreeDotsVerticalIcon from "#/icons/three-dots-vertical.svg?react";
 import { CodePillIcon } from "#/icons/code-pill";
 import { useUnifiedPauseConversation } from "#/hooks/mutation/use-unified-stop-conversation";
 import { useOptionalConversationId } from "#/hooks/use-conversation-id";
-import { usePauseConversation } from "#/hooks/mutation/use-pause-conversation";
-import { useResumeConversation } from "#/hooks/mutation/use-resume-conversation";
+import { useSessionControls } from "#/workspace-core/use-session-controls";
 import { useActiveBackend } from "#/contexts/active-backend-context";
 import { useAgentProfiles } from "#/hooks/query/use-agent-profiles";
 import { useChatInputModelState } from "#/hooks/use-chat-input-model-state";
@@ -72,8 +71,7 @@ export function ChatInputActions({
   const { t } = useTranslation("openhands");
   const isComposerDockedMinimal = useComposerDockedMinimal();
   const unifiedPauseMutation = useUnifiedPauseConversation();
-  const pauseConversationMutation = usePauseConversation();
-  const resumeConversationMutation = useResumeConversation();
+  const sessionControls = useSessionControls();
   const { conversationId } = useOptionalConversationId();
   const { backend } = useActiveBackend();
   const isCloud = backend.kind === "cloud";
@@ -171,18 +169,10 @@ export function ChatInputActions({
     return () => observer.disconnect();
   }, [showChangeAgentButton]);
 
-  const handlePauseAgent = () => {
-    if (!conversationId) return;
-    pauseConversationMutation.mutate({ conversationId });
-  };
-
-  const handleResumeAgentClick = () => {
-    if (!conversationId) return;
-    resumeConversationMutation.mutate({ conversationId });
-  };
-
+  const handlePauseAgent = sessionControls.stop;
+  const handleResumeAgentClick = sessionControls.resume;
   const isPausing =
-    unifiedPauseMutation.isPending || pauseConversationMutation.isPending;
+    unifiedPauseMutation.isPending || sessionControls.isStopping;
 
   const OVERFLOW_BUTTON_WIDTH = 28;
   const INLINE_GAP = 12;

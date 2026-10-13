@@ -257,6 +257,7 @@ export function ConversationMain() {
 
       <div
         ref={containerRef}
+        data-workspace-split=""
         className={cn(
           "flex flex-1 overflow-hidden",
           isMobile ? "flex-col" : "transition-all duration-300 ease-in-out",
