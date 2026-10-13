@@ -7,3 +7,4 @@ This checkout is an independent companion app. The old fork remains on `codex/op
 - Exact-pin dependencies and commit package-lock.json. Use `npm ci`.
 - Run lint, unit tests, build and relevant browser/integration tests. Use local fixture models, not paid accounts.
 - Gate unsupported actions honestly. OpenCode abort does not imply pause/resume; never resend prompts as a fake resume.
+- Keep validation economical: run deterministic unit/browser tests first; real-agent tests use local fixture models. When subagent delegation is authorized, prefer 1–2 `gpt-6-luna` agents for bounded test-writing or coverage audits, assign disjoint files, and have the parent review their changes and run combined checks. Do not use paid inference merely to validate buttons or sounds.

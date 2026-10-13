@@ -24,11 +24,14 @@ export function playSkinSound(skin: WorkspaceInterface, cue: SoundCue) {
   if (cue === "press") lastPress = now;
   try {
     context ??= new AudioContext();
-    void context
+    const playback = context;
+    void playback
       .resume()
       .then(() => {
         if (
-          context?.state !== "running" ||
+          context !== playback ||
+          playback.state !== "running" ||
+          document.visibilityState === "hidden" ||
           !useInterfaceStore.getState().soundsEnabled
         )
           return;
@@ -45,9 +48,9 @@ export function playSkinSound(skin: WorkspaceInterface, cue: SoundCue) {
                 : [1];
         const duration = cue === "press" ? 0.065 : 0.14;
         notes.forEach((ratio, index) => {
-          const oscillator = context!.createOscillator();
-          const gain = context!.createGain();
-          const start = context!.currentTime + index * 0.16;
+          const oscillator = playback.createOscillator();
+          const gain = playback.createGain();
+          const start = playback.currentTime + index * 0.16;
           oscillator.type =
             skin === "retro"
               ? "square"
@@ -67,7 +70,7 @@ export function playSkinSound(skin: WorkspaceInterface, cue: SoundCue) {
           );
           gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
           oscillator.connect(gain);
-          gain.connect(context!.destination);
+          gain.connect(playback.destination);
           oscillator.start(start);
           oscillator.stop(start + duration + 0.02);
           oscillator.onended = () => {

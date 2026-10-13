@@ -14,3 +14,11 @@ npx playwright test tests/backends.spec.ts
 ```
 
 The test opens the DJ interface, creates a session, invokes real tools through each adapter, and reads the resulting file through the shared file panel. Credentials and test output belong in ignored `.runtime/` files. Never put provider credentials in screenshots or fixture source.
+
+## Economical UI and sound validation
+
+The regular unit and browser suites cover control wiring and sound behavior without an agent or provider account. Run these before opting into real-agent integration tests. `tests/controls.spec.ts` covers session selection, every tool pad, preview popups, keyboard activation, model and directory controls, and the physical Stop/Resume buttons in every hardware skin. `tests/audio-browser.spec.ts` runs the real Chromium Web Audio engine and verifies tones start and finish for all four sound packs; it cannot verify the listener's speakers or volume setting.
+
+Sound unit tests exercise every cue, opt-in/mute behavior, missing audio support, rapid-click throttling, and delayed audio resume races. Motion tests check reduced-motion support while retaining functional controls.
+
+For AI-assisted test maintenance, use a small number of cheaper-model subagents on separate files, then review and execute the combined suite. A subagent's written assertion is not evidence until the test runs. Keep real backend inference tests separate and opt-in.
