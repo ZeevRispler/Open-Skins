@@ -4,6 +4,9 @@ import type { WorkspaceController } from "#/workspace-core/use-workspace-control
 import { useInterfaceStore } from "./interface-store";
 import { SkinConsole } from "./skin-console";
 import { SkinSwitcher } from "./skin-switcher";
+import { AmbientInstruments } from "./ambient-instruments";
+import { useTranslation } from "react-i18next";
+import { I18nKey } from "#/i18n/declaration";
 
 // @spec CS-001 — Keep shared panels mounted while presentation changes.
 export function WorkspaceInterfaceFrame({
@@ -13,6 +16,7 @@ export function WorkspaceInterfaceFrame({
   children: ReactNode;
   controller: WorkspaceController;
 }) {
+  const { t } = useTranslation("open-skins");
   const interfaceId = useInterfaceStore((state) => state.interfaceId);
   const soundsEnabled = useInterfaceStore((state) => state.soundsEnabled);
   const previous = useRef(controller.state.agentState);
@@ -52,11 +56,19 @@ export function WorkspaceInterfaceFrame({
       }}
     >
       <SkinSwitcher />
+      <header className="arcade-marquee" aria-hidden="true">
+        <span>{t(I18nKey.CONVERSATION$ARCADE_PLAYER)}</span>
+        <strong>{t(I18nKey.CONVERSATION$ARCADE_MARQUEE)}</strong>
+        <span>{t(I18nKey.CONVERSATION$ARCADE_PROMPT)}</span>
+      </header>
       <div className="workspace-interface-body">
         <aside className="dj-controls" hidden={interfaceId === "standard"}>
           <SkinConsole controller={controller} />
         </aside>
-        <div className="workspace-panels">{children}</div>
+        <div className="workspace-stage">
+          <div className="workspace-panels">{children}</div>
+          <AmbientInstruments />
+        </div>
       </div>
     </section>
   );

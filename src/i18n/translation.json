@@ -89,24 +89,6 @@
     "uk": "Ретроконсоль",
     "id": "Konsol retro"
   },
-  "CONVERSATION$CYBERDECK_INTERFACE": {
-    "en": "Cyberdeck",
-    "ja": "サイバーデッキ",
-    "zh-CN": "赛博终端",
-    "zh-TW": "賽博終端",
-    "ko-KR": "사이버덱",
-    "no": "Cyberdeck",
-    "ar": "واجهة سايبر",
-    "de": "Cyberdeck",
-    "fr": "Cyberdeck",
-    "it": "Cyberdeck",
-    "pt": "Cyberdeck",
-    "es": "Cyberdeck",
-    "ca": "Cyberdeck",
-    "tr": "Siber güverte",
-    "uk": "Кібердек",
-    "id": "Cyberdeck"
-  },
   "CONVERSATION$SOUNDS": {
     "en": "Interface sounds",
     "ja": "インターフェースの音",
@@ -415,5 +397,14 @@
   },
   "CONVERSATION$FERRARI_INTERFACE": {
     "en": "Ferrari"
+  },
+  "CONVERSATION$ARCADE_MARQUEE": {
+    "en": "OPEN SKINS ARCADE"
+  },
+  "CONVERSATION$ARCADE_PLAYER": {
+    "en": "PLAYER ONE"
+  },
+  "CONVERSATION$ARCADE_PROMPT": {
+    "en": "PRESS SEND TO PLAY"
   }
 }

@@ -4,11 +4,7 @@
   display: none;
   pointer-events: none;
 }
-.workspace-interface:is(
-    [data-interface="cockpit"],
-    [data-interface="retro"],
-    [data-interface="cyberdeck"]
-  )
+.workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
   [data-hardware-switch] {
   display: block;
   position: absolute;
@@ -21,11 +17,7 @@
   background: #050a10;
   box-shadow: inset 0 2px 5px #000b;
 }
-.workspace-interface:is(
-    [data-interface="cockpit"],
-    [data-interface="retro"],
-    [data-interface="cyberdeck"]
-  )
+.workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
   [data-hardware-switch]::after {
   content: "";
   position: absolute;
@@ -39,29 +31,17 @@
   transform: translateX(0);
   transition: transform 180ms ease;
 }
-.workspace-interface:is(
-    [data-interface="cockpit"],
-    [data-interface="retro"],
-    [data-interface="cyberdeck"]
-  )
+.workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
   .skin-history[aria-pressed="true"]
   [data-hardware-switch] {
   background: color-mix(in srgb, var(--skin-accent) 60%, #07100d);
 }
-.workspace-interface:is(
-    [data-interface="cockpit"],
-    [data-interface="retro"],
-    [data-interface="cyberdeck"]
-  )
+.workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
   .skin-history[aria-pressed="true"]
   [data-hardware-switch]::after {
   transform: translateX(28px);
 }
-.workspace-interface:is(
-    [data-interface="cockpit"],
-    [data-interface="retro"],
-    [data-interface="cyberdeck"]
-  )
+.workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
   [data-hardware-handle] {
   display: block;
   position: absolute;
@@ -314,88 +294,6 @@
   box-shadow: 0 7px 0 #100a1c;
 }
 
-/* Cyberdeck: circuit traces, glowing gates and a stepped rotary selector. */
-.workspace-interface[data-interface="cyberdeck"] .dj-controls {
-  border: 2px solid #46c5bf;
-  border-left: 6px solid #cb57c6;
-  border-radius: 0 18px 0 18px;
-  background:
-    repeating-linear-gradient(135deg, #39bbb90a 0 1px, transparent 1px 14px),
-    linear-gradient(110deg, #062124, #161129 65%, #082025);
-  box-shadow:
-    inset 0 -3px #97239355,
-    0 0 14px #33d7d422;
-}
-.workspace-interface[data-interface="cyberdeck"] .dj-console .skin-history {
-  border: 4px double #55e7dd;
-  background:
-    repeating-radial-gradient(circle, transparent 0 8px, #55e7dd55 9px 10px),
-    #062127;
-  box-shadow: 0 0 15px #55e7dd44;
-}
-.workspace-interface[data-interface="cyberdeck"] [data-hardware-switch] {
-  border-color: #4eb5ad;
-  border-radius: 2px;
-}
-.workspace-interface[data-interface="cyberdeck"] [data-hardware-switch]::after {
-  border-radius: 0;
-  background: #f2a6f2;
-  box-shadow: 0 0 6px #e455da;
-}
-.workspace-interface[data-interface="cyberdeck"]
-  .skin-tool-wheel
-  [data-hardware-handle] {
-  inset: 8px;
-  border: 2px solid transparent;
-  border-top-color: #ff8ced;
-  border-bottom-color: #53e5df;
-  border-radius: 50%;
-  transform: rotate(var(--instrument-angle));
-  box-shadow: 0 0 6px #ff8ced22;
-}
-.workspace-interface[data-interface="cyberdeck"] .dj-pads button {
-  border: 1px solid #5eb7bd;
-  border-left: 3px solid #914b95;
-  background: linear-gradient(120deg, #093535, #171329);
-  letter-spacing: 0.04em;
-}
-.workspace-interface[data-interface="cyberdeck"]
-  .dj-pads
-  button[aria-pressed="true"] {
-  border-color: #8cfff0;
-  background: linear-gradient(120deg, #14615c, #3b1a4a);
-  box-shadow:
-    inset 0 -3px #f077de,
-    0 0 10px #4dd6ce44;
-}
-.workspace-interface[data-interface="cyberdeck"] .dj-status {
-  padding: 12px;
-  border-left: 2px solid #ec61db;
-  background: linear-gradient(90deg, #3d1d4444, transparent);
-  color: #80e6df;
-  font-family: ui-monospace, monospace;
-}
-.workspace-interface[data-interface="cyberdeck"] .dj-tool-selector input {
-  border-color: #58c9bc;
-  background:
-    repeating-linear-gradient(90deg, #b4489d 0 1px, transparent 1px 16px),
-    #060e1a;
-}
-.workspace-interface[data-interface="cyberdeck"]
-  .dj-tool-selector
-  input::-webkit-slider-thumb {
-  background: #72e7df;
-  box-shadow: 0 0 8px #66e5df88;
-  border-color: #16413f;
-}
-.workspace-interface[data-interface="cyberdeck"] .workspace-panels {
-  border: 2px solid #47bcb7;
-  border-left: 5px solid #7e3f86;
-  box-shadow:
-    inset 0 -3px #91398944,
-    0 0 15px #35b5bd22;
-}
-
 @media (max-width: 1200px) {
   .workspace-interface[data-interface="cockpit"] .dj-pads button {
     padding: 6px 32px 6px 8px;
@@ -408,11 +306,7 @@
     padding: 8px;
     min-height: 106px;
   }
-  .workspace-interface:is(
-      [data-interface="cockpit"],
-      [data-interface="retro"],
-      [data-interface="cyberdeck"]
-    )
+  .workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
     .skin-history[aria-pressed="true"]
     [data-hardware-switch]::after {
     transform: translateX(16px);
@@ -424,31 +318,19 @@
     padding: 6px;
     min-height: 96px;
   }
-  .workspace-interface:is(
-      [data-interface="cockpit"],
-      [data-interface="retro"],
-      [data-interface="cyberdeck"]
-    )
+  .workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
     [data-hardware-switch] {
     bottom: 2px;
     height: 10px;
     left: 20%;
     width: 60%;
   }
-  .workspace-interface:is(
-      [data-interface="cockpit"],
-      [data-interface="retro"],
-      [data-interface="cyberdeck"]
-    )
+  .workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
     [data-hardware-switch]::after {
     width: 7px;
     height: 4px;
   }
-  .workspace-interface:is(
-      [data-interface="cockpit"],
-      [data-interface="retro"],
-      [data-interface="cyberdeck"]
-    )
+  .workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
     .skin-history[aria-pressed="true"]
     [data-hardware-switch]::after {
     transform: translateX(12px);
@@ -478,11 +360,7 @@
     left: -3px;
     top: -5px;
   }
-  .workspace-interface:is(
-      [data-interface="cockpit"],
-      [data-interface="retro"],
-      [data-interface="cyberdeck"]
-    )
+  .workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
     .dj-status {
     display: none;
   }

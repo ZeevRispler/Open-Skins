@@ -39,7 +39,6 @@ export function playSkinSound(skin: WorkspaceInterface, cue: SoundCue) {
           dj: 180,
           cockpit: 420,
           retro: 660,
-          cyberdeck: 920,
           ferrari: 260,
         }[skin];
         const notes =

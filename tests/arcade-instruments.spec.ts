@@ -1,0 +1,128 @@
+import { test, expect } from "@playwright/test";
+
+test("removed cyberdeck is absent and an old saved selection falls back to standard", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      "agent-canvas-workspace-interface",
+      JSON.stringify({
+        state: { interfaceId: "cyberdeck", soundsEnabled: false },
+        version: 0,
+      }),
+    );
+  });
+  await page.goto("/");
+  await expect(page.locator("body")).toHaveAttribute(
+    "data-coding-skin",
+    "standard",
+  );
+  await page.locator("summary").click();
+  await expect(page.locator('[data-skin-option="cyberdeck"]')).toHaveCount(0);
+});
+
+test("retro arcade marquee has distinct tokens and preserves a draft", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const input = page.getByRole("textbox", { name: "Message agent" });
+  await input.fill("keep this arcade draft");
+  await page.locator("summary").click();
+  await page.locator('[data-skin-option="retro"]').click();
+  const marquee = page.locator(".arcade-marquee");
+  await expect(marquee).toBeVisible();
+  await expect(marquee).toContainText(/ARCADE|PIXEL|INSERT COIN/i);
+  await expect(marquee).toHaveCSS("color", "rgb(255, 248, 221)");
+  const marqueeBackground = await marquee.evaluate(
+    (element) => getComputedStyle(element).backgroundImage,
+  );
+  expect(marqueeBackground).toContain("0, 137, 196");
+  const legends = page.locator(".arcade-pad-code");
+  await expect(legends).toHaveCount(4);
+  await expect(legends).toHaveText(["A", "B", "C", "D"]);
+  await expect(legends.first()).toHaveAttribute("aria-hidden", "true");
+  await expect(legends.first().locator("xpath=..")).toHaveJSProperty(
+    "tagName",
+    "BUTTON",
+  );
+  const pads = page.locator(".dj-pads button");
+  await expect(pads).toHaveCount(4);
+  const padRadii = await pads.evaluateAll((buttons) =>
+    buttons.map((button) => getComputedStyle(button).borderRadius),
+  );
+  expect(padRadii).toEqual(["50%", "50%", "50%", "50%"]);
+  const padBackgrounds = await pads.evaluateAll((buttons) =>
+    buttons.map((button) => getComputedStyle(button).backgroundImage),
+  );
+  expect(padBackgrounds[0]).toContain("227, 57, 43");
+  expect(padBackgrounds[1]).toContain("255, 255, 255");
+  expect(padBackgrounds[2]).toContain("8, 127, 209");
+  await expect(input).toHaveValue("keep this arcade draft");
+});
+
+test("ambient instruments appear only on desktop DJ and cockpit skins", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  for (const skin of ["dj", "cockpit"]) {
+    await page.locator("summary").click();
+    await page.locator(`[data-skin-option="${skin}"]`).click();
+    const rail = page.locator(".ambient-instruments");
+    await expect(rail).toBeVisible();
+    await expect(rail.locator(".ambient-meter")).toBeVisible();
+    await expect(rail.locator(".ambient-compass")).toBeVisible();
+    await expect(rail).not.toHaveAttribute("role", "button");
+    const agent = await page.locator(".agent").boundingBox();
+    expect(agent?.width).toBeGreaterThanOrEqual(1000);
+    expect(agent?.height).toBeGreaterThanOrEqual(550);
+  }
+  for (const skin of ["standard", "retro"]) {
+    await page.locator("summary").click();
+    await page.locator(`[data-skin-option="${skin}"]`).click();
+    await expect(page.locator(".ambient-instruments")).toBeHidden();
+  }
+});
+
+test("ambient rail hides on mobile and follows agent state without motion", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.locator("summary").click();
+  await page.locator('[data-skin-option="cockpit"]').click();
+  const rail = page.locator(".ambient-instruments");
+  await expect(rail).toBeHidden();
+  const composer = await page.locator(".composer").boundingBox();
+  expect(composer!.y + composer!.height).toBeLessThanOrEqual(844);
+  await page.locator("summary").click();
+  await page.locator('[data-skin-option="retro"]').click();
+  const modelSelect = await page.locator(".dj-model select").boundingBox();
+  const pads = await page.locator(".dj-pads").boundingBox();
+  expect(modelSelect && pads).toBeTruthy();
+  const controlsOverlap =
+    modelSelect!.x < pads!.x + pads!.width &&
+    modelSelect!.x + modelSelect!.width > pads!.x &&
+    modelSelect!.y < pads!.y + pads!.height &&
+    modelSelect!.y + modelSelect!.height > pads!.y;
+  expect(controlsOverlap).toBe(false);
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.locator("summary").click();
+  await page.locator('[data-skin-option="cockpit"]').click();
+  await expect(rail).toBeVisible();
+  const workspace = page.locator(".workspace-interface");
+  await expect(workspace).toHaveAttribute(
+    "data-agent-state",
+    "awaiting_user_input",
+  );
+  await page.getByRole("textbox", { name: "Message agent" }).fill("slow demo");
+  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(workspace).toHaveAttribute("data-agent-state", "running");
+  await expect(rail.locator("i")).toHaveCount(13);
+  for (const instrumentNeedle of await rail.locator("i").all()) {
+    await expect(instrumentNeedle).toHaveCSS("animation-name", "none");
+    await expect(instrumentNeedle).toHaveCSS("transition-duration", "0s");
+  }
+});

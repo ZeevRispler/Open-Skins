@@ -258,30 +258,6 @@
   border: 4px ridge var(--skin-line);
   border-radius: 3px;
 }
-/* Cyberdeck: clipped silhouettes and light traces only at the screen edge. */
-.workspace-interface[data-interface="cyberdeck"] .dj-controls {
-  border-radius: 0 12px 0 12px;
-  border-left: 3px solid var(--skin-secondary);
-}
-.workspace-interface[data-interface="cyberdeck"] .dj-console button {
-  border-radius: 0 8px 0 8px;
-}
-.workspace-interface[data-interface="cyberdeck"] .skin-history {
-  border-radius: 50%;
-  background: repeating-radial-gradient(
-    circle,
-    transparent 0 7px,
-    #69e9df33 7px 8px
-  );
-}
-.workspace-interface[data-interface="cyberdeck"] .skin-history img {
-  display: none;
-}
-.workspace-interface[data-interface="cyberdeck"] .workspace-panels {
-  border-left: 2px solid var(--skin-accent);
-  border-bottom: 2px solid var(--skin-secondary);
-  border-radius: 0 10px 0 10px;
-}
 @media (max-width: 1200px) {
   .dj-console {
     gap: 5px;
@@ -353,8 +329,7 @@
     scroll-behavior: auto;
   }
 }
-.workspace-interface[data-interface="cockpit"] .dj-console .skin-history,
-.workspace-interface[data-interface="cyberdeck"] .dj-console .skin-history {
+.workspace-interface[data-interface="cockpit"] .dj-console .skin-history {
   border-radius: 50%;
 }
 
@@ -451,16 +426,6 @@
 .interface-switcher [data-skin-preview="retro"] {
   background: repeating-linear-gradient(0deg, #111127 0 3px, #302340 3px 4px);
   border: 2px solid #bd79dd;
-}
-.interface-switcher [data-skin-preview="cyberdeck"] {
-  background: linear-gradient(
-    135deg,
-    #073638 20%,
-    #16bfbf 21% 24%,
-    #121427 25% 70%,
-    #ce62cd 71% 74%,
-    #121427 75%
-  );
 }
 
 /* Hardware stays above the screens rather than covering their content. */
@@ -582,8 +547,7 @@
   filter: hue-rotate(85deg);
 }
 .workspace-interface[data-interface="cockpit"] .skin-tool-wheel img,
-.workspace-interface[data-interface="retro"] .skin-tool-wheel img,
-.workspace-interface[data-interface="cyberdeck"] .skin-tool-wheel img {
+.workspace-interface[data-interface="retro"] .skin-tool-wheel img {
   display: none;
 }
 .workspace-interface[data-interface="cockpit"] .dj-console .skin-tool-wheel {
@@ -615,15 +579,6 @@
 .workspace-interface[data-interface="retro"] .dj-console .skin-tool-wheel {
   background: radial-gradient(circle at 40% 35%, #875fa6, #41234e 70%);
   border: 5px ridge #9265a8;
-}
-.workspace-interface[data-interface="cyberdeck"] .dj-console .skin-tool-wheel {
-  border: 3px double var(--skin-secondary);
-  background: repeating-radial-gradient(
-    circle,
-    #69e9df14 0 9px,
-    #69e9df70 10px 11px
-  );
-  box-shadow: 0 0 18px #69e9df30;
 }
 @media (max-width: 1200px) {
   .dj-console {
