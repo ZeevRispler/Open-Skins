@@ -6,7 +6,6 @@ export const WORKSPACE_INTERFACES = [
   "dj",
   "cockpit",
   "retro",
-  "cyberdeck",
   "ferrari",
 ] as const;
 export type WorkspaceInterface = (typeof WORKSPACE_INTERFACES)[number];

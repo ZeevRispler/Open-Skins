@@ -1,0 +1,405 @@
+.workspace-stage {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  gap: 8px;
+}
+.ambient-instruments,
+.arcade-marquee {
+  display: none;
+}
+/* A narrow rack, outside the agent screen; no fake metrics or clickable controls. */
+@media (min-width: 1100px) {
+  .workspace-interface:is([data-interface="dj"], [data-interface="cockpit"])
+    .ambient-instruments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    width: 74px;
+    flex-shrink: 0;
+    padding: 18px 7px;
+    background: linear-gradient(90deg, var(--skin-raised), var(--skin-panel));
+    border: 2px ridge var(--skin-line);
+    border-radius: 8px;
+    pointer-events: none;
+  }
+}
+.ambient-meter {
+  position: relative;
+  width: 54px;
+  height: 45px;
+  border: 3px ridge #6b7975;
+  border-radius: 6px;
+  background:
+    repeating-conic-gradient(
+      from -90deg at 50% 100%,
+      #cbd7c3 0 2deg,
+      transparent 2deg 25deg
+    ),
+    #091914;
+  overflow: hidden;
+}
+.ambient-meter > i {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 2px;
+  height: 30px;
+  background: var(--skin-accent);
+  transform-origin: bottom;
+  transform: rotate(-40deg);
+  transition: transform 400ms;
+}
+.ambient-meter > span {
+  position: absolute;
+  bottom: 0;
+  left: 7px;
+  color: #c8d5c8;
+  font: 12px monospace;
+}
+.ambient-compass {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 4px ridge #57645b;
+  background:
+    repeating-conic-gradient(#dce5cc66 0 2deg, transparent 2deg 30deg), #081711;
+}
+.ambient-compass > i {
+  position: absolute;
+  inset: 9px 22px;
+  background: linear-gradient(var(--skin-accent) 50%, #bd574a 50%);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  transform: rotate(15deg);
+}
+.ambient-levels {
+  height: 55px;
+  width: 50px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  padding: 4px;
+  background: #081314;
+  border: 1px solid var(--skin-line);
+}
+.ambient-levels > i {
+  width: 3px;
+  height: 38px;
+  background: linear-gradient(#efad67, #72cdb4);
+  transform: scaleY(0.2);
+  transform-origin: bottom;
+}
+.ambient-patch {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+}
+.ambient-patch > i {
+  width: 16px;
+  height: 16px;
+  border: 3px ridge #869a99;
+  border-radius: 50%;
+  background: #050d10;
+  box-shadow: 0 0 0 3px #131f25;
+}
+.ambient-patch::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 7px;
+  width: 30px;
+  height: 52px;
+  border: 3px solid var(--skin-secondary);
+  border-left: 0;
+  border-radius: 0 18px 18px 0;
+  box-shadow: 2px 2px 3px #0008;
+}
+.ambient-instruments small {
+  margin-top: auto;
+  color: var(--ui-muted);
+  font:
+    7px ui-monospace,
+    monospace;
+  letter-spacing: 0.6px;
+}
+.workspace-interface[data-agent-state="running"] .ambient-meter > i {
+  animation: ambient-needle 1.7s ease-in-out infinite alternate;
+}
+.workspace-interface[data-agent-state="running"] .ambient-compass > i {
+  animation: ambient-navigation 12s linear infinite;
+}
+.workspace-interface[data-agent-state="running"] .ambient-levels > i {
+  animation: ambient-level 700ms ease-in-out infinite alternate;
+}
+/* Blue cabinet, speckled deck and red/white/blue arcade caps. */
+body[data-coding-skin="retro"] .brand {
+  background: linear-gradient(100deg, #0c7fc0, #154367);
+  color: #fff6df;
+  border-bottom: 3px solid #111b25;
+}
+body[data-coding-skin="retro"] .brand button {
+  color: #f5edda;
+  background: #133248;
+}
+body[data-coding-skin="retro"] .brand > span {
+  color: #d5e4ed;
+}
+.workspace-interface[data-interface="retro"] .arcade-marquee {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 20px;
+  margin: 0 6px;
+  border: 4px ridge #a8b8c2;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(115deg, #103f69, #0089c4 50%, #153e64);
+  box-shadow: inset 0 0 15px #0008;
+  color: #fff8dd;
+  font:
+    11px ui-monospace,
+    monospace;
+  letter-spacing: 2px;
+  flex-shrink: 0;
+}
+.arcade-marquee strong {
+  font-size: 19px;
+  font-style: italic;
+  text-shadow:
+    2px 2px #de4539,
+    0 0 10px #e4aa6544;
+  letter-spacing: 3px;
+}
+.workspace-interface[data-interface="retro"] .dj-controls {
+  background:
+    linear-gradient(#ffffff22, #ffffff22), url("./arcade-speckle.svg");
+  border: 5px ridge #b7bdbe;
+  border-left: 10px solid #1388c5;
+  border-right: 10px solid #1388c5;
+  border-radius: 0 0 12px 12px;
+}
+.workspace-interface[data-interface="retro"] .dj-console {
+  background:
+    linear-gradient(#ffffff88, #ffffff55), url("./arcade-speckle.svg");
+  border-color: #727c83;
+}
+.workspace-interface[data-interface="retro"] .dj-console .skin-history {
+  background:
+    linear-gradient(90deg, transparent 32%, #62666a 33% 67%, transparent 68%),
+    linear-gradient(transparent 32%, #62666a 33% 67%, transparent 68%), #101c24;
+  border-color: #8c989f;
+}
+.workspace-interface[data-interface="retro"] .dj-console .skin-tool-wheel {
+  background: radial-gradient(circle, #39434c, #141d25);
+  border-color: #535e67;
+}
+.workspace-interface[data-interface="retro"]
+  .skin-tool-wheel
+  [data-hardware-handle] {
+  background: linear-gradient(90deg, #131820, #63717b 45%, #151c23 70%);
+}
+.workspace-interface[data-interface="retro"]
+  .skin-tool-wheel
+  [data-hardware-handle]::before {
+  background: radial-gradient(circle at 30% 20%, #6b7883, #202a34 55%, #0a1118);
+  box-shadow: 0 4px 2px #090e13;
+}
+.workspace-interface[data-interface="retro"] .lever-directions {
+  color: #ffe18a;
+}
+.workspace-interface[data-interface="retro"] .dj-console .dj-pads button {
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 3px;
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  min-height: 58px;
+  border-radius: 50%;
+  border: 3px ridge #ff9e8b;
+  background: radial-gradient(circle at 30% 20%, #ff8c73, #e3392b 55%, #981e1b);
+  color: #fff9e8;
+  box-shadow:
+    0 4px 0 #481211,
+    inset 0 2px 3px #ffffff77;
+}
+.workspace-interface[data-interface="retro"]
+  .dj-console
+  .dj-pads
+  button:nth-child(2),
+.workspace-interface[data-interface="retro"]
+  .dj-console
+  .dj-pads
+  button:nth-child(4) {
+  border-color: #e4e8e9;
+  background: radial-gradient(circle at 30% 20%, #ffffff, #dfdfd9 55%, #a9b0b4);
+  color: #182733;
+  box-shadow:
+    0 4px 0 #6d777f,
+    inset 0 2px 3px #fff;
+}
+.workspace-interface[data-interface="retro"]
+  .dj-console
+  .dj-pads
+  button:nth-child(3) {
+  border-color: #80c5f5;
+  background: radial-gradient(circle at 30% 20%, #77c8fa, #087fd1 55%, #134e85);
+  color: #fff9e8;
+  box-shadow:
+    0 4px 0 #153a59,
+    inset 0 2px 3px #ffffff77;
+}
+.workspace-interface[data-interface="retro"]
+  .dj-pads
+  button
+  > span:not(.arcade-pad-code):not(.metal-toggle) {
+  font:
+    9px ui-monospace,
+    monospace;
+}
+.workspace-interface[data-interface="retro"] .dj-pads .arcade-pad-code {
+  position: absolute;
+  right: 2px;
+  bottom: 3px;
+  width: 12px;
+  height: 12px;
+  font-size: 8px;
+  margin: 0;
+}
+.workspace-interface[data-interface="retro"]
+  .dj-pads
+  button[aria-pressed="true"] {
+  transform: translateY(3px);
+  box-shadow:
+    0 1px 0 #152631,
+    inset 0 3px 5px #0008;
+}
+.workspace-interface[data-interface="retro"] .dj-status {
+  background: repeating-linear-gradient(#092b28 0 3px, #124438 3px 4px);
+  border-color: #718e8d;
+  color: #c9f3ba;
+}
+.workspace-interface[data-interface="retro"] .dj-transport button {
+  border-color: #c7d1d6;
+  background: linear-gradient(#eef1ed, #949fa8);
+  color: #203443;
+}
+.workspace-interface[data-interface="retro"] .dj-settings {
+  background: #113b55;
+  color: #ffdf87;
+  border-color: #819da8;
+}
+.workspace-interface[data-interface="retro"] .workspace-panels {
+  border: 5px ridge #8a9da9;
+  border-left: 8px solid #1282bf;
+  border-right: 8px solid #1282bf;
+  background: #12374e;
+  box-shadow: 0 6px 0 #091b2a;
+}
+.interface-switcher [data-skin-preview="retro"] {
+  background: linear-gradient(
+    135deg,
+    #1687c3 45%,
+    #eeeae0 46% 65%,
+    #e94736 66%
+  );
+}
+@keyframes ambient-needle {
+  from {
+    transform: rotate(-15deg);
+  }
+  to {
+    transform: rotate(35deg);
+  }
+}
+@keyframes ambient-navigation {
+  to {
+    transform: rotate(375deg);
+  }
+}
+@keyframes ambient-level {
+  from {
+    transform: scaleY(0.25);
+  }
+  to {
+    transform: scaleY(0.9);
+  }
+}
+@media (max-width: 620px) {
+  .workspace-interface[data-interface="retro"] .arcade-marquee {
+    padding: 6px 8px;
+    letter-spacing: 0.5px;
+  }
+  .arcade-marquee strong {
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+  .arcade-marquee span {
+    font-size: 8px;
+  }
+  .arcade-marquee span:last-child {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-interface[data-agent-state] .ambient-instruments i {
+    animation: none;
+    transition: none;
+  }
+}
+
+.arcade-pad-code {
+  display: none;
+}
+.workspace-interface[data-interface="retro"] .arcade-pad-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font:
+    10px ui-monospace,
+    monospace;
+  margin-left: 2px;
+}
+
+@media (max-width: 620px) {
+  .workspace-interface[data-interface="retro"] .dj-console .dj-pads button {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 2px;
+  }
+  .workspace-interface[data-interface="retro"] .dj-pads .arcade-pad-code {
+    display: none;
+  }
+  .workspace-interface[data-interface="retro"] .dj-pads svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+/* Native selects must stay inside their allocated row, even with long model names. */
+.dj-model select {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+@media (max-width: 620px) {
+  .workspace-interface .dj-model {
+    min-width: 110px;
+    max-width: none;
+    flex: 1 1 130px;
+  }
+  .workspace-interface .dj-pads {
+    flex: 0 0 auto;
+  }
+}

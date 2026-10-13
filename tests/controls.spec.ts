@@ -117,7 +117,6 @@ test("hardware stop and resume controls work across the nonstandard skins", asyn
     "dj",
     "cockpit",
     "retro",
-    "cyberdeck",
   ].entries()) {
     await page.locator("summary").click();
     await page.locator(`[data-skin-option="${skin}"]`).click();
