@@ -412,5 +412,8 @@
     "uk": "Від'єднано",
     "ca": "Desconnectat",
     "id": "Terputus"
+  },
+  "CONVERSATION$FERRARI_INTERFACE": {
+    "en": "Ferrari"
   }
 }

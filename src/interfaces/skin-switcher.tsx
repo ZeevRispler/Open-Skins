@@ -7,6 +7,7 @@ import "./app-skins.css";
 import "./theme-hardware.css";
 import "./skin-feedback.css";
 import "./cockpit-retro-activity.css";
+import "./ferrari.css";
 import { muteSkinSound, playSkinSound } from "./skin-sound";
 import {
   WORKSPACE_INTERFACES,
@@ -20,6 +21,7 @@ const SKIN_LABELS: Record<WorkspaceInterface, I18nKey> = {
   cockpit: I18nKey.CONVERSATION$COCKPIT_INTERFACE,
   retro: I18nKey.CONVERSATION$RETRO_INTERFACE,
   cyberdeck: I18nKey.CONVERSATION$CYBERDECK_INTERFACE,
+  ferrari: I18nKey.CONVERSATION$FERRARI_INTERFACE,
 };
 
 // @spec CS-009 — The skin gallery stays hidden until requested.
