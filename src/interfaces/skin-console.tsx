@@ -68,6 +68,10 @@ export function SkinConsole({
       >
         <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
         <History aria-hidden="true" />
+        <span className="racing-dial" aria-hidden="true">
+          <i className="racing-needle" />
+          <b>AGENT</b>
+        </span>
         <span className="skin-radar" aria-hidden="true">
           <i className="radar-sweep" />
           <i className="radar-contact" />
@@ -221,6 +225,10 @@ export function SkinConsole({
         <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
         <Files aria-hidden="true" />
         <span data-hardware-handle aria-hidden="true" />
+        <span className="racing-gear" aria-hidden="true">
+          <i />
+          <b>{toolIndex + 1}</b>
+        </span>
         <span className="lever-directions" aria-hidden="true">
           <i>←</i>
           <i>↑</i>

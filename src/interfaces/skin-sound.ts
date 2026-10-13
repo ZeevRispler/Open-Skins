@@ -35,9 +35,13 @@ export function playSkinSound(skin: WorkspaceInterface, cue: SoundCue) {
           !useInterfaceStore.getState().soundsEnabled
         )
           return;
-        const base = { dj: 180, cockpit: 420, retro: 660, cyberdeck: 920 }[
-          skin
-        ];
+        const base = {
+          dj: 180,
+          cockpit: 420,
+          retro: 660,
+          cyberdeck: 920,
+          ferrari: 260,
+        }[skin];
         const notes =
           cue === "complete"
             ? [1, 1.25, 1.5]

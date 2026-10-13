@@ -119,7 +119,10 @@ describe("skin sound regression coverage", () => {
         ).toBe(true);
       }
     }
-    expect(audio.oscillators).toHaveLength(32);
+    expect(audio.oscillators).toHaveLength(
+      sounds.length *
+        cues.reduce((total, cue) => total + expectedCounts[cue], 0),
+    );
   });
 
   it("stays silent while the document is hidden", async () => {
