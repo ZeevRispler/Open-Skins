@@ -1,26 +1,41 @@
 # Connect Google AI Pro without an API key
 
-Google AI Pro is supported through Gemini CLI's Google sign-in. Coding Skins runs Gemini CLI as an ACP agent; Google credentials remain in the CLI's normal local credential storage. The account's subscription and limits are determined by Google.
+Use Google's official **Antigravity ACP agent**, with Google account sign-in. Coding Skins connects through OpenHands' existing custom ACP support. Credentials stay in Google's local runtime storage; the frontend never receives your Google tokens.
 
-1. Open Terminal and run:
+## This machine
+
+The official macOS ARM64 Antigravity ACP runtime 1.3.0 is installed in `.runtime/antigravity`. The live OpenHands stack at http://127.0.0.1:8000 has an active `google-pro-antigravity` agent profile pointing to it. The key-free scripted demo at port 5173 is separate.
+
+1. To sign in again, run:
 
    ```sh
    cd /Users/zeevrispler/Documents/ChatGPT/side/Coding_Skins
    ./scripts/google-login.sh
    ```
 
-2. If Gemini asks about trusting a folder, choose only the `gemini-login` folder. Choose **Sign in with Google**, then finish signing in in Google's browser window using the account holding Google AI Pro. Do not choose Gemini API key or Vertex AI. After successful authentication, enter `/quit`.
+   Complete Google's browser flow with the account holding Google AI Pro. A valid existing Google session can sign in silently. No API key or Google Cloud project is configured for this personal-account connection.
 
-3. The live app is already running for this session. For a future start, run `./scripts/start-coding-skins.sh` from the same folder and keep that terminal open. Do not start a second copy while the live app is already running. The launcher rebuilds the real frontend, starts the pinned OpenHands services, and provides Gemini CLI on the backend process PATH.
+2. Open http://127.0.0.1:8000. For a future restart, run `./scripts/start-coding-skins.sh` and keep the terminal open. Do not start a second live stack while one is running.
 
-4. Open http://127.0.0.1:8000. The port 5173 page is a mock preview and cannot use your subscription. During onboarding, choose **Gemini CLI**, then **Next**. The connection step should detect the CLI login. Leave API key and Google Cloud fields empty and continue.
+3. Start a **new conversation** using `google-pro-antigravity`, then select **DJ console**. Existing scripted-demo conversations do not become real Google sessions.
 
-5. Start a new conversation, then choose **DJ console**. Agent choices apply to newly created conversations; an existing mock conversation is not a live Gemini session. Start with a simple question such as “Reply with a short hello.”
+4. Send a coding task. Tools and approval requests use the shared OpenHands UI. Google determines subscription entitlements and limits.
 
-If the connection step does not detect a login, restart the live app after completing Gemini CLI sign-in, then retry onboarding. Login detection checks the presence of local CLI credentials; a real response is the final verification of authentication and subscription access.
+The default model is **Gemini 3.8 Flash (Low)**, following the user's preference for economical usage. Prefer short prompts and low reasoning; do not enable credit overage or upgrade to a heavier model automatically. Model availability is determined by Google.
 
-The local scripts require Node, npm, uvx and Gemini CLI. These prerequisites have been installed under `.runtime` on this machine. `.runtime` is ignored by Git, including generated local server authentication files. The Node executable currently uses this machine's bundled Codex runtime; on another machine install Node 24+, npm, uv and Gemini CLI on PATH.
+## Verification and migration
+
+Google's official Antigravity runtime successfully authenticated, reported the account's Google AI Pro tier, and returned a real response through the DJ conversation UI. The test used one short greeting and no coding tools.
+
+The Gemini CLI sign-in page saved credentials, but Google rejected actual access on this account with `UNSUPPORTED_CLIENT` and directed it to Antigravity. Credential-file presence alone is not proof of usable access. Do not route Google subscription credentials into a Gemini API proxy; use the official ACP agent.
+
+## Installing on another machine
+
+Use the platform-specific official binary in the [ACP registry](https://github.com/agentclientprotocol/registry/blob/main/antigravity-acp/agent.json). Download its archive directly from `dl.google.com`, extract it into `.runtime/antigravity`, and make `agy_acp_server.par` executable on macOS/Linux. Configure a custom ACP agent profile in OpenHands with the absolute executable path and no API key, then authenticate with `scripts/google-login.sh`. Windows uses the registry's `.exe` distribution.
+
+Node 24+, npm, and uv are needed for the local stack. `.runtime` is ignored by Git; Google credentials must not be copied into the repository.
 
 References:
-- https://geminicli.com/docs/get-started/authentication/
-- https://geminicli.com/plans/
+- [Google's official account authentication](https://antigravity.google/docs/cli/install/)
+- [Google's ACP-based integration and personal-account auth](https://antigravity.google/docs/ide/extensions/zed)
+- [Antigravity plans](https://antigravity.google/pricing)

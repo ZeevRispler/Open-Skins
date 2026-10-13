@@ -3,7 +3,7 @@
 set -euo pipefail
 skin_root="$(cd "$(dirname "$0")/.." && pwd)"
 export PATH="$skin_root/.runtime/bin:$PATH"
-for skin_command in node npm uvx gemini; do
+for skin_command in node npm uvx; do
   if ! command -v "$skin_command" >/dev/null 2>&1; then
     printf 'Missing required command: %s\n' "$skin_command" >&2
     exit 1

@@ -46,4 +46,4 @@ The DJ layout uses two large decks around a central mixer. `src/interfaces/dj/as
 
 ## Google AI Pro sign-in
 
-See [Google sign-in without API keys](GOOGLE_SIGN_IN.md). `scripts/google-login.sh` launches the official Gemini CLI; `scripts/start-coding-skins.sh` launches the live OpenHands stack on localhost:8000 with the CLI available to its backend. The live stack was checked through `/ready`; Google sign-in and a real model response remain pending user authentication.
+See [Google sign-in without API keys](GOOGLE_SIGN_IN.md). `scripts/google-login.sh` authenticates Google’s official Antigravity ACP agent. `scripts/start-coding-skins.sh` launches the live OpenHands stack on localhost:8000. Google AI Pro authentication and a real response through the DJ interface were verified. The active Google profile defaults to Gemini 3.8 Flash (Low); the scripted demo on port 5173 remains separate.
