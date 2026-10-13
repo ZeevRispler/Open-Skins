@@ -87,6 +87,11 @@ export function SkinConsole({
         <SkinModelControl />
       </div>
       <div className="dj-status" role="status">
+        <span className="dj-equalizer" aria-hidden="true">
+          {Array.from({ length: 7 }, (_, i) => (
+            <i key={i} style={{ animationDelay: `${i * -0.13}s` }} />
+          ))}
+        </span>
         <span
           className="dj-led"
           data-active={state.running}

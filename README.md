@@ -71,6 +71,8 @@ The companion is deliberately smaller than a full IDE: no embedded code editor, 
 
 ## Skins and feedback
 
+DJ platters rotate in opposite directions while the agent is working, with a reactive equalizer beside its status light. They pause when work stops, finishes, or needs approval. These decorative indicators follow agent activity.
+
 The palette button opens a compact skin gallery. Sounds are **off by default**; enable them with the speaker button. Each skin has synthesized local press, completion, permission and error cues. Background tabs stay quiet, and motion respects the operating system's reduced-motion preference.
 
 | Cockpit                                             | Retro console                                   |

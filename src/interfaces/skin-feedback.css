@@ -65,3 +65,72 @@
   background: #96e6b1;
   box-shadow: 0 0 8px #96e6b144;
 }
+
+/* Pause the platters in place; icons and controls remain stationary. */
+.workspace-interface[data-interface="dj"]
+  :is(.skin-history, .skin-tool-wheel)
+  img {
+  animation: dj-platter 4s linear infinite;
+  animation-play-state: paused;
+}
+.workspace-interface[data-interface="dj"] .skin-tool-wheel img {
+  animation-direction: reverse;
+}
+.workspace-interface[data-interface="dj"][data-agent-state="running"]
+  :is(.skin-history, .skin-tool-wheel)
+  img {
+  animation-play-state: running;
+}
+.dj-equalizer {
+  display: none;
+}
+.workspace-interface[data-interface="dj"] .dj-equalizer {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 24px;
+  margin-right: 10px;
+}
+.dj-equalizer i {
+  width: 3px;
+  height: 20px;
+  background: var(--skin-accent);
+  border-radius: 2px;
+  transform: scaleY(0.2);
+}
+.workspace-interface[data-interface="dj"][data-agent-state="running"]
+  .dj-equalizer
+  i {
+  animation: dj-level 800ms ease-in-out infinite alternate;
+}
+@keyframes dj-platter {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes dj-level {
+  from {
+    transform: scaleY(0.2);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-interface[data-interface="dj"]
+    :is(.skin-history, .skin-tool-wheel)
+    img,
+  .workspace-interface[data-interface="dj"][data-agent-state="running"]
+    .dj-equalizer
+    i {
+    animation: none;
+  }
+  .workspace-interface[data-interface="dj"][data-agent-state="running"]
+    .dj-equalizer
+    i {
+    transform: scaleY(0.7);
+  }
+}
