@@ -52342,5 +52342,23 @@
     "tr": "Araç seçici",
     "uk": "Вибір інструментів",
     "id": "Pemilih alat"
+  },
+  "CONVERSATION$EVENTS": {
+    "en": "Events",
+    "ja": "イベント",
+    "zh-CN": "事件",
+    "zh-TW": "事件",
+    "ko-KR": "이벤트",
+    "no": "Hendelser",
+    "ar": "الأحداث",
+    "de": "Ereignisse",
+    "fr": "Événements",
+    "it": "Eventi",
+    "pt": "Eventos",
+    "es": "Eventos",
+    "ca": "Esdeveniments",
+    "tr": "Olaylar",
+    "uk": "Події",
+    "id": "Peristiwa"
   }
 }

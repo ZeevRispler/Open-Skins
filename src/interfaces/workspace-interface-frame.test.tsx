@@ -7,13 +7,16 @@ import type { WorkspaceController } from "#/workspace-core/use-workspace-control
 import { AgentState } from "#/types/agent-state";
 import { I18nKey } from "#/i18n/declaration";
 
-vi.mock("#/components/features/chat/components/chat-input-model", () => ({
-  ChatInputModel: () => null,
+vi.mock("./dj/dj-model-control", () => ({
+  DjModelControl: () => null,
 }));
 
 function makeController(): WorkspaceController {
   return {
     state: {
+      eventCount: 12,
+      contextUsage: 25,
+      connectionOpen: true,
       agentState: AgentState.RUNNING,
       canConfigure: true,
       running: true,

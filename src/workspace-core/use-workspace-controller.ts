@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useEventStore } from "#/stores/use-event-store";
+import { useContextWindowUsage } from "#/hooks/use-context-window-usage";
+import { useMainWebSocketStatus } from "#/hooks/use-unified-websocket-status";
 import { useNavigation } from "#/context/navigation-context";
 import type { ConversationTab } from "#/stores/conversation-store";
 import { useOptionalSidebarMobileNav } from "#/components/features/sidebar/sidebar-mobile-nav-context";
@@ -18,6 +21,15 @@ import { AgentState } from "#/types/agent-state";
 // @spec CS-003 — Adapt shared panels to desktop and mobile navigation.
 export function useWorkspaceController() {
   const tools = useSelectConversationTab();
+  const eventCount = useEventStore((store) => store.events.length);
+  const context = useContextWindowUsage();
+  const connectionOpen = useMainWebSocketStatus() === "OPEN";
+  const contextUsage = context
+    ? Math.min(
+        100,
+        Math.max(0, (context.perTurnToken / context.contextWindow) * 100),
+      )
+    : null;
   const { navigate, conversationId } = useNavigation();
   const isMobilePanel = useBreakpoint();
   const revealPanel = () => {
@@ -39,6 +51,9 @@ export function useWorkspaceController() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   return {
     state: {
+      eventCount,
+      contextUsage,
+      connectionOpen,
       agentState: curAgentState,
       canConfigure: Boolean(settings) && getLockedCloudHost() === null,
       running: curAgentState === AgentState.RUNNING,

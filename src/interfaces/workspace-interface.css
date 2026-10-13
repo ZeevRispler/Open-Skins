@@ -141,6 +141,39 @@
   height: 140px;
   accent-color: #6ee7b7;
   cursor: pointer;
+  appearance: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 13px,
+    #71859388 13px 14px
+  );
+  border-radius: 3px;
+}
+.dj-tool-selector input::-webkit-slider-runnable-track {
+  width: 5px;
+  border: 1px solid #405566;
+  border-radius: 3px;
+  background: #080d13;
+}
+.dj-tool-selector input::-webkit-slider-thumb {
+  appearance: none;
+  width: 25px;
+  height: 15px;
+  margin-left: -11px;
+  border: 1px solid #8599a9;
+  border-radius: 2px;
+  background: linear-gradient(#516575 0 42%, #60e9ee 42% 58%, #253342 58%);
+  box-shadow: 0 3px 5px #000a;
+}
+.dj-tool-selector input::-moz-range-track {
+  width: 5px;
+  background: #080d13;
+}
+.dj-tool-selector input::-moz-range-thumb {
+  width: 25px;
+  height: 15px;
+  border-radius: 2px;
+  background: linear-gradient(#516575 0 42%, #60e9ee 42% 58%, #253342 58%);
 }
 .dj-led[data-active="true"] {
   background: #6ee7b7;
@@ -298,5 +331,157 @@
   }
   .dj-controls {
     max-height: 330px;
+  }
+}
+
+/* Hardware iteration: engraved readouts, larger decks, inset screen bays. */
+.dj-console [data-dj-part="readout"] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid #364b5a;
+  border-top-color: #0b1017;
+  border-radius: 4px;
+  background: #0c151b;
+  color: #8faebc;
+  font:
+    10px ui-monospace,
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  box-shadow: inset 0 2px 6px #0009;
+}
+.dj-console [data-dj-part="readout"] strong {
+  font-size: 15px;
+  color: #76eaf1;
+}
+.dj-console [data-deck="tools"] [data-dj-part="readout"] strong {
+  color: #edb4ff;
+}
+.dj-console [data-dj-part="control-label"] {
+  display: block;
+  margin-bottom: 8px;
+  color: #9eb9c5;
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+.dj-console [data-dj-part="context-meter"] {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  color: #a6c0cb;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.dj-console [data-dj-part="context-meter"] meter {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  width: 100%;
+  height: 10px;
+  accent-color: #6ee7b7;
+}
+.dj-console [data-dj-part="context-meter"] output {
+  color: #b4eadc;
+}
+.workspace-interface[data-interface="dj"] [data-workspace-split] {
+  padding: 8px;
+  gap: 8px;
+  background: #0c1119;
+}
+.workspace-interface[data-interface="dj"]
+  [data-testid="conversation-chat-panel"],
+.workspace-interface[data-interface="dj"]
+  [data-testid="conversation-right-panel"] {
+  border: 1px solid #384b5c;
+  border-radius: 6px;
+  box-shadow: inset 0 2px 10px #0005;
+}
+.dj-console [data-dj-part="deck"] {
+  position: relative;
+  background:
+    radial-gradient(ellipse at 50% 50%, #20334366, transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      #ffffff02 0px,
+      #ffffff02 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+.dj-console [data-dj-part="deck"]::before,
+.dj-console [data-dj-part="deck"]::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid #71808f;
+  background: linear-gradient(45deg, #17232d 42%, #8895a4 47%, #17232d 52%);
+}
+.dj-console [data-dj-part="deck"]::before {
+  left: 7px;
+}
+.dj-console [data-dj-part="deck"]::after {
+  right: 7px;
+}
+@media (min-width: 1300px) {
+  .dj-platter {
+    width: min(22vw, 29vh, 320px);
+  }
+  .dj-controls {
+    max-height: 49vh;
+  }
+  .dj-console {
+    grid-template-columns: minmax(0, 1fr) 250px minmax(0, 1fr);
+  }
+  .dj-console [data-dj-part="deck"] {
+    padding: 14px 20px;
+    gap: 10px;
+  }
+  .dj-console [data-dj-part="mixer"] {
+    padding: 18px 20px;
+  }
+  .dj-pads button,
+  .dj-transport button {
+    min-height: 48px;
+  }
+}
+@media (min-width: 621px) and (max-height: 800px) {
+  .dj-controls {
+    max-height: 46vh;
+  }
+  .dj-platter {
+    width: min(18vw, 23vh, 220px);
+  }
+  .dj-console [data-dj-part="deck"] {
+    gap: 7px;
+    padding: 10px 14px;
+  }
+  .dj-console [data-dj-part="mixer"] {
+    gap: 9px;
+    padding: 12px;
+  }
+  .dj-tool-selector input {
+    height: 85px;
+  }
+}
+@media (max-width: 620px) {
+  .dj-console [data-dj-part="readout"] {
+    padding: 5px;
+    font-size: 8px;
+  }
+  .dj-console [data-dj-part="readout"] strong {
+    font-size: 11px;
+  }
+  .dj-console [data-dj-part="context-meter"] {
+    grid-column: 1 / -1;
+  }
+  .dj-console [data-dj-part="deck"] {
+    padding: 8px;
   }
 }

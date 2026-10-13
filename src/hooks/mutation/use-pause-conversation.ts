@@ -7,11 +7,14 @@ import {
   patchConversationInCache,
 } from "./conversation-mutation-utils";
 
+export const PAUSE_CONVERSATION_MUTATION_KEY = ["pause-conversation"];
+
 export const usePauseConversation = () => {
   const queryClient = useQueryClient();
   const { backend } = useActiveBackend();
 
   return useMutation({
+    mutationKey: PAUSE_CONVERSATION_MUTATION_KEY,
     mutationFn: (variables: { conversationId: string }) =>
       pauseConversation(variables.conversationId),
     onMutate: async () => {

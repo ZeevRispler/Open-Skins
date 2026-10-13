@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
 import type { WorkspaceController } from "#/workspace-core/use-workspace-controller";
 import type { ConversationTab } from "#/stores/conversation-store";
-import { ChatInputModel } from "#/components/features/chat/components/chat-input-model";
+import { DjModelControl } from "./dj-model-control";
 
 import jogWheel from "./assets/jog-wheel-v1.png";
 import { AgentState } from "#/types/agent-state";
@@ -49,6 +49,10 @@ export function DjConsole({ controller }: { controller: WorkspaceController }) {
           <History aria-hidden="true" />
           {t(I18nKey.CONVERSATION$HISTORY_CONTROL)}
         </header>
+        <div data-dj-part="readout">
+          <span>{t(I18nKey.CONVERSATION$EVENTS)}</span>
+          <strong>{state.eventCount}</strong>
+        </div>
         <button
           type="button"
           className="dj-platter"
@@ -94,12 +98,31 @@ export function DjConsole({ controller }: { controller: WorkspaceController }) {
             aria-hidden="true"
           />
           {t(
-            STATUS_LABELS[state.agentState] ??
-              I18nKey.AGENT_STATUS$WAITING_FOR_TASK,
+            !state.connectionOpen && !state.canResume
+              ? I18nKey.CHAT_INTERFACE$DISCONNECTED
+              : (STATUS_LABELS[state.agentState] ??
+                  I18nKey.AGENT_STATUS$WAITING_FOR_TASK),
           )}
         </div>
         <div className="dj-model">
-          <ChatInputModel />
+          <span data-dj-part="control-label">
+            {t(I18nKey.SCHEMA$LLM$MODEL$LABEL)}
+          </span>
+          <DjModelControl />
+        </div>
+        <div data-dj-part="context-meter">
+          <span>{t(I18nKey.CONVERSATION$CONTEXT_WINDOW)}</span>
+          <meter
+            min={0}
+            max={100}
+            value={state.contextUsage ?? 0}
+            aria-label={t(I18nKey.CONVERSATION$CONTEXT_WINDOW)}
+          />
+          <output>
+            {state.contextUsage === null
+              ? t(I18nKey.CONVERSATION$CONTEXT_WINDOW_UNKNOWN)
+              : `${Math.round(state.contextUsage)}%`}
+          </output>
         </div>
         <div data-dj-part="mixer-controls">
           <button
@@ -134,6 +157,10 @@ export function DjConsole({ controller }: { controller: WorkspaceController }) {
           <Files aria-hidden="true" />
           {t(I18nKey.CONVERSATION$TOOL_SELECTOR)}
         </header>
+        <div data-dj-part="readout">
+          <span>{t(I18nKey.CONVERSATION$TOOL_SELECTOR)}</span>
+          <strong>{t(TOOL_PADS[toolIndex].label)}</strong>
+        </div>
         <button
           type="button"
           className="dj-platter"

@@ -5,5 +5,6 @@
 - CS-003: DJ tool pads and the tool slider operate the existing shared tool panels. At mobile widths, tools open the existing panel route.
 - CS-004: Layout preference persists independently of conversations. Invalid stored layout ids fall back to Standard.
 - CS-005: The history platter uses desktop sidebar controls or the mobile navigation drawer. Settings use the existing modal and model selection uses the existing picker.
+- CS-006: The key-free demo uses a local scripted model with the real Agent Server. Its state, ports, and workspace are separate from the live provider stack.
 
 The current version retains one active conversation. Simultaneously live decks and external skin plugin loading are future work.

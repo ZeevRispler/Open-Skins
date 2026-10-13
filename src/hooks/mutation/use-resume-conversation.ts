@@ -1,10 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { resumeConversation } from "./conversation-mutation-utils";
 
+export const RESUME_CONVERSATION_MUTATION_KEY = ["resume-conversation"];
+
 export const useResumeConversation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: RESUME_CONVERSATION_MUTATION_KEY,
     mutationFn: (variables: { conversationId: string }) =>
       resumeConversation(variables.conversationId),
     onMutate: async () => {
