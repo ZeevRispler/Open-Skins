@@ -86,6 +86,8 @@ The companion is deliberately smaller than a full IDE: no embedded code editor, 
 
 DJ platters rotate in opposite directions while the agent is working, with a reactive equalizer beside its status light. They pause when work stops, finishes, or needs approval. These decorative indicators follow agent activity.
 
+The cockpit has a radar sweep during agent work and metallic ball-tip switches for history and tool panels. The retro character walks during work and celebrates completion. The cockpit and retro lever supports dragging or arrow keys: **left Files, up Terminal, down Changes, right Browser**. Clicking it still cycles through tools; clicking an active tool pad closes that panel.
+
 The palette button opens a compact skin gallery. Sounds are **off by default**; enable them with the speaker button. Each skin has synthesized local press, completion, permission and error cues. Background tabs stay quiet, and motion respects the operating system's reduced-motion preference.
 
 | Cockpit                                             | Retro console                                   |

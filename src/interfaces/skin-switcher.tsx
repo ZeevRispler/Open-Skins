@@ -6,6 +6,7 @@ import "./workspace-interface.css";
 import "./app-skins.css";
 import "./theme-hardware.css";
 import "./skin-feedback.css";
+import "./cockpit-retro-activity.css";
 import { muteSkinSound, playSkinSound } from "./skin-sound";
 import {
   WORKSPACE_INTERFACES,

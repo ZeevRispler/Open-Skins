@@ -1,0 +1,291 @@
+/* Compact instrument feedback; the shared conversation keeps its full area. */
+.skin-radar,
+.retro-avatar,
+.metal-toggle,
+.lever-directions {
+  display: none;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skin-tool-wheel {
+  touch-action: none;
+}
+.workspace-interface[data-interface="cockpit"] .dj-console .skin-history {
+  background: #061510;
+  overflow: hidden;
+}
+.workspace-interface[data-interface="cockpit"] .skin-history::before {
+  display: none;
+}
+.workspace-interface[data-interface="cockpit"] .skin-radar {
+  display: block;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle, transparent 0 13px, #70b58b45 14px 15px),
+    linear-gradient(90deg, transparent 49%, #70b58b55 50%, transparent 51%),
+    linear-gradient(transparent 49%, #70b58b55 50%, transparent 51%);
+  pointer-events: none;
+}
+.radar-sweep {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 280deg,
+    #76e6a438 335deg,
+    #98ffc780 359deg,
+    transparent 360deg
+  );
+  animation: cockpit-sweep 3s linear infinite;
+  animation-play-state: paused;
+}
+.radar-contact {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  top: 28%;
+  left: 68%;
+  border-radius: 50%;
+  background: #a5efbb;
+  box-shadow: 0 0 5px #99ffb6;
+}
+.workspace-interface[data-agent-state="running"] .radar-sweep {
+  animation-play-state: running;
+}
+.workspace-interface[data-agent-state="awaiting_user_confirmation"]
+  .skin-radar {
+  filter: sepia(1) saturate(2);
+}
+.workspace-interface[data-interface="cockpit"] .skin-history svg {
+  position: relative;
+  z-index: 1;
+  opacity: 0.8;
+}
+.workspace-interface[data-interface="cockpit"] .dj-pads button {
+  padding-right: 42px;
+  min-height: 42px;
+}
+.workspace-interface[data-interface="cockpit"] .dj-pads button::after {
+  display: none;
+}
+.workspace-interface[data-interface="cockpit"] .metal-toggle {
+  display: block;
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  width: 23px;
+  height: 23px;
+  left: auto;
+  border: 1px solid #1d211d;
+  border-radius: 50%;
+  background: repeating-conic-gradient(#a99565 0deg 15deg, #d6c798 15deg 30deg);
+  box-shadow:
+    0 2px 2px #0009,
+    inset 0 0 0 4px #5a5d51,
+    inset 0 0 0 6px #d2d7c5;
+  pointer-events: none;
+}
+.workspace-interface[data-interface="cockpit"] .metal-toggle::after {
+  display: none;
+}
+.workspace-interface[data-interface="cockpit"] .metal-toggle i {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  width: 6px;
+  height: 23px;
+  border: 1px solid #51574b;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #606758, #f0f3de 45%, #848e77);
+  transform-origin: 50% 95%;
+  transform: rotate(-28deg);
+  transition: transform 180ms ease;
+  box-shadow: 2px 2px 3px #0008;
+}
+.workspace-interface[data-interface="cockpit"] .metal-toggle i::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 25%,
+    #fffce0,
+    #b6bba0 40%,
+    #4b5044 75%
+  );
+  box-shadow: 1px 2px 2px #0007;
+}
+.workspace-interface[data-interface="cockpit"]
+  button[aria-pressed="true"]
+  .metal-toggle
+  i {
+  transform: rotate(28deg);
+}
+.workspace-interface[data-interface="cockpit"]
+  button[aria-pressed="true"]
+  .metal-toggle {
+  box-shadow:
+    0 0 8px #96e6b15a,
+    inset 0 0 0 4px #5a5d51,
+    inset 0 0 0 6px #d2d7c5;
+}
+.workspace-interface[data-interface="cockpit"] .skin-history .metal-toggle {
+  bottom: 6px;
+  right: 8px;
+  z-index: 2;
+}
+/* The selector is a directional lever: left/files, up/terminal, down/changes, right/browser. */
+.workspace-interface[data-interface="cockpit"] .dj-console .skin-tool-wheel {
+  border-radius: 12px;
+  background: linear-gradient(125deg, #4c5952, #202b26);
+}
+.workspace-interface[data-interface="cockpit"]
+  .skin-tool-wheel
+  [data-hardware-handle] {
+  left: calc(50% - 4px);
+  top: 30%;
+  bottom: auto;
+  width: 8px;
+  height: 40%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #6a7569, #ecf0d8 45%, #8a9885);
+  box-shadow: 2px 3px 5px #0009;
+  transform: translate(var(--stick-x), var(--stick-y));
+}
+.workspace-interface[data-interface="cockpit"]
+  .skin-tool-wheel
+  [data-hardware-handle]::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 25%,
+    #f1f4d9,
+    #9ba78f 45%,
+    #4c584a 80%
+  );
+  box-shadow: 2px 3px 4px #0008;
+}
+.workspace-interface:is([data-interface="cockpit"], [data-interface="retro"])
+  .lever-directions {
+  display: block;
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  color: var(--skin-accent);
+  font: 12px monospace;
+}
+.lever-directions i {
+  position: absolute;
+  font-style: normal;
+}
+.lever-directions i:nth-child(1) {
+  left: 0;
+  top: 40%;
+}
+.lever-directions i:nth-child(2) {
+  top: 0;
+  left: 45%;
+}
+.lever-directions i:nth-child(3) {
+  bottom: 0;
+  left: 45%;
+}
+.lever-directions i:nth-child(4) {
+  right: 0;
+  top: 40%;
+}
+.workspace-interface[data-interface="retro"] .retro-avatar {
+  display: inline-block;
+  width: 30px;
+  height: 34px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+.retro-avatar svg {
+  width: 100%;
+  height: 100%;
+}
+.workspace-interface[data-interface="retro"][data-agent-state="running"]
+  .retro-avatar {
+  animation: retro-walk 450ms steps(2, end) infinite;
+}
+.workspace-interface[data-interface="retro"][data-agent-state="running"]
+  .retro-feet {
+  animation: retro-stride 450ms steps(2, end) infinite alternate;
+  transform-origin: center;
+}
+.workspace-interface[data-interface="retro"][data-agent-state="finished"]
+  .retro-avatar {
+  animation: retro-celebrate 600ms ease-out 2;
+}
+@keyframes cockpit-sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes retro-walk {
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes retro-stride {
+  to {
+    transform: scaleX(-1);
+  }
+}
+@keyframes retro-celebrate {
+  40% {
+    transform: translateY(-8px) rotate(-8deg);
+  }
+  70% {
+    transform: translateY(-3px) rotate(8deg);
+  }
+}
+@media (max-width: 620px) {
+  .workspace-interface[data-interface="cockpit"] .dj-pads button {
+    padding-right: 27px;
+    min-height: 32px;
+  }
+  .workspace-interface[data-interface="cockpit"] .dj-pads .metal-toggle {
+    right: 3px;
+    bottom: 3px;
+    transform: scale(0.6);
+    transform-origin: right bottom;
+  }
+  .workspace-interface[data-interface="cockpit"] .skin-history .metal-toggle {
+    right: 0;
+    bottom: 0;
+    transform: scale(0.6);
+    transform-origin: right bottom;
+  }
+  .lever-directions {
+    opacity: 0.8;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .radar-sweep,
+  .workspace-interface[data-interface="retro"] .retro-avatar,
+  .workspace-interface[data-interface="retro"] .retro-feet {
+    animation: none !important;
+  }
+  .metal-toggle i {
+    transition: none;
+  }
+}

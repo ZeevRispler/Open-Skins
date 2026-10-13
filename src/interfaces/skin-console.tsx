@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import {
   Files,
   Terminal,
@@ -39,6 +40,14 @@ export function SkinConsole({
 }) {
   const { t } = useTranslation("open-skins");
   const { state, commands } = controller;
+  const gesture = useRef<{ x: number; y: number } | null>(null);
+  const dragged = useRef(false);
+  const directions: Record<string, ToolTab> = {
+    ArrowLeft: "files",
+    ArrowUp: "terminal",
+    ArrowDown: "changes",
+    ArrowRight: "browser",
+  };
   const toolIndex = Math.max(
     0,
     TOOL_PADS.findIndex((pad) => pad.id === state.selectedTool),
@@ -59,7 +68,13 @@ export function SkinConsole({
       >
         <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
         <History aria-hidden="true" />
-        <span data-hardware-switch aria-hidden="true" />
+        <span className="skin-radar" aria-hidden="true">
+          <i className="radar-sweep" />
+          <i className="radar-contact" />
+        </span>
+        <span className="metal-toggle" data-hardware-switch aria-hidden="true">
+          <i />
+        </span>
       </button>
       <div className="dj-transport">
         <button
@@ -87,6 +102,18 @@ export function SkinConsole({
         <SkinModelControl />
       </div>
       <div className="dj-status" role="status">
+        <span className="retro-avatar" aria-hidden="true">
+          <svg viewBox="0 0 20 24" shapeRendering="crispEdges">
+            <path fill="#66ddf4" d="M5 1h10v3H3V3h2z" />
+            <path fill="#f5c498" d="M5 4h10v7H5z" />
+            <path fill="#21162b" d="M7 6h2v2H7zm5 0h2v2h-2z" />
+            <path fill="#82dfb2" d="M4 11h12v7H4z" />
+            <path fill="#f5c498" d="M2 12h2v5H2zm14 0h2v5h-2z" />
+            <g className="retro-feet" fill="#be8de1">
+              <path d="M5 18h4v5H3v-2h2zm6 0h4v3h2v2h-6z" />
+            </g>
+          </svg>
+        </span>
         <span className="dj-equalizer" aria-hidden="true">
           {Array.from({ length: 7 }, (_, i) => (
             <i key={i} style={{ animationDelay: `${i * -0.13}s` }} />
@@ -112,12 +139,19 @@ export function SkinConsole({
             aria-label={t(label)}
             aria-pressed={state.toolsOpen && state.selectedTool === id}
             onClick={() =>
-              id === "changes" ? commands.openChanges() : commands.openTool(id)
+              state.toolsOpen && state.selectedTool === id
+                ? commands.closeTools()
+                : id === "changes"
+                  ? commands.openChanges()
+                  : commands.openTool(id)
             }
             title={t(label)}
           >
             <Icon aria-hidden="true" />
             <span>{t(label)}</span>
+            <span className="metal-toggle" aria-hidden="true">
+              <i />
+            </span>
           </button>
         ))}
       </div>
@@ -138,16 +172,66 @@ export function SkinConsole({
       <button
         className="skin-tool-wheel"
         type="button"
+        aria-describedby="skin-tool-directions"
+        onKeyDown={(event) => {
+          const tool = directions[event.key];
+          if (tool) {
+            event.preventDefault();
+            commands.openTool(tool);
+          }
+        }}
+        onPointerDown={(event) => {
+          if (event.button !== 0) return;
+          gesture.current = { x: event.clientX, y: event.clientY };
+          dragged.current = false;
+          event.currentTarget.setPointerCapture(event.pointerId);
+        }}
+        onPointerCancel={() => {
+          gesture.current = null;
+          dragged.current = false;
+        }}
+        onPointerUp={(event) => {
+          const start = gesture.current;
+          gesture.current = null;
+          if (!start) return;
+          const dx = event.clientX - start.x;
+          const dy = event.clientY - start.y;
+          if (Math.max(Math.abs(dx), Math.abs(dy)) < 12) return;
+          dragged.current = true;
+          commands.openTool(
+            Math.abs(dx) > Math.abs(dy)
+              ? dx < 0
+                ? "files"
+                : "browser"
+              : dy < 0
+                ? "terminal"
+                : "changes",
+          );
+        }}
         aria-label={t(I18nKey.CONVERSATION$TOOL_SELECTOR)}
         title={t(I18nKey.CONVERSATION$TOOL_SELECTOR)}
-        onClick={() =>
-          commands.openTool(TOOL_PADS[(toolIndex + 1) % TOOL_PADS.length].id)
-        }
+        onClick={() => {
+          if (dragged.current) {
+            dragged.current = false;
+            return;
+          }
+          commands.openTool(TOOL_PADS[(toolIndex + 1) % TOOL_PADS.length].id);
+        }}
       >
         <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
         <Files aria-hidden="true" />
         <span data-hardware-handle aria-hidden="true" />
+        <span className="lever-directions" aria-hidden="true">
+          <i>←</i>
+          <i>↑</i>
+          <i>↓</i>
+          <i>→</i>
+        </span>
       </button>
+      <span id="skin-tool-directions" className="sr-only">
+        Click to cycle tools, or use arrow keys or drag: left Files, up
+        Terminal, down Changes, right Browser.
+      </span>
       <button
         className="dj-settings"
         type="button"

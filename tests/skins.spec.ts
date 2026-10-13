@@ -172,15 +172,11 @@ test("sound toggle and actual hardware movement respond to clicks", async ({
     .poll(() => lever.evaluate((el) => getComputedStyle(el).transform))
     .not.toBe(before);
   await page.getByRole("button", { name: "Close tools" }).click();
-  const toggle = page.locator("[data-hardware-switch]");
-  const off = await toggle.evaluate(
-    (el) => getComputedStyle(el, "::after").transform,
-  );
+  const toggle = page.locator(".skin-history .metal-toggle i");
+  const off = await toggle.evaluate((el) => getComputedStyle(el).transform);
   await page.locator(".skin-history").click();
   await expect
-    .poll(() =>
-      toggle.evaluate((el) => getComputedStyle(el, "::after").transform),
-    )
+    .poll(() => toggle.evaluate((el) => getComputedStyle(el).transform))
     .not.toBe(off);
   await page.locator(".skin-history").click();
   await speaker.click();
