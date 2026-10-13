@@ -52414,5 +52414,23 @@
     "tr": "Siber güverte",
     "uk": "Кібердек",
     "id": "Cyberdeck"
+  },
+  "CONVERSATION$SOUNDS": {
+    "en": "Interface sounds",
+    "ja": "インターフェースの音",
+    "zh-CN": "界面音效",
+    "zh-TW": "介面音效",
+    "ko-KR": "인터페이스 소리",
+    "no": "Grensesnittlyder",
+    "ar": "أصوات الواجهة",
+    "de": "Oberflächentöne",
+    "fr": "Sons de l’interface",
+    "it": "Suoni dell’interfaccia",
+    "pt": "Sons da interface",
+    "es": "Sonidos de la interfaz",
+    "ca": "Sons de la interfície",
+    "tr": "Arayüz sesleri",
+    "uk": "Звуки інтерфейсу",
+    "id": "Interface sounds"
   }
 }

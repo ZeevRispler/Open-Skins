@@ -1,10 +1,12 @@
 import { useRef, type KeyboardEvent } from "react";
-import { ChevronDown, Check, Palette } from "lucide-react";
+import { ChevronDown, Check, Palette, Volume2, VolumeX } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
 import "./workspace-interface.css";
 import "./app-skins.css";
 import "./theme-hardware.css";
+import "./skin-feedback.css";
+import { muteSkinSound, playSkinSound } from "./skin-sound";
 import {
   WORKSPACE_INTERFACES,
   useInterfaceStore,
@@ -23,7 +25,8 @@ const SKIN_LABELS: Record<WorkspaceInterface, I18nKey> = {
 // @spec CS-007 — One skin preference controls every app surface.
 export function SkinSwitcher() {
   const { t } = useTranslation("openhands");
-  const { interfaceId, setInterface } = useInterfaceStore();
+  const { interfaceId, setInterface, soundsEnabled, setSoundsEnabled } =
+    useInterfaceStore();
   const picker = useRef<HTMLDetailsElement>(null);
   const closeOnEscape = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key === "Escape" && picker.current) {
@@ -33,6 +36,25 @@ export function SkinSwitcher() {
   };
   return (
     <header className="interface-switcher">
+      {interfaceId !== "standard" && (
+        <button
+          type="button"
+          aria-label={t(I18nKey.CONVERSATION$SOUNDS)}
+          title={t(I18nKey.CONVERSATION$SOUNDS)}
+          aria-pressed={soundsEnabled}
+          onClick={() => {
+            setSoundsEnabled(!soundsEnabled);
+            if (!soundsEnabled) playSkinSound(interfaceId, "press");
+            else muteSkinSound();
+          }}
+        >
+          {soundsEnabled ? (
+            <Volume2 aria-hidden="true" />
+          ) : (
+            <VolumeX aria-hidden="true" />
+          )}
+        </button>
+      )}
       <details
         ref={picker}
         onBlur={(event) => {
@@ -62,6 +84,8 @@ export function SkinSwitcher() {
               data-skin-option={id}
               onClick={() => {
                 setInterface(id);
+                if (id === "standard") muteSkinSound();
+                if (soundsEnabled) playSkinSound(id, "press");
                 if (picker.current) {
                   picker.current.open = false;
                   picker.current.querySelector("summary")?.focus();

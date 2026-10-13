@@ -1,0 +1,67 @@
+/* Activity lights reflect real state and stay outside conversation content. */
+.workspace-interface:not(
+    [data-interface="standard"]
+  )[data-agent-state="running"]
+  .dj-controls {
+  animation: skin-work-light 2.4s ease-in-out infinite;
+}
+.workspace-interface:not(
+    [data-interface="standard"]
+  )[data-agent-state="awaiting_user_confirmation"]
+  .dj-controls {
+  box-shadow:
+    inset 0 0 0 2px #e9b758,
+    0 0 12px #e9b75844;
+}
+.workspace-interface:not([data-interface="standard"])[data-agent-state="paused"]
+  .dj-controls {
+  border-color: #bc995d;
+}
+.workspace-interface:not([data-interface="standard"])[data-agent-state="error"]
+  .dj-controls {
+  box-shadow: inset 0 0 0 2px #db8277;
+}
+.workspace-interface[data-agent-state="running"] .dj-led {
+  box-shadow: 0 0 10px var(--skin-accent);
+}
+.dj-console .dj-settings svg {
+  transition: transform 180ms ease;
+}
+.dj-console .dj-settings:active:not(:disabled) svg {
+  transform: rotate(40deg);
+}
+.dj-console .skin-tool-wheel:active:not(:disabled) [data-hardware-handle] {
+  filter: brightness(1.4);
+}
+.dj-console .dj-transport button:active:not(:disabled) {
+  transform: translateY(3px);
+}
+@keyframes skin-work-light {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.12);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-interface:not(
+      [data-interface="standard"]
+    )[data-agent-state="running"]
+    .dj-controls {
+    animation: none;
+  }
+  .dj-console .dj-settings svg {
+    transition: none;
+  }
+}
+
+.workspace-interface:not([data-interface="standard"]):is(
+    [data-agent-state="finished"],
+    [data-agent-state="awaiting_user_input"]
+  )
+  .dj-led {
+  background: #96e6b1;
+  box-shadow: 0 0 8px #96e6b144;
+}

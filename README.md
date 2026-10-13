@@ -16,6 +16,8 @@ Actual screenshots from the running application, captured during browser tests w
 
 The agent screen stays central. Switches, joystick positions, instrument needles and selector rings reflect the actual history and tool state. Choose a skin from the compact picker; keyboard controls and reduced-motion preferences are supported.
 
+Optional skin-specific sounds provide button feedback and agent completion, approval and error cues. Enable them with the speaker button; activity lights follow real agent state and respect reduced-motion preferences.
+
 ## Start here
 
 Requires Node.js 24+, npm and uv.

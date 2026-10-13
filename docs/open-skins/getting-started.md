@@ -50,3 +50,7 @@ npx playwright test --config=playwright.coding-skins.config.ts
 The dedicated browser suite uses an isolated real Agent Server and local scripted model; it does not require paid provider credentials. It checks tool panels, model selection, settings, history, stop/resume, draft retention, physical-control movement, reduced motion, and desktop/mobile layout.
 
 To test the persistent demo, start it as above and run `npx playwright test --config=playwright.coding-skins-demo.config.ts`.
+
+## Sounds and activity feedback
+
+Use the speaker button beside the skin picker to enable or mute sounds. Sounds start off, are synthesized locally, and follow the selected skin. Buttons give short tactile cues; completion, approval requests and errors have distinct signals. Normal token generation and background tabs stay quiet. The control strip lights gently during work, with amber approval/paused indicators and an error indicator. Reduced-motion disables animated lights and extra transitions.

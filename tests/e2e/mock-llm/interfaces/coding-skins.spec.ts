@@ -23,6 +23,15 @@ test("DJ controls operate the real coding workspace without a provider key", asy
   page,
 }) => {
   test.setTimeout(180000);
+  await page.addInitScript(() => {
+    const createOscillator = AudioContext.prototype.createOscillator;
+    AudioContext.prototype.createOscillator = function () {
+      document.documentElement.dataset.skinSoundNotes = String(
+        Number(document.documentElement.dataset.skinSoundNotes ?? "0") + 1,
+      );
+      return createOscillator.call(this);
+    };
+  });
   await seedLocalStorage(page);
   await routeSessionApiKey(page);
   await ensureMockLLMProfile(page, {
@@ -190,6 +199,24 @@ test("DJ controls operate the real coding workspace without a provider key", asy
         page.getByRole("tabpanel", { name, exact: true }),
       ).toBeVisible();
     }
+    const sound = page.getByRole("button", {
+      name: "Interface sounds",
+      exact: true,
+    });
+    const notesBefore = await page.evaluate(() =>
+      Number(document.documentElement.dataset.skinSoundNotes ?? "0"),
+    );
+    await sound.click();
+    await expect(sound).toHaveAttribute("aria-pressed", "true");
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          Number(document.documentElement.dataset.skinSoundNotes ?? "0"),
+        ),
+      )
+      .toBeGreaterThan(notesBefore);
+    await sound.click();
+    await expect(sound).toHaveAttribute("aria-pressed", "false");
     const chrome = await page.locator(".dj-controls").boundingBox();
     const workspace = await page.locator(".workspace-panels").boundingBox();
     expect(chrome!.height).toBeLessThan(155);
@@ -271,6 +298,23 @@ test("DJ controls operate the real coding workspace without a provider key", asy
   await page.getByTestId("chat-input").press("Enter");
   const stop = console.getByRole("button", { name: "Stop", exact: true });
   await expect(stop).toBeEnabled();
+  // @spec CS-011 — Activity lights follow running state and respect reduced motion.
+  await expect
+    .poll(() =>
+      page
+        .locator(".dj-controls")
+        .evaluate((el) => getComputedStyle(el).animationName),
+    )
+    .not.toBe("none");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect
+    .poll(() =>
+      page
+        .locator(".dj-controls")
+        .evaluate((el) => getComputedStyle(el).animationName),
+    )
+    .toBe("none");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
   const interrupted = page.waitForResponse(
     (response) =>
       response.url().includes("/interrupt") &&
