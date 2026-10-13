@@ -40,3 +40,50 @@ test("key-free demo creates and runs a real file", async ({ page }) => {
     path: "test-results-skins-demo/working-dj-demo.png",
   });
 });
+
+// @spec CS-007 — Home, settings, sidebar and dialogs share the selected skin.
+test("skins cover the app and survive route navigation", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("openhands-onboarded", "1");
+    localStorage.setItem("analytics-consent", "false");
+    localStorage.setItem("openhands-telemetry-consent", "denied");
+  });
+  await page.goto("/");
+  const backgrounds = new Set<string>();
+  for (const [name, id] of [
+    ["Cockpit", "cockpit"],
+    ["Retro console", "retro"],
+    ["Cyberdeck", "cyberdeck"],
+    ["DJ console", "dj"],
+    ["Standard", "standard"],
+  ]) {
+    await page.getByRole("button", { name, exact: true }).click();
+    await expect(page.locator("body")).toHaveAttribute("data-coding-skin", id);
+    const background = await page
+      .locator('[data-testid="root-layout"] > aside')
+      .evaluate((element) => getComputedStyle(element).background);
+    expect(backgrounds.has(background)).toBe(false);
+    backgrounds.add(background);
+    if (id !== "standard") {
+      await expect
+        .poll(
+          async () =>
+            (await page
+              .locator('[data-testid="root-layout"] > aside')
+              .boundingBox())!.width,
+        )
+        .toBeLessThan(250);
+    }
+    await page.screenshot({ path: `test-results-skins-demo/home-${id}.png` });
+    await page.goto("/settings");
+    await expect(
+      page.getByRole("button", { name, exact: true }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator("body")).toHaveAttribute("data-coding-skin", id);
+    await page.screenshot({
+      path: `test-results-skins-demo/settings-${id}.png`,
+      mask: [page.locator('input[type="password"]')],
+    });
+    await page.goto("/");
+  }
+});

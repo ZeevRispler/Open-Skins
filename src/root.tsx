@@ -1,3 +1,4 @@
+import { AppSkinApplier } from "#/interfaces/app-skin-applier";
 import {
   Links,
   LinksFunction,
@@ -106,6 +107,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body data-agent-server-ui="" className="m-0">
         <AgentServerUIRoot contentClassName="min-h-screen">
           <ColorThemeApplier />
+          <AppSkinApplier />
           {children}
           <Toaster toastOptions={TOAST_OPTIONS} />
           <div id="modal-portal-exit" />

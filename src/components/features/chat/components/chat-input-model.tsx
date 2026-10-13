@@ -149,7 +149,9 @@ export function ChatInputModelMenuContent({
   );
 }
 
-export function ChatInputModel() {
+export function ChatInputModel({
+  position = "top",
+}: { position?: "top" | "bottom" } = {}) {
   const model = useChatInputModelState();
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
@@ -191,7 +193,7 @@ export function ChatInputModel() {
         <ContextMenu
           ref={popoverRef}
           testId="chat-input-llm-model-popover"
-          position="top"
+          position={position}
           alignment="left"
           spacing="none"
           className="z-[60] mb-2 min-w-50 max-w-80 max-h-[60vh] overflow-y-auto"

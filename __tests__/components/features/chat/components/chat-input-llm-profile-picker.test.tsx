@@ -90,6 +90,19 @@ describe("ChatInputLlmProfilePicker", () => {
 
     expect(selectProfile).toHaveBeenCalledWith("Smart");
   });
+  // @spec CS-008 — A top toolbar must fit its menu below the trigger.
+  it("leaves usable menu space when mounted near the top of the screen", () => {
+    renderWithProviders(<ChatInputLlmProfilePicker position="bottom" />);
+    const trigger = screen.getByTestId("chat-input-llm-profile");
+    const rect = vi.spyOn(trigger, "getBoundingClientRect");
+    rect.mockReturnValue({ top: 50, bottom: 85 } as DOMRect);
+    fireEvent.click(trigger);
+    const menu = screen.getByTestId("chat-input-llm-profile-popover");
+    expect(Number.parseFloat(menu.style.maxHeight)).toBeGreaterThan(400);
+    fireEvent.click(screen.getByTestId("chat-input-llm-profile-option-Smart"));
+    expect(selectProfile).toHaveBeenCalledWith("Smart");
+    rect.mockRestore();
+  });
 
   it("does not switch when the current profile is re-selected", () => {
     renderWithProviders(<ChatInputLlmProfilePicker />);

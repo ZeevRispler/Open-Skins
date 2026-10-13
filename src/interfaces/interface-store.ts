@@ -1,7 +1,14 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-export type WorkspaceInterface = "standard" | "dj";
+export const WORKSPACE_INTERFACES = [
+  "standard",
+  "dj",
+  "cockpit",
+  "retro",
+  "cyberdeck",
+] as const;
+export type WorkspaceInterface = (typeof WORKSPACE_INTERFACES)[number];
 const INTERFACE_STORAGE_KEY = "agent-canvas-workspace-interface";
 interface InterfaceState {
   interfaceId: WorkspaceInterface;
@@ -20,11 +27,12 @@ export const useInterfaceStore = create<InterfaceState>()(
       partialize: ({ interfaceId }) => ({ interfaceId }),
       merge: (persisted, current) => ({
         ...current,
-        interfaceId:
-          (persisted as Partial<InterfaceState> | undefined)?.interfaceId ===
-          "dj"
-            ? "dj"
-            : "standard",
+        interfaceId: WORKSPACE_INTERFACES.includes(
+          (persisted as Partial<InterfaceState> | undefined)
+            ?.interfaceId as WorkspaceInterface,
+        )
+          ? (persisted as InterfaceState).interfaceId
+          : "standard",
       }),
     },
   ),

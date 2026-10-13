@@ -701,6 +701,15 @@ button.extension-module-card-interactive {
 }
 
 /* Interface-pack base utilities; variants live in interfaces/workspace-interface.css. */
+@utility skin-history {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+@utility skin-tool-wheel {
+  display: grid;
+  place-items: center;
+}
 @utility workspace-interface {
   display: flex;
   flex-direction: column;

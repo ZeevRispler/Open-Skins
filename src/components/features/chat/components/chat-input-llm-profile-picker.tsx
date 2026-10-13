@@ -173,7 +173,9 @@ export function ChatInputLlmProfileMenuContent({
   );
 }
 
-export function ChatInputLlmProfilePicker() {
+export function ChatInputLlmProfilePicker({
+  position = "top",
+}: { position?: "top" | "bottom" } = {}) {
   const { t } = useTranslation("openhands");
   const {
     profiles,
@@ -202,7 +204,10 @@ export function ChatInputLlmProfilePicker() {
           0,
           Math.min(
             window.innerHeight * 0.6,
-            trigger.getBoundingClientRect().top - 16,
+            (position === "top"
+              ? trigger.getBoundingClientRect().top
+              : window.innerHeight - trigger.getBoundingClientRect().bottom) -
+              16,
           ),
         ),
       );
@@ -214,7 +219,7 @@ export function ChatInputLlmProfilePicker() {
       window.removeEventListener("resize", measureAvailableSpace);
       window.removeEventListener("scroll", measureAvailableSpace, true);
     };
-  }, [isPopoverOpen]);
+  }, [isPopoverOpen, position]);
 
   // No LLM profiles yet (or the agent-server lacks the surface): stay out of
   // the way, exactly like the ACP/AgentProfile pickers.
@@ -255,7 +260,7 @@ export function ChatInputLlmProfilePicker() {
           ref={popoverRef}
           testId="chat-input-llm-profile-popover"
           style={{ maxHeight: popoverMaxHeight }}
-          position="top"
+          position={position}
           alignment="left"
           spacing="none"
           className="z-[60] mb-2 min-w-50 max-w-80 max-h-[60vh] overflow-y-auto"

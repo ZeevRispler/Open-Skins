@@ -32,17 +32,17 @@ test("DJ controls operate the real coding workspace without a provider key", asy
   await ensureMockLLMProfile(page);
   await ensureMockLLMAgentProfile(page.request);
   await resetMockLLM(page.request);
-  // The pinned server makes one skill-analysis completion before the agent loop.
+  // Startup can consume up to two completions for skill analysis. Repeating
+  // this idempotent fixture command leaves at least one actual agent tool call.
   await registerTrajectory(page.request, "skin-tool-smoke", [
-    { text: "" },
-    {
+    ...Array.from({ length: 3 }, () => ({
       tool_call: {
         name: "terminal",
         arguments: {
           command: `printf 'Coding Skins file test\\n' > coding-skins-demo.txt; printf '${BASH_TOKEN}\\n'`,
         },
       },
-    },
+    })),
     { text: REPLY_TOKEN },
   ]);
   await activateTrajectory(page.request, "skin-tool-smoke");
@@ -55,7 +55,15 @@ test("DJ controls operate the real coding workspace without a provider key", asy
   await page.getByRole("button", { name: "DJ console", exact: true }).click();
   const id = getConversationIdFromURL(page);
   await waitForNonUserMessageText(page, REPLY_TOKEN);
-  await page.getByRole("button", { name: "Expand", exact: true }).click();
+  const group = page.getByRole("button", {
+    name: "Expand actions",
+    exact: true,
+  });
+  if (await group.first().isVisible()) await group.first().click();
+  const expand = page.getByRole("button", { name: "Expand", exact: true });
+  for (let action = 0; action < 3; action++) {
+    if (await expand.first().isVisible()) await expand.first().click();
+  }
   await expect(
     page.locator("code").filter({ hasText: BASH_TOKEN }).last(),
   ).toBeVisible();
@@ -128,6 +136,46 @@ test("DJ controls operate the real coding workspace without a provider key", asy
     page.getByRole("tabpanel", { name: "Files", exact: true }),
   ).toBeVisible();
   await setChatInput(page, "Preserve this draft");
+  for (const skin of ["Cockpit", "Retro console", "Cyberdeck", "DJ console"]) {
+    await page.getByRole("button", { name: skin, exact: true }).click();
+    await expect(page.getByTestId("chat-input")).toContainText(
+      "Preserve this draft",
+    );
+    const chrome = await page.locator(".dj-controls").boundingBox();
+    const workspace = await page.locator(".workspace-panels").boundingBox();
+    expect(chrome!.height).toBeLessThan(100);
+    expect(workspace!.height).toBeGreaterThan(750);
+    await console
+      .getByRole("button", { name: "Terminal", exact: true })
+      .click();
+    await console.getByRole("button", { name: "Files", exact: true }).click();
+    await console
+      .getByRole("button", { name: "Settings", exact: true })
+      .click();
+    await expect(page.getByTestId("ai-config-modal")).toBeVisible();
+    const panelSurface = await page
+      .locator(".workspace-interface")
+      .evaluate((element) =>
+        getComputedStyle(element).getPropertyValue("--oh-surface").trim(),
+      );
+    const modalSurface = await page
+      .getByTestId("ai-config-modal")
+      .evaluate((element) =>
+        getComputedStyle(element).getPropertyValue("--oh-surface").trim(),
+      );
+    expect(modalSurface).toBe(panelSurface);
+    await page.keyboard.press("Escape");
+    // Terminal-created files can predate the cached file-tree request.
+    await page
+      .getByRole("button", { name: "Refresh files", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "coding-skins-demo.txt", exact: true })
+      .click({ timeout: 10000 });
+    await page.screenshot({
+      path: `test-results-mock-llm/skin-${skin.replaceAll(" ", "-").toLowerCase()}.png`,
+    });
+  }
   await page.getByRole("button", { name: "Standard", exact: true }).click();
   await expect(page.getByTestId("chat-input")).toContainText(
     "Preserve this draft",

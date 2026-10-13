@@ -1,4 +1,5 @@
 import React from "react";
+import { SkinSwitcher } from "#/interfaces/skin-switcher";
 import {
   useRouteError,
   isRouteErrorResponse,
@@ -176,6 +177,7 @@ function MainAppContent() {
             <Sidebar />
 
             <div className="flex min-h-0 flex-col w-full min-w-0 h-full gap-3">
+              {!hideMobileSidebarMenuBar ? <SkinSwitcher /> : null}
               {!hideMobileSidebarMenuBar ? <SidebarMobileMenuBar /> : null}
               {config.data &&
                 (config.data.maintenance_start_time ||

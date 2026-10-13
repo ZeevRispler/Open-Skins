@@ -73,9 +73,16 @@ describe("interchangeable workspace interfaces", () => {
     });
     fireEvent.change(draft, { target: { value: "Keep my draft" } });
     draft.focus();
-    fireEvent.click(
-      screen.getByRole("button", { name: I18nKey.CONVERSATION$DJ_INTERFACE }),
-    );
+    for (const interfaceId of [
+      "dj",
+      "cockpit",
+      "retro",
+      "cyberdeck",
+    ] as const) {
+      act(() => useInterfaceStore.getState().setInterface(interfaceId));
+      expect(screen.getByRole("textbox")).toBe(draft);
+      expect(draft).toHaveValue("Keep my draft");
+    }
     expect(screen.getByRole("textbox")).toBe(draft);
     expect(draft).toHaveValue("Keep my draft");
     expect(draft).toHaveFocus();
@@ -159,14 +166,17 @@ describe("interchangeable workspace interfaces", () => {
     ).toBeDisabled();
   });
 
-  it("restores the saved interface without owning session state", async () => {
-    const key = useInterfaceStore.persist.getOptions().name;
-    if (!key) throw new Error("Missing persistence name");
-    localStorage.setItem(
-      key,
-      JSON.stringify({ state: { interfaceId: "dj" }, version: 0 }),
-    );
-    await useInterfaceStore.persist.rehydrate();
-    expect(useInterfaceStore.getState().interfaceId).toBe("dj");
-  });
+  it.each(["dj", "cockpit", "retro", "cyberdeck"])(
+    "restores %s without owning session state",
+    async (interfaceId) => {
+      const key = useInterfaceStore.persist.getOptions().name;
+      if (!key) throw new Error("Missing persistence name");
+      localStorage.setItem(
+        key,
+        JSON.stringify({ state: { interfaceId }, version: 0 }),
+      );
+      await useInterfaceStore.persist.rehydrate();
+      expect(useInterfaceStore.getState().interfaceId).toBe(interfaceId);
+    },
+  );
 });

@@ -22,6 +22,7 @@ export default defineConfig({
   ],
   use: {
     ...base.use,
+    actionTimeout: 15000,
     viewport: { width: 1600, height: 1000 },
     video: "retain-on-failure",
   },

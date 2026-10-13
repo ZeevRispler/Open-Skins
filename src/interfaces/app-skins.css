@@ -1,0 +1,256 @@
+/* Full app skins: shared design tokens reach navigation, forms and portals. */
+body[data-coding-skin="dj"][data-agent-server-ui],
+body[data-coding-skin="dj"] [data-agent-server-ui],
+.workspace-interface[data-interface="dj"] {
+  --skin-base: #0c1118;
+  --skin-panel: #18212c;
+  --skin-raised: #223040;
+  --skin-line: #395165;
+  --skin-accent: #78e4e9;
+  --skin-secondary: #d6a4f4;
+  --skin-text: #e4edf4;
+}
+body[data-coding-skin="cockpit"][data-agent-server-ui],
+body[data-coding-skin="cockpit"] [data-agent-server-ui],
+.workspace-interface[data-interface="cockpit"] {
+  --skin-base: #101917;
+  --skin-panel: #1a2825;
+  --skin-raised: #293b33;
+  --skin-line: #536255;
+  --skin-accent: #e9c079;
+  --skin-secondary: #93cdb3;
+  --skin-text: #e5eadf;
+}
+body[data-coding-skin="retro"][data-agent-server-ui],
+body[data-coding-skin="retro"] [data-agent-server-ui],
+.workspace-interface[data-interface="retro"] {
+  --skin-base: #151022;
+  --skin-panel: #221a32;
+  --skin-raised: #352747;
+  --skin-line: #665082;
+  --skin-accent: #a9ddff;
+  --skin-secondary: #f4a5d5;
+  --skin-text: #f1eafa;
+}
+body[data-coding-skin="cyberdeck"][data-agent-server-ui],
+body[data-coding-skin="cyberdeck"] [data-agent-server-ui],
+.workspace-interface[data-interface="cyberdeck"] {
+  --skin-base: #07151c;
+  --skin-panel: #0d232d;
+  --skin-raised: #173542;
+  --skin-line: #2d6170;
+  --skin-accent: #69e9df;
+  --skin-secondary: #f293dc;
+  --skin-text: #e1f4f4;
+}
+body[data-coding-skin][data-agent-server-ui]:not([data-coding-skin="standard"]),
+body[data-coding-skin][data-agent-server-ui]:not([data-coding-skin="standard"])
+  [data-agent-server-ui],
+.workspace-interface:not([data-interface="standard"]) {
+  --oh-color-base: var(--skin-base);
+  --oh-color-base-secondary: var(--skin-panel);
+  --oh-color-tertiary: var(--skin-raised);
+  --oh-color-tertiary-light: var(--oh-text-secondary);
+  --oh-color-content: var(--skin-text);
+  --oh-color-content-2: var(--skin-text);
+  --oh-color-basic: var(--oh-muted);
+  --oh-background: var(--skin-base);
+  --oh-surface: var(--skin-panel);
+  --oh-surface-raised: var(--skin-raised);
+  --oh-surface-deep: var(--skin-base);
+  --oh-overlay: var(--skin-panel);
+  --oh-overlay-foreground: var(--skin-text);
+  --oh-surface-foreground: var(--skin-text);
+  --oh-modal-title-foreground: var(--skin-text);
+  --oh-foreground: var(--skin-text);
+  --oh-contrast: var(--skin-text);
+  --oh-contrast-foreground: var(--skin-base);
+  --oh-text-secondary: color-mix(
+    in srgb,
+    var(--skin-text) 80%,
+    var(--skin-base)
+  );
+  --oh-text-tertiary: color-mix(
+    in srgb,
+    var(--skin-text) 65%,
+    var(--skin-base)
+  );
+  --oh-muted: color-mix(in srgb, var(--skin-text) 65%, var(--skin-base));
+  --oh-text-dim: var(--oh-muted);
+  --oh-text-subtle: var(--oh-muted);
+  --oh-border: var(--skin-line);
+  --oh-border-input: var(--skin-line);
+  --oh-border-subtle: color-mix(
+    in srgb,
+    var(--skin-line) 60%,
+    var(--skin-base)
+  );
+  --oh-focus: var(--skin-accent);
+  --oh-interactive-hover: var(--skin-raised);
+  --oh-interactive-hover-low: var(--skin-panel);
+  --oh-interactive-active: var(--skin-raised);
+  --oh-color-primary: var(--skin-accent);
+  --oh-color-logo: var(--skin-accent);
+}
+body[data-coding-skin][data-agent-server-ui]:not([data-coding-skin="standard"])
+  [data-testid="root-layout"] {
+  background: var(--skin-base);
+}
+body[data-coding-skin][data-agent-server-ui]:not([data-coding-skin="standard"])
+  #root-outlet {
+  background:
+    radial-gradient(
+      ellipse at 95% 0%,
+      color-mix(in srgb, var(--skin-accent) 7%, transparent),
+      transparent 50%
+    ),
+    var(--skin-base);
+}
+body[data-coding-skin][data-agent-server-ui]:not([data-coding-skin="standard"])
+  [data-testid="root-layout"]
+  > aside {
+  background: linear-gradient(90deg, var(--skin-panel), var(--skin-base));
+  border-right: 1px solid var(--skin-line);
+}
+body[data-coding-skin="dj"][data-agent-server-ui]
+  [data-testid="root-layout"]
+  > aside {
+  box-shadow: inset 4px 0 var(--skin-accent);
+  background-image:
+    repeating-linear-gradient(0deg, #ffffff02 0 1px, transparent 1px 4px),
+    linear-gradient(90deg, var(--skin-panel), var(--skin-base));
+}
+body[data-coding-skin="cockpit"][data-agent-server-ui] #root-outlet {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 79px, #9ebfa507 79px 80px),
+    radial-gradient(ellipse at 50% 0%, #b4c78d12, transparent 55%),
+    var(--skin-base);
+}
+body[data-coding-skin="cockpit"][data-agent-server-ui]
+  [data-testid="root-layout"]
+  > aside {
+  border-right: 3px double var(--skin-line);
+  box-shadow: inset 0 0 28px #0004;
+}
+body[data-coding-skin="retro"][data-agent-server-ui] #root-outlet {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 3px, #a39bbb05 3px 4px),
+    var(--skin-base);
+}
+body[data-coding-skin="retro"][data-agent-server-ui]
+  [data-testid="root-layout"]
+  > aside {
+  border-right: 3px solid var(--skin-line);
+  box-shadow: inset -3px 0 var(--skin-base);
+}
+body[data-coding-skin="cyberdeck"][data-agent-server-ui] #root-outlet {
+  background:
+    linear-gradient(90deg, #5bcacb06 1px, transparent 1px),
+    linear-gradient(#5bcacb06 1px, transparent 1px),
+    radial-gradient(ellipse at 100% 0%, #ee84d610, transparent 50%),
+    var(--skin-base);
+  background-size:
+    40px 40px,
+    40px 40px,
+    auto,
+    auto;
+}
+body[data-coding-skin="cyberdeck"][data-agent-server-ui]
+  [data-testid="root-layout"]
+  > aside {
+  border-right: 1px solid var(--skin-accent);
+  box-shadow: inset 3px 0 var(--skin-secondary);
+}
+body[data-coding-skin][data-agent-server-ui]:not([data-coding-skin="standard"])
+  :is([role="dialog"], [data-testid="ai-config-modal"]) {
+  border-color: var(--skin-line);
+  box-shadow: 0 16px 60px #0007;
+}
+body[data-coding-skin="retro"][data-agent-server-ui]
+  :is([role="dialog"], .interface-switcher button) {
+  border-radius: 2px;
+}
+body[data-coding-skin="cockpit"][data-agent-server-ui] .interface-switcher,
+body[data-coding-skin="retro"][data-agent-server-ui] .interface-switcher,
+body[data-coding-skin="cyberdeck"][data-agent-server-ui] .interface-switcher {
+  font-family: ui-monospace, monospace;
+}
+/* Ambient artwork lives in unused margins; it does not reserve layout space. */
+body[data-coding-skin][data-agent-server-ui]:not([data-coding-skin="standard"])
+  #root-outlet::before {
+  content: "";
+  position: absolute;
+  top: 38px;
+  right: 30px;
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+  opacity: 0.12;
+}
+body[data-coding-skin="dj"][data-agent-server-ui] #root-outlet::before {
+  background: url("./dj/assets/jog-wheel-v1.png") center / contain no-repeat;
+}
+body[data-coding-skin="cockpit"][data-agent-server-ui] #root-outlet::before {
+  border: 6px double var(--skin-line);
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      transparent 49%,
+      var(--skin-accent) 49% 51%,
+      transparent 51%
+    ),
+    linear-gradient(#4fa3a6 49%, #796539 51%);
+  box-shadow:
+    0 0 0 10px #0006,
+    inset 0 0 0 10px #0006;
+}
+body[data-coding-skin="retro"][data-agent-server-ui] #root-outlet::before {
+  height: 100px;
+  border: 6px double var(--skin-secondary);
+  border-radius: 10px 10px 20px 20px;
+  background:
+    radial-gradient(
+      circle at 75% 45%,
+      var(--skin-accent) 0 9px,
+      transparent 10px
+    ),
+    radial-gradient(
+      circle at 85% 60%,
+      var(--skin-secondary) 0 9px,
+      transparent 10px
+    ),
+    linear-gradient(
+        90deg,
+        transparent 15%,
+        var(--skin-accent) 15% 22%,
+        transparent 22%
+      )
+      0 35px / 80px 30px no-repeat;
+}
+body[data-coding-skin="cyberdeck"][data-agent-server-ui] #root-outlet::before {
+  border: 1px solid var(--skin-accent);
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(
+      ellipse,
+      transparent 0 19px,
+      var(--skin-accent) 20px 21px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 19px,
+      var(--skin-secondary) 20px 21px
+    );
+  transform: rotate(-25deg);
+}
+@media (min-width: 1024px) {
+  body[data-coding-skin][data-agent-server-ui]:not(
+      [data-coding-skin="standard"]
+    )
+    [data-testid="root-layout"]
+    > aside[data-collapsed="false"] {
+    width: 224px;
+    min-width: 224px;
+    max-width: 224px;
+  }
+}
