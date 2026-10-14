@@ -37,14 +37,7 @@ test("retro arcade marquee has distinct tokens and preserves a draft", async ({
     (element) => getComputedStyle(element).backgroundColor,
   );
   expect(marqueeBackground).toContain("228, 229, 204");
-  const legends = page.locator(".arcade-pad-code");
-  await expect(legends).toHaveCount(4);
-  await expect(legends).toHaveText(["A", "B", "C", "D"]);
-  await expect(legends.first()).toHaveAttribute("aria-hidden", "true");
-  await expect(legends.first().locator("xpath=..")).toHaveJSProperty(
-    "tagName",
-    "BUTTON",
-  );
+  await expect(page.locator(".arcade-pad-code")).toHaveCount(0);
   const pads = page.locator(".dj-pads button");
   await expect(pads).toHaveCount(4);
   const padRadii = await pads.evaluateAll((buttons) =>
@@ -54,7 +47,7 @@ test("retro arcade marquee has distinct tokens and preserves a draft", async ({
   const padBackgrounds = await pads.evaluateAll((buttons) =>
     buttons.map((button) => getComputedStyle(button).backgroundImage),
   );
-  await expect(pads.first()).toHaveCSS("background-color", "rgb(201, 54, 50)");
+  expect(padBackgrounds[0]).toContain("227, 57, 43");
   expect(padBackgrounds[1]).toContain("255, 255, 255");
   expect(padBackgrounds[2]).toContain("8, 127, 209");
   await expect(input).toHaveValue("keep this arcade draft");
@@ -159,5 +152,37 @@ test("retro transport stays legible when disabled, running and paused", async ({
   await expect(page.locator(".workspace-interface")).toHaveAttribute(
     "data-agent-state",
     "running",
+  );
+});
+
+test("restored retro colors and scenery stay inside the conversation behind readable cards", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.locator("summary").click();
+  await page.locator('[data-skin-option="retro"]').click();
+  await expect(page.locator(".workspace-interface")).toHaveCSS(
+    "--skin-base",
+    "#0d2536",
+  );
+  await expect(page.locator(".arcade-pad-code")).toHaveCount(0);
+  const scene = page.locator(".agent > .conversation-atmosphere");
+  await expect(scene).toBeVisible();
+  const agent = (await page.locator(".agent").boundingBox())!;
+  const backdrop = (await scene.boundingBox())!;
+  expect(backdrop.width).toBeGreaterThan(agent.width - 2);
+  expect(backdrop.height).toBeGreaterThan(agent.height - 2);
+  await expect(scene).toHaveCSS("pointer-events", "none");
+  await expect(page.locator(".welcome")).toHaveCSS(
+    "background-color",
+    "rgb(22, 54, 75)",
+  );
+  await page
+    .getByRole("textbox", { name: "Message agent" })
+    .fill("keep this readable");
+  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(page.locator(".messages article").first()).toHaveCSS(
+    "background-color",
+    "rgb(22, 54, 75)",
   );
 });
