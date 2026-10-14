@@ -1,6 +1,6 @@
 import type { AgentAdapter, Session, Snapshot, Approval } from "#/core/types";
 import { emptySnapshot } from "#/core/types";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 export class DemoAdapter implements AgentAdapter {
   readonly kind = "demo" as const;
   readonly capabilities = {

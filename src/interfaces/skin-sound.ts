@@ -1,5 +1,5 @@
 import { useInterfaceStore, type WorkspaceInterface } from "./interface-store";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 
 export type SoundCue = "press" | "complete" | "approval" | "error" | "scratch";
 let context: AudioContext | undefined;

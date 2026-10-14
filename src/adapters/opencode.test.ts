@@ -11,7 +11,7 @@ vi.mock("@opencode-ai/sdk/v2/client", () => ({
   createOpencodeClient: () => api,
 }));
 import { OpenCodeAdapter } from "./opencode";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 describe("OpenCode adapter contract", () => {
   it("normalizes pending permission, latest state and actual patch output", async () => {
     api.session.messages.mockResolvedValue({

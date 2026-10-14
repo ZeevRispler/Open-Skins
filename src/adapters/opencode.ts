@@ -1,5 +1,5 @@
 import { createOpencodeClient } from "@opencode-ai/sdk/v2/client";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 import {
   emptySnapshot,
   type AgentAdapter,

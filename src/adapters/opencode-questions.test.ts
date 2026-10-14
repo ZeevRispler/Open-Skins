@@ -20,7 +20,7 @@ vi.mock("@opencode-ai/sdk/v2/client", () => ({
 }));
 
 import { OpenCodeAdapter } from "./opencode";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 
 describe("OpenCode question and provider contract", () => {
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import { SceneVisitors } from "./interfaces/scene-visitors";
-import { AgentState } from "./types/agent-state";
+import { AgentState } from "./core/agent-state";
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
 import "./i18n";

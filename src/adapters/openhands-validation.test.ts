@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 
 const api = vi.hoisted(() => ({
   conversation: {
