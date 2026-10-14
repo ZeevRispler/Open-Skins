@@ -114,6 +114,10 @@ test("flagship stays readable at desktop and mobile and respects reduced motion"
   expect(box.width).toBeGreaterThan(1000);
   expect(box.height).toBeGreaterThan(550);
   await page.screenshot({ path: "docs/screenshots/open-skins/flagship.png" });
+  await page
+    .locator(".ship-signals")
+    .getByRole("button", { name: "Files", exact: true })
+    .click();
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(page.locator(".ship-cloth").first()).toHaveCSS(
     "animation-name",
@@ -134,6 +138,15 @@ test("mast carries multiple flags while commands stay on the deck", async ({
   await page.goto("/");
   await page.locator("summary").click();
   await page.locator('[data-skin-option="flagship"]').click();
+  await page
+    .getByRole("textbox", { name: "Message agent" })
+    .fill("approval demo");
+  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(page.locator(".approval")).toBeVisible();
+  await page
+    .locator(".ship-signals")
+    .getByRole("button", { name: "Files", exact: true })
+    .click();
   await page
     .getByRole("textbox", { name: "Message agent" })
     .fill("preserve this");

@@ -12,6 +12,7 @@ import "./arcade-instruments.css";
 import "./physical-skins.css";
 import "./conversation-scenes.css";
 import "./workspace-polish.css";
+import "./skin-secrets.css";
 import "./dj/decks.css";
 import { muteSkinSound, playSkinSound } from "./skin-sound";
 import {
@@ -57,7 +58,11 @@ export function SkinSwitcher() {
         <button
           type="button"
           aria-label={t(I18nKey.CONVERSATION$SOUNDS)}
-          title={t(I18nKey.CONVERSATION$SOUNDS)}
+          title={
+            soundsEnabled
+              ? "Sound on — click to mute"
+              : "Sound off — enable button and scratch sounds"
+          }
           aria-pressed={soundsEnabled}
           onClick={() => {
             setSoundsEnabled(!soundsEnabled);
@@ -70,6 +75,7 @@ export function SkinSwitcher() {
           ) : (
             <VolumeX aria-hidden="true" />
           )}
+          <span>{soundsEnabled ? "Sound on" : "Sound off"}</span>
         </button>
       )}
       <details

@@ -44,6 +44,8 @@ export function SkinConsole({
   const { t } = useTranslation("open-skins");
   const { state, commands } = controller;
   const isDj = useInterfaceStore((s) => s.interfaceId) === "dj";
+  const isRetro = useInterfaceStore((s) => s.interfaceId) === "retro";
+  const [coins, setCoins] = useState(0);
   const lights = useInterfaceStore((s) => s.djLights);
   const setLights = useInterfaceStore((s) => s.setDjLights);
   const [scratch, setScratch] = useState({ side: "", A: 0, B: 0 });
@@ -398,6 +400,21 @@ export function SkinConsole({
             onChange={(event) => setLights(Number(event.target.value))}
           />
         </label>
+      )}
+      {isRetro && (
+        <button
+          className="retro-coin"
+          type="button"
+          aria-label="Insert arcade coin"
+          title="Playful coin counter — no effect on agent credits or limits"
+          onClick={() => setCoins((value) => value + 1)}
+        >
+          <i aria-hidden="true" />
+          <span>
+            COINS {String(coins).padStart(2, "0")}
+            {coins >= 3 ? " ★" : ""}
+          </span>
+        </button>
       )}
       <button
         className="dj-settings"
