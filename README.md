@@ -86,7 +86,7 @@ The companion is deliberately smaller than a full IDE: no embedded code editor, 
 
 ## Skins and feedback
 
-DJ platters rotate in opposite directions while the agent is working, with a reactive equalizer beside its status light. They pause when work stops, finishes, or needs approval. These decorative indicators follow agent activity.
+DJ decks now have grooved vinyl, a spindle, session/tool labels and tonearms that lower during work and return when it stops. Platters rotate in opposite directions while the agent is working, with a reactive equalizer beside its status light. They pause when work stops, finishes, or needs approval. These indicators follow agent activity. Click the left deck for history or the right to cycle tools; arrow keys on the right select tools. Drag either vinyl to scratch without activating panels. Scratch cues are synthesized locally, throttled and silent unless sounds are enabled. The compact mixer has a Tools fader and a Lights fader that adjusts only the conversation backdrop.
 
 The cockpit has a radar sweep during agent work and metallic ball-tip switches for history and tool panels. The blue arcade cabinet has a speckled deck, black joystick, red/white/blue/green buttons and a cream marquee. Tool names remain on the pads without small letter badges. Resume and Stop remain readable when disabled. Its retro character walks during work and celebrates completion. The cockpit and retro lever supports dragging or arrow keys: **left Files, up Terminal, down Changes, right Browser**. Clicking it still cycles through tools; clicking an active tool pad closes that panel.
 

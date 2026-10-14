@@ -15,6 +15,9 @@ import type { WorkspaceController } from "#/workspace-core/use-workspace-control
 import type { ToolTab } from "#/core/types";
 import { SkinModelControl } from "./skin-model-control";
 import { AgentState } from "#/types/agent-state";
+import { useInterfaceStore } from "./interface-store";
+import { playSkinSound } from "./skin-sound";
+import { VinylDeck } from "./dj/vinyl-deck";
 import jogWheel from "./dj/assets/jog-wheel-v1.png";
 
 const STATUS_LABELS: Partial<Record<AgentState, I18nKey>> = {
@@ -40,6 +43,54 @@ export function SkinConsole({
 }) {
   const { t } = useTranslation("open-skins");
   const { state, commands } = controller;
+  const isDj = useInterfaceStore((s) => s.interfaceId) === "dj";
+  const lights = useInterfaceStore((s) => s.djLights);
+  const setLights = useInterfaceStore((s) => s.setDjLights);
+  const [scratch, setScratch] = useState({ side: "", A: 0, B: 0 });
+  const scratchStart = useRef<{
+    x: number;
+    y: number;
+    angle: number;
+    side: "A" | "B";
+  } | null>(null);
+  const scratchDragged = useRef(false);
+  function startScratch(
+    event: React.PointerEvent<HTMLButtonElement>,
+    side: "A" | "B",
+  ) {
+    if (!isDj || event.button !== 0) return;
+    scratchStart.current = {
+      x: event.clientX,
+      y: event.clientY,
+      angle: scratch[side],
+      side,
+    };
+    event.currentTarget.dataset.scratchDragged = "false";
+    scratchDragged.current = false;
+    setScratch((s) => ({ ...s, side }));
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+  function moveScratch(event: React.PointerEvent<HTMLButtonElement>) {
+    if (!isDj || !scratchStart.current) return;
+    const start = scratchStart.current;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    const travel = Math.abs(dx) >= Math.abs(dy) ? dx : -dy;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) > 6) {
+      scratchDragged.current = true;
+      event.currentTarget.dataset.scratchDragged = "true";
+      setScratch((s) => ({
+        ...s,
+        [start.side]: start.angle + travel * 2,
+      }));
+      playSkinSound("dj", "scratch");
+    }
+  }
+  function endScratch() {
+    scratchStart.current = null;
+    setScratch((s) => ({ ...s, side: "" }));
+  }
+
   const gesture = useRef<{ x: number; y: number } | null>(null);
   const dragged = useRef(false);
   const [lean, setLean] = useState({ x: 0, y: 0 });
@@ -64,10 +115,35 @@ export function SkinConsole({
         type="button"
         aria-label={t(I18nKey.CONVERSATION$HISTORY_CONTROL)}
         title={t(I18nKey.CONVERSATION$HISTORY_CONTROL)}
+        aria-describedby={isDj ? "skin-tool-directions" : undefined}
         aria-pressed={state.historyOpen}
-        onClick={commands.toggleHistory}
+        onPointerDown={(event) => startScratch(event, "A")}
+        onPointerMove={moveScratch}
+        onLostPointerCapture={endScratch}
+        onPointerUp={endScratch}
+        onPointerCancel={() => {
+          endScratch();
+          scratchDragged.current = false;
+        }}
+        onClick={(event) => {
+          if (scratchDragged.current) {
+            event.currentTarget.dataset.scratchDragged = "false";
+            scratchDragged.current = false;
+            return;
+          }
+          commands.toggleHistory();
+        }}
       >
-        <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
+        {isDj ? (
+          <VinylDeck
+            side="A"
+            label={state.session?.title || "New session"}
+            angle={scratch.A}
+            scratching={scratch.side === "A"}
+          />
+        ) : (
+          <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
+        )}
         <History aria-hidden="true" />
         <span className="racing-dial" aria-hidden="true">
           <i className="racing-needle" />
@@ -200,9 +276,14 @@ export function SkinConsole({
             commands.openTool(tool);
           }
         }}
+        onLostPointerCapture={endScratch}
         onKeyUp={() => setLean({ x: 0, y: 0 })}
         onBlur={() => setLean({ x: 0, y: 0 })}
         onPointerMove={(event) => {
+          if (isDj) {
+            moveScratch(event);
+            return;
+          }
           const start = gesture.current;
           if (start)
             setLean({
@@ -211,17 +292,30 @@ export function SkinConsole({
             });
         }}
         onPointerDown={(event) => {
+          if (isDj) {
+            startScratch(event, "B");
+            return;
+          }
           if (event.button !== 0) return;
           gesture.current = { x: event.clientX, y: event.clientY };
           dragged.current = false;
           event.currentTarget.setPointerCapture(event.pointerId);
         }}
         onPointerCancel={() => {
+          if (isDj) {
+            endScratch();
+            scratchDragged.current = false;
+            return;
+          }
           setLean({ x: 0, y: 0 });
           gesture.current = null;
           dragged.current = false;
         }}
         onPointerUp={(event) => {
+          if (isDj) {
+            endScratch();
+            return;
+          }
           setLean({ x: 0, y: 0 });
           const start = gesture.current;
           gesture.current = null;
@@ -242,7 +336,12 @@ export function SkinConsole({
         }}
         aria-label={t(I18nKey.CONVERSATION$TOOL_SELECTOR)}
         title={t(I18nKey.CONVERSATION$TOOL_SELECTOR)}
-        onClick={() => {
+        onClick={(event) => {
+          if (isDj && scratchDragged.current) {
+            event.currentTarget.dataset.scratchDragged = "false";
+            scratchDragged.current = false;
+            return;
+          }
           if (dragged.current) {
             dragged.current = false;
             return;
@@ -250,7 +349,16 @@ export function SkinConsole({
           commands.openTool(TOOL_PADS[(toolIndex + 1) % TOOL_PADS.length].id);
         }}
       >
-        <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
+        {isDj ? (
+          <VinylDeck
+            side="B"
+            label={t(TOOL_PADS[toolIndex].label)}
+            angle={scratch.B}
+            scratching={scratch.side === "B"}
+          />
+        ) : (
+          <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
+        )}
         <Files aria-hidden="true" />
         <span
           data-hardware-handle
@@ -274,9 +382,23 @@ export function SkinConsole({
         </span>
       </button>
       <span id="skin-tool-directions" className="sr-only">
-        Click to cycle tools, or use arrow keys or drag: left Files, up
-        Terminal, down Changes, right Browser.
+        {isDj
+          ? "Click the left record for history or the right record to cycle tools. Arrow keys on the right record select tools. Drag either record to scratch; scratching affects visuals and opt-in audio only."
+          : "Click to cycle tools, or use arrow keys or drag: left Files, up Terminal, down Changes, right Browser."}
       </span>
+      {isDj && (
+        <label className="dj-light-fader">
+          Lights
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={lights}
+            aria-label="DJ lights"
+            onChange={(event) => setLights(Number(event.target.value))}
+          />
+        </label>
+      )}
       <button
         className="dj-settings"
         type="button"

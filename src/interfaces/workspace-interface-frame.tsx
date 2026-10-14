@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { agentSoundCue, playSkinSound } from "./skin-sound";
 import type { WorkspaceController } from "#/workspace-core/use-workspace-controller";
 import { useInterfaceStore } from "./interface-store";
@@ -25,6 +25,7 @@ export function WorkspaceInterfaceFrame({
 }) {
   const { t } = useTranslation("open-skins");
   const interfaceId = useInterfaceStore((state) => state.interfaceId);
+  const djLights = useInterfaceStore((state) => state.djLights);
   const soundsEnabled = useInterfaceStore((state) => state.soundsEnabled);
   const previous = useRef(controller.state.agentState);
   const previousSession = useRef(controller.state.session?.id);
@@ -45,12 +46,18 @@ export function WorkspaceInterfaceFrame({
   return (
     <section
       className="workspace-interface"
+      style={{ "--dj-lights": djLights / 100 } as CSSProperties}
       data-interface={interfaceId}
       data-agent-state={controller.state.agentState}
       onClickCapture={(event) => {
         if (!soundsEnabled || !(event.target instanceof Element)) return;
         const button = event.target.closest("button");
-        if (button && !button.disabled && button.closest(".dj-controls"))
+        if (
+          button &&
+          !button.disabled &&
+          button.dataset.scratchDragged !== "true" &&
+          button.closest(".dj-controls")
+        )
           playSkinSound(interfaceId, "press");
       }}
       onChangeCapture={(event) => {

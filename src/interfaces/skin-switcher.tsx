@@ -12,6 +12,7 @@ import "./arcade-instruments.css";
 import "./physical-skins.css";
 import "./conversation-scenes.css";
 import "./workspace-polish.css";
+import "./dj/decks.css";
 import { muteSkinSound, playSkinSound } from "./skin-sound";
 import {
   WORKSPACE_INTERFACES,

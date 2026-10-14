@@ -1,7 +1,7 @@
 import { useInterfaceStore, type WorkspaceInterface } from "./interface-store";
 import { AgentState } from "#/types/agent-state";
 
-export type SoundCue = "press" | "complete" | "approval" | "error";
+export type SoundCue = "press" | "complete" | "approval" | "error" | "scratch";
 let context: AudioContext | undefined;
 let lastPress = 0;
 
@@ -20,8 +20,8 @@ export function playSkinSound(skin: WorkspaceInterface, cue: SoundCue) {
   )
     return;
   const now = Date.now();
-  if (cue === "press" && now - lastPress < 70) return;
-  if (cue === "press") lastPress = now;
+  if ((cue === "press" || cue === "scratch") && now - lastPress < 70) return;
+  if (cue === "press" || cue === "scratch") lastPress = now;
   try {
     context ??= new AudioContext();
     const playback = context;
@@ -50,26 +50,29 @@ export function playSkinSound(skin: WorkspaceInterface, cue: SoundCue) {
               : cue === "error"
                 ? [1, 0.65]
                 : [1];
-        const duration = cue === "press" ? 0.065 : 0.14;
+        const duration =
+          cue === "press" ? 0.065 : cue === "scratch" ? 0.1 : 0.14;
         notes.forEach((ratio, index) => {
           const oscillator = playback.createOscillator();
           const gain = playback.createGain();
           const start = playback.currentTime + index * 0.16;
           oscillator.type =
-            skin === "retro"
-              ? "square"
-              : skin === "cockpit"
-                ? "triangle"
-                : "sine";
+            cue === "scratch"
+              ? "sawtooth"
+              : skin === "retro"
+                ? "square"
+                : skin === "cockpit"
+                  ? "triangle"
+                  : "sine";
           oscillator.frequency.setValueAtTime(base * ratio, start);
-          if (cue === "press")
+          if (cue === "press" || cue === "scratch")
             oscillator.frequency.exponentialRampToValueAtTime(
               base * 0.45,
               start + duration,
             );
           gain.gain.setValueAtTime(0.0001, start);
           gain.gain.exponentialRampToValueAtTime(
-            skin === "retro" ? 0.025 : 0.06,
+            skin === "retro" || cue === "scratch" ? 0.025 : 0.06,
             start + 0.008,
           );
           gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
@@ -107,6 +110,7 @@ export function agentSoundCue(
 }
 
 export function muteSkinSound() {
+  lastPress = 0;
   void context?.close().catch(() => {});
   context = undefined;
 }

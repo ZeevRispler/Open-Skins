@@ -91,6 +91,7 @@ describe("skin sound regression coverage", () => {
     const cues: SoundCue[] = ["press", "complete", "approval", "error"];
     const expectedCounts: Record<SoundCue, number> = {
       press: 1,
+      scratch: 1,
       complete: 3,
       approval: 2,
       error: 2,
@@ -287,4 +288,27 @@ describe("skin sound regression coverage", () => {
     muteSkinSound();
     expect(audio.close).toHaveBeenCalledOnce();
   });
+});
+
+it("scratch cues are quiet, throttled and respect sound opt-in", async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date("2040-01-01T00:00:00Z"));
+  const audio = audioHarness();
+  useInterfaceStore.setState({ soundsEnabled: false });
+  playSkinSound("dj", "scratch");
+  await flushResume();
+  expect(audio.oscillators).toHaveLength(0);
+  useInterfaceStore.setState({ soundsEnabled: true });
+  playSkinSound("dj", "scratch");
+  await flushResume();
+  expect(audio.oscillators).toHaveLength(1);
+  expect(audio.oscillators[0].type).toBe("sawtooth");
+  playSkinSound("dj", "scratch");
+  await flushResume();
+  expect(audio.oscillators).toHaveLength(1);
+  useInterfaceStore.setState({ soundsEnabled: false });
+  vi.setSystemTime(Date.now() + 100);
+  playSkinSound("dj", "scratch");
+  await flushResume();
+  expect(audio.oscillators).toHaveLength(1);
 });

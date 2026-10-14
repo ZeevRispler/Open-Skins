@@ -14,6 +14,8 @@ const INTERFACE_STORAGE_KEY = "agent-canvas-workspace-interface";
 interface InterfaceState {
   interfaceId: WorkspaceInterface;
   soundsEnabled: boolean;
+  djLights: number;
+  setDjLights: (value: number) => void;
   setSoundsEnabled: (enabled: boolean) => void;
   setInterface: (id: WorkspaceInterface) => void;
 }
@@ -23,6 +25,9 @@ export const useInterfaceStore = create<InterfaceState>()(
     (set) => ({
       interfaceId: "standard",
       soundsEnabled: false,
+      djLights: 65,
+      setDjLights: (value) =>
+        set({ djLights: Math.max(0, Math.min(100, value)) }),
       setSoundsEnabled: (soundsEnabled) => set({ soundsEnabled }),
       setInterface: (interfaceId) => set({ interfaceId }),
     }),
