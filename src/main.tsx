@@ -1,3 +1,4 @@
+import { AgentState } from "./types/agent-state";
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
 import "./i18n";
@@ -9,6 +10,22 @@ import {
   ControllerContext,
   SkinModelControl,
 } from "./interfaces/skin-model-control";
+const AGENT_STATUS_LABELS: Record<AgentState, string> = {
+  loading: "Connecting",
+  init: "Starting",
+  running: "Working",
+  awaiting_user_input: "Ready",
+  paused: "Paused",
+  stopped: "Stopped",
+  finished: "Complete",
+  rejected: "Declined",
+  error: "Needs attention",
+  rate_limited: "Waiting for capacity",
+  awaiting_user_confirmation: "Needs your approval",
+  user_confirmed: "Approved",
+  user_rejected: "Declined",
+};
+
 function App() {
   const c = useWorkspaceController();
   const { state: s, commands: a } = c;
@@ -63,23 +80,34 @@ function App() {
                 <i />
               </div>
               <header className="agent-heading">
-                <h1>{s.session?.title || "Your agent takes center stage"}</h1>
-                <span role="status">{s.snapshot.state}</span>
+                <h1>{s.session?.title || "Workspace"}</h1>
+                <span className="agent-state" role="status">
+                  {AGENT_STATUS_LABELS[s.snapshot.state]}
+                </span>
               </header>
               <div className="messages">
                 {!s.snapshot.messages.length && (
                   <div className="welcome">
-                    <h2>Choose your workspace. Keep your flow.</h2>
+                    <h2>Start a conversation</h2>
                     <p>
                       Connect a running OpenHands or OpenCode server, or try the
-                      free simulated demo. Skins change the controls around your
-                      conversation.
+                      free simulated demo. Your conversation and files stay with
+                      you when you switch skins.
                     </p>
                   </div>
                 )}
                 {s.snapshot.messages.map((m) => (
                   <article key={m.id} data-role={m.role}>
-                    <small>{m.role}</small>
+                    <small>
+                      {
+                        {
+                          user: "You",
+                          assistant: "Agent",
+                          tool: "Tool",
+                          system: "System",
+                        }[m.role]
+                      }
+                    </small>
                     <pre>{m.text}</pre>
                   </article>
                 ))}

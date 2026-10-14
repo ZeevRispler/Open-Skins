@@ -412,5 +412,23 @@
   },
   "CONVERSATION$FLAGSHIP_MARQUEE": {
     "en": "THE OPEN SKINS · SIGNAL DECK"
+  },
+  "CONVERSATION$STANDARD_DESCRIPTION": {
+    "en": "A quiet, minimal workspace"
+  },
+  "CONVERSATION$DJ_DESCRIPTION": {
+    "en": "Twin decks, mixer and club lights"
+  },
+  "CONVERSATION$COCKPIT_DESCRIPTION": {
+    "en": "Flight instruments and drifting clouds"
+  },
+  "CONVERSATION$RETRO_DESCRIPTION": {
+    "en": "Arcade cabinet and tactile controls"
+  },
+  "CONVERSATION$FERRARI_DESCRIPTION": {
+    "en": "Racing dashboard and gated shifter"
+  },
+  "CONVERSATION$FLAGSHIP_DESCRIPTION": {
+    "en": "Waving flags and rolling seas"
   }
 }
