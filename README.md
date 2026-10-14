@@ -90,11 +90,11 @@ The cockpit has a radar sweep during agent work and metallic ball-tip switches f
 
 The Retro joystick now pivots around its socket while dragging or holding arrow keys, then springs back without losing the selected tool. Its cream marquee and green fourth button complement the blue cabinet.
 
-Flagship adds a timber-and-brass frame and a cloth signal flag that rises while working or awaiting a decision. Green sends the current draft or resumes where supported; red stops; amber focuses the pending approval; blue opens files; white appends an explanation request without sending it. The pirate flag starts a new session when no draft or task is active. On small screens the signals become a compact button rack.
+Flagship adds a timber-and-brass frame and a cloth signal flag that rises while working or awaiting a decision. Green sends the current draft or resumes where supported; red stops; amber focuses the pending approval; blue opens files; white appends an explanation request without sending it. The pirate flag starts a new session when no draft or task is active. Signal controls span the lower deck, while the side mast carries up to three waving flags for status, the ship pennant, and draft or workspace context. On small screens the signals become a compact button rack.
 
-The Ferrari-inspired dashboard adds red bodywork, carbon-fiber panels, a gauge that reacts to agent activity, and a gearshift-shaped tool selector. It shares the same directional controls and opt-in sounds.
+The Ferrari-inspired dashboard adds red bodywork, carbon-fiber panels, a gauge that reacts to agent activity, and a gearshift-shaped tool selector. A black steering wheel with a yellow center and alignment stripe cycles tools or selects them with arrow keys. Yellow trim complements the red bodywork. It shares the same directional controls and opt-in sounds.
 
-DJ and Cockpit also have a narrow decorative instrument rack on wide screens: analog needles, compass motion, activity lights and patch cables. It follows agent activity without displaying invented telemetry, and disappears below 1100px to preserve workspace space.
+DJ and Cockpit have distinct decorative racks on wide screens. DJ uses twin VU meters, level bars, faders and patch leads; Cockpit uses an attitude indicator, compass, annunciators and a round activity dial. It follows agent activity without displaying invented telemetry, and disappears below 1100px to preserve workspace space.
 
 The palette button opens a compact skin gallery. Sounds are **off by default**; enable them with the speaker button. Each skin has synthesized local press, completion, permission and error cues. Background tabs stay quiet, and motion respects the operating system's reduced-motion preference.
 

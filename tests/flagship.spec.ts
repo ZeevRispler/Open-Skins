@@ -20,32 +20,38 @@ test("flag signals operate the shared agent and preserve drafts across skins", a
   ).toBeDisabled();
   await input.fill("slow demo");
   await rig.getByRole("button", { name: "Send draft", exact: true }).click();
-  await expect(page.locator(".ship-hoist")).toHaveAttribute(
-    "data-signal",
-    "green",
-  );
-  await expect(page.locator(".ship-hoist")).toHaveAttribute(
-    "data-raised",
-    "true",
-  );
+  await expect(
+    page.locator(".ship-hoist:not(.ship-secondary)"),
+  ).toHaveAttribute("data-signal", "green");
+  await expect(
+    page.locator(".ship-hoist:not(.ship-secondary)"),
+  ).toHaveAttribute("data-raised", "true");
   await rig.getByRole("button", { name: "Stop", exact: true }).click();
   await expect(
     rig.getByRole("button", { name: "Resume", exact: true }),
   ).toBeEnabled();
-  await expect(page.locator(".ship-hoist")).toHaveAttribute(
-    "data-signal",
-    "red",
-  );
+  await expect(
+    page.locator(".ship-hoist:not(.ship-secondary)"),
+  ).toHaveAttribute("data-signal", "red");
+  await rig.getByRole("button", { name: "Files", exact: true }).click();
+  await expect(page.locator(".tools h2")).toHaveText("files");
+  await expect(
+    rig.getByRole("button", { name: "Files", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await rig.getByRole("button", { name: "Files", exact: true }).click();
+  await expect(page.locator(".tools")).toHaveCount(0);
+  await expect(
+    rig.getByRole("button", { name: "Files", exact: true }),
+  ).toHaveAttribute("aria-pressed", "false");
   await rig.getByRole("button", { name: "Files", exact: true }).click();
   await expect(page.locator(".tools h2")).toHaveText("files");
   await page.getByRole("button", { name: "Close tools" }).click();
   await input.fill("approval demo");
   await rig.getByRole("button", { name: "Send draft", exact: true }).click();
   await expect(page.locator(".approval")).toBeVisible();
-  await expect(page.locator(".ship-hoist")).toHaveAttribute(
-    "data-signal",
-    "amber",
-  );
+  await expect(
+    page.locator(".ship-hoist:not(.ship-secondary)"),
+  ).toHaveAttribute("data-signal", "amber");
   await rig.getByRole("button", { name: "Decision", exact: true }).click();
   await expect(page.locator(".approval")).toBeFocused();
   await expect(
@@ -109,7 +115,10 @@ test("flagship stays readable at desktop and mobile and respects reduced motion"
   expect(box.height).toBeGreaterThan(550);
   await page.screenshot({ path: "docs/screenshots/open-skins/flagship.png" });
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(page.locator(".ship-cloth")).toHaveCSS("animation-name", "none");
+  await expect(page.locator(".ship-cloth").first()).toHaveCSS(
+    "animation-name",
+    "none",
+  );
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
     390,
@@ -117,4 +126,47 @@ test("flagship stays readable at desktop and mobile and respects reduced motion"
   await expect(
     page.getByRole("textbox", { name: "Message agent" }),
   ).toBeInViewport();
+});
+
+test("mast carries multiple flags while commands stay on the deck", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.locator("summary").click();
+  await page.locator('[data-skin-option="flagship"]').click();
+  await page
+    .getByRole("textbox", { name: "Message agent" })
+    .fill("preserve this");
+  await expect(page.locator(".ship-hoist")).toHaveCount(3);
+  const mast = (await page.locator(".ship-watch").boundingBox())!;
+  const controls = (await page.locator(".ship-signals").boundingBox())!;
+  expect(controls.width).toBeGreaterThan(mast.width * 5);
+  expect(controls.y).toBeGreaterThanOrEqual(mast.y + mast.height);
+});
+
+test("racing wheel rotates and selects tools without touching the draft", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.locator("summary").click();
+  await page.locator('[data-skin-option="ferrari"]').click();
+  const input = page.getByRole("textbox", { name: "Message agent" });
+  await input.fill("keep racing draft");
+  const wheel = page.getByRole("button", {
+    name: "Steering wheel: select tool",
+  });
+  await wheel.click();
+  await expect(page.locator(".tools h2")).toHaveText("terminal");
+  await wheel.press("ArrowRight");
+  await expect(page.locator(".tools h2")).toHaveText("browser");
+  await expect
+    .poll(() =>
+      wheel
+        .locator("svg")
+        .evaluate((e) => new DOMMatrix(getComputedStyle(e).transform).b),
+    )
+    .toBeGreaterThan(0.5);
+  await expect(input).toHaveValue("keep racing draft");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(wheel.locator("svg")).toHaveCSS("transition-duration", "0s");
 });

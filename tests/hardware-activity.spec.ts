@@ -71,7 +71,7 @@ test("cockpit radar and retro avatar animate only while their state calls for it
   await expect(avatar).toHaveCSS("animation-name", "none");
 });
 
-test("tool wheel keys and drags map to tools and signed lever positions", async ({
+test("tool wheel keys and drags map to tools with fixed lever sockets", async ({
   page,
 }) => {
   await page.goto("/");
@@ -100,7 +100,20 @@ test("tool wheel keys and drags map to tools and signed lever positions", async 
             return [matrix.m41, matrix.m42];
           }),
         )
-        .toEqual(skin === "retro" ? [0, 0] : [expected.x, expected.y]);
+        .toEqual([0, 0]);
+      if (skin === "cockpit") {
+        await expect
+          .poll(() =>
+            handle.evaluate((el) => {
+              const m = new DOMMatrixReadOnly(getComputedStyle(el).transform);
+              return [
+                Math.sign(Math.round(m.m12 * 100)),
+                Math.sign(Math.round(m.m23 * 100)),
+              ];
+            }),
+          )
+          .toEqual([Math.sign(expected.x), Math.sign(-expected.y) || 0]);
+      }
     }
 
     const box = await wheel.boundingBox();

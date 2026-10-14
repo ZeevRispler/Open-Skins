@@ -113,11 +113,7 @@ test("hardware stop and resume controls work across the nonstandard skins", asyn
   page,
 }) => {
   await page.goto("/");
-  for (const [index, skin] of [
-    "dj",
-    "cockpit",
-    "retro",
-  ].entries()) {
+  for (const [index, skin] of ["dj", "cockpit", "retro"].entries()) {
     await page.locator("summary").click();
     await page.locator(`[data-skin-option="${skin}"]`).click();
     const console = page.locator(".dj-console");
@@ -178,4 +174,62 @@ test("keyboard activation opens controls and backend connection failures preserv
   await page.keyboard.press("Space");
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(input).toHaveValue("keep this draft");
+});
+
+test("every skin tool pad and history toggles on the second activation", async ({
+  page,
+}) => {
+  await page.goto("/");
+  for (const skin of ["dj", "cockpit", "retro", "ferrari", "flagship"]) {
+    await page.locator("summary").click();
+    await page.locator(`[data-skin-option="${skin}"]`).click();
+    for (const activation of ["click", "keyboard"]) {
+      for (const name of ["Files", "Terminal", "Changes", "Browser"]) {
+        const button = page
+          .locator(".dj-pads")
+          .getByRole("button", { name, exact: true });
+        for (const open of [true, false, true, false]) {
+          if (activation === "click") await button.click();
+          else {
+            await button.focus();
+            await page.keyboard.press("Enter");
+          }
+          await expect(button).toHaveAttribute("aria-pressed", String(open));
+          if (open)
+            await expect(page.locator(".tools h2")).toHaveText(
+              name.toLowerCase() === "terminal"
+                ? "terminal"
+                : name === "Browser"
+                  ? "browser"
+                  : name.toLowerCase(),
+            );
+          else await expect(page.locator(".tools")).toHaveCount(0);
+        }
+      }
+      if (skin === "flagship") {
+        const flag = page
+          .locator(".ship-signals")
+          .getByRole("button", { name: "Files", exact: true });
+        for (const open of [true, false, true, false]) {
+          if (activation === "click") await flag.click();
+          else {
+            await flag.focus();
+            await page.keyboard.press("Space");
+          }
+          await expect(flag).toHaveAttribute("aria-pressed", String(open));
+          await expect(page.locator(".tools")).toHaveCount(open ? 1 : 0);
+        }
+      }
+      const history = page.locator(".skin-history");
+      for (const open of [true, false]) {
+        if (activation === "click") await history.click();
+        else {
+          await history.focus();
+          await page.keyboard.press("Space");
+        }
+        await expect(history).toHaveAttribute("aria-pressed", String(open));
+        await expect(page.locator(".history")).toHaveCount(open ? 1 : 0);
+      }
+    }
+  }
 });
