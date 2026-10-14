@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { WorkspaceController } from "#/workspace-core/use-workspace-controller";
 import { playSkinSound } from "./skin-sound";
 
@@ -14,17 +13,15 @@ export function FlagshipRig({
   prepareExplanation: () => void;
 }) {
   const { state, commands } = controller;
-  const [selected, setSelected] = useState("blue");
   const approval = state.snapshot.approvals.length > 0;
-  const signal = approval
-    ? "amber"
-    : state.running
-      ? "green"
-      : state.agentState === "paused" || state.agentState === "stopped"
-        ? "red"
-        : selected === "green" || selected === "red"
-          ? "blue"
-          : selected;
+  const signals = [
+    ...(approval ? ["amber"] : []),
+    ...(state.running ? ["green"] : []),
+    ...(["paused", "stopped"].includes(state.agentState) ? ["red"] : []),
+    ...(state.toolsOpen && state.selectedTool === "files" ? ["blue"] : []),
+    ...(hasDraft ? ["white"] : []),
+  ];
+  const signal = signals[0];
   const symbols: Record<string, string> = {
     green: "➜",
     red: "■",
@@ -42,7 +39,7 @@ export function FlagshipRig({
     amber: "Decision needed",
   };
   function act(id: string, action: () => void) {
-    setSelected(id);
+    void id;
     playSkinSound("flagship", "press");
     action();
   }
@@ -53,39 +50,32 @@ export function FlagshipRig({
           <i className="ship-pole" />
           <i className="ship-rope" />
           <i className="ship-pulley" />
-          <div
-            className="ship-hoist"
-            data-signal={signal}
-            data-raised={state.running || approval}
-          >
-            <div className="ship-cloth">
-              <span>{symbols[signal]}</span>
-            </div>
-          </div>
-          {Array.from(
-            new Set([
-              "pirate",
-              ...(state.toolsOpen ? ["blue"] : []),
-              ...(hasDraft ? ["white"] : []),
-            ]),
-          )
-            .filter((id) => id !== signal)
-            .slice(0, 2)
-            .map((id, index) => (
-              <div
-                key={id}
-                className="ship-hoist ship-secondary"
-                data-signal={id}
-                style={{ top: `${160 + index * 85}px` }}
-              >
-                <div className="ship-cloth">
-                  <span>{symbols[id]}</span>
-                </div>
+          {signal && (
+            <div
+              className="ship-hoist"
+              data-signal={signal}
+              data-raised={state.running || approval}
+            >
+              <div className="ship-cloth">
+                <span>{symbols[signal]}</span>
               </div>
-            ))}
+            </div>
+          )}
+          {signals.slice(1, 3).map((id, index) => (
+            <div
+              key={id}
+              className="ship-hoist ship-secondary"
+              data-signal={id}
+              style={{ top: `${160 + index * 85}px` }}
+            >
+              <div className="ship-cloth">
+                <span>{symbols[id]}</span>
+              </div>
+            </div>
+          ))}
         </div>
         <p className="ship-signal-status" role="status">
-          {labels[signal]} · Signal pennants
+          {labels[signal] ?? "At anchor"}
         </p>
       </div>
       <div className="ship-signals">

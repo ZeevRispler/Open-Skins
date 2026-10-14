@@ -21,7 +21,9 @@ npm run dev
 
 Open **http://127.0.0.1:5180**. The initial **simulated demo** works without an account or API key. It demonstrates controls and virtual files; connect a real backend for actual coding.
 
-Click the palette button to choose a skin, then send **Build a demo**. Send **slow demo** to see the DJ discs rotate and try Stop/Resume. The speaker button enables sound. This first run needs no `.env` file or installed agent.
+Click the palette button to choose a skin, then send **Build a demo**. Send **slow demo** to see the DJ discs rotate and try Stop/Resume. Click **Sound off** once to enable button and scratch cues, then drag a DJ record to hear a scratch. There is no background music track. This first run needs no `.env` file or installed agent.
+
+Browse the [current app screenshots](#skins-and-feedback) for all skins.
 
 The shallow clone downloads the current app without the inherited OpenHands Git history.
 
@@ -92,7 +94,7 @@ The cockpit has a radar sweep during agent work and metallic ball-tip switches f
 
 The Retro joystick now pivots around its socket while dragging or holding arrow keys, then holds the selected direction like the cockpit lever. Its cream marquee and green fourth button complement the blue cabinet.
 
-Flagship adds a timber-and-brass frame and a cloth signal flag that rises while working or awaiting a decision. Green sends the current draft or resumes where supported; red stops; amber focuses the pending approval; blue opens files; white appends an explanation request without sending it. The pirate flag starts a new session when no draft or task is active. Signal controls span the lower deck, while the side mast carries up to three waving flags for status, the ship pennant, and draft or workspace context. On small screens the signals become a compact button rack.
+Flagship adds a timber-and-brass frame and a cloth signal flag that rises while working or awaiting a decision. Green sends the current draft or resumes where supported; red stops; amber focuses the pending approval; blue opens files; white appends an explanation request without sending it. The pirate flag starts a new session when no draft or task is active. Signal controls span the lower deck, while the side mast carries up to three waving flags derived from current agent, approval, Files-panel and draft state. Closing Files or switching to another tool removes its blue flag; stopping removes green; answering approval removes amber; clearing/sending the draft removes white. A paused agent keeps red until resumed or replaced. On small screens the signals become a compact button rack.
 
 The Ferrari-inspired dashboard adds red bodywork, carbon-fiber panels, a gauge that reacts to agent activity, and a gearshift-shaped tool selector. Yellow trim complements the red bodywork. It shares the same directional controls and opt-in sounds.
 
@@ -100,7 +102,7 @@ DJ and Cockpit have distinct decorative racks on wide screens. DJ uses twin VU m
 
 The conversation background adds a pixel skyline, cockpit clouds, DJ lighting, ship waves or racing road markings behind opaque message cards. Cockpit clouds drift in two layers, ship waves roll with gentle swells, and DJ lights sweep slowly through haze even while idle. Retro and racing scenery follow agent work. All backgrounds respect reduced motion and cannot intercept clicks.
 
-The palette button opens a compact skin gallery. Sounds are **off by default**; enable them with the speaker button. Each skin has synthesized local press, completion, permission and error cues. Background tabs stay quiet, and motion respects the operating system's reduced-motion preference.
+The palette button opens a compact skin gallery. Sounds are **off by default**; enable them with the labeled **Sound off** button. Each skin has synthesized local press, completion, permission and error cues. Background tabs stay quiet, and motion respects the operating system's reduced-motion preference.
 
 | Cockpit                                             | Retro console                                   |
 | --------------------------------------------------- | ----------------------------------------------- |
@@ -111,6 +113,8 @@ The palette button opens a compact skin gallery. Sounds are **off by default**; 
 ![Flagship signal deck](docs/screenshots/open-skins/flagship.png)
 
 Interactive visual studies are available at `/design-studies/index.html` while the app is running.
+
+Small Easter eggs: insert three coins using the Retro coin-slot button for a star; watch for a passing aircraft in Cockpit or a dolphin in Flagship; Ferrari shows a checkered flag when a task completes. Coin counts are cosmetic and do not change provider credits. Reduced motion hides the passing visitors.
 
 Screenshots above are captured from this app's browser regression tests, using the clearly labeled simulated demo.
 

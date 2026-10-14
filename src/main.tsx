@@ -1,3 +1,4 @@
+import { SceneVisitors } from "./interfaces/scene-visitors";
 import { AgentState } from "./types/agent-state";
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
@@ -78,6 +79,7 @@ function App() {
             <main className="agent">
               <div className="conversation-atmosphere" aria-hidden="true">
                 <i />
+                <SceneVisitors />
               </div>
               <header className="agent-heading">
                 <h1>{s.session?.title || "Workspace"}</h1>
