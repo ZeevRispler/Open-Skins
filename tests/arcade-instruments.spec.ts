@@ -70,8 +70,16 @@ test("ambient instruments appear only on desktop DJ and cockpit skins", async ({
     await page.locator(`[data-skin-option="${skin}"]`).click();
     const rail = page.locator(".ambient-instruments");
     await expect(rail).toBeVisible();
-    await expect(rail.locator(".ambient-meter")).toBeVisible();
-    await expect(rail.locator(".ambient-compass")).toBeVisible();
+    await expect(rail).toHaveAttribute("data-rack", skin);
+    if (skin === "dj") {
+      await expect(rail.locator(".ambient-meter")).toHaveCount(2);
+      await expect(rail.locator(".rack-faders")).toBeVisible();
+      await expect(rail.locator(".rack-horizon")).toHaveCount(0);
+    } else {
+      await expect(rail.locator(".rack-horizon")).toBeVisible();
+      await expect(rail.locator(".ambient-compass")).toBeVisible();
+      await expect(rail.locator(".ambient-patch")).toHaveCount(0);
+    }
     await expect(rail).not.toHaveAttribute("role", "button");
     const agent = await page.locator(".agent").boundingBox();
     expect(agent?.width).toBeGreaterThanOrEqual(1000);
@@ -120,7 +128,7 @@ test("ambient rail hides on mobile and follows agent state without motion", asyn
   await page.getByRole("textbox", { name: "Message agent" }).fill("slow demo");
   await page.getByRole("button", { name: "Send", exact: true }).click();
   await expect(workspace).toHaveAttribute("data-agent-state", "running");
-  await expect(rail.locator("i")).toHaveCount(13);
+  await expect(rail.locator("i")).toHaveCount(3);
   for (const instrumentNeedle of await rail.locator("i").all()) {
     await expect(instrumentNeedle).toHaveCSS("animation-name", "none");
     await expect(instrumentNeedle).toHaveCSS("transition-duration", "0s");

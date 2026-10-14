@@ -48,23 +48,46 @@ export function FlagshipRig({
   }
   return (
     <aside className="flagship-rig" aria-label="Ship signals">
-      <div className="ship-mast" aria-hidden="true">
-        <i className="ship-pole" />
-        <i className="ship-rope" />
-        <i className="ship-pulley" />
-        <div
-          className="ship-hoist"
-          data-signal={signal}
-          data-raised={state.running || approval}
-        >
-          <div className="ship-cloth">
-            <span>{symbols[signal]}</span>
+      <div className="ship-watch">
+        <div className="ship-mast" aria-hidden="true">
+          <i className="ship-pole" />
+          <i className="ship-rope" />
+          <i className="ship-pulley" />
+          <div
+            className="ship-hoist"
+            data-signal={signal}
+            data-raised={state.running || approval}
+          >
+            <div className="ship-cloth">
+              <span>{symbols[signal]}</span>
+            </div>
           </div>
+          {Array.from(
+            new Set([
+              "pirate",
+              ...(state.toolsOpen ? ["blue"] : []),
+              ...(hasDraft ? ["white"] : []),
+            ]),
+          )
+            .filter((id) => id !== signal)
+            .slice(0, 2)
+            .map((id, index) => (
+              <div
+                key={id}
+                className="ship-hoist ship-secondary"
+                data-signal={id}
+                style={{ top: `${160 + index * 85}px` }}
+              >
+                <div className="ship-cloth">
+                  <span>{symbols[id]}</span>
+                </div>
+              </div>
+            ))}
         </div>
+        <p className="ship-signal-status" role="status">
+          {labels[signal]} · Signal pennants
+        </p>
       </div>
-      <p className="ship-signal-status" role="status">
-        {labels[signal]}
-      </p>
       <div className="ship-signals">
         <button
           disabled={
@@ -107,7 +130,16 @@ export function FlagshipRig({
           </span>
           Decision
         </button>
-        <button onClick={() => act("blue", () => commands.openTool("files"))}>
+        <button
+          aria-pressed={state.toolsOpen && state.selectedTool === "files"}
+          onClick={() =>
+            act("blue", () =>
+              state.toolsOpen && state.selectedTool === "files"
+                ? commands.closeTools()
+                : commands.openTool("files"),
+            )
+          }
+        >
           <span aria-hidden="true" className="mini-flag blue">
             ≈
           </span>
