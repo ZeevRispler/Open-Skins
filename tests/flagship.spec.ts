@@ -150,7 +150,7 @@ test("scenery moves only during work and the racing toolbar has no steering whee
   await page.goto("/");
   await page.locator("summary").click();
   await page.locator('[data-skin-option="retro"]').click();
-  const scene = page.locator(".skin-atmosphere i");
+  const scene = page.locator(".conversation-atmosphere i");
   await expect(scene).toHaveCSS("animation-play-state", "paused");
   await page.getByRole("textbox", { name: "Message agent" }).fill("slow demo");
   await page.getByRole("button", { name: "Send", exact: true }).click();

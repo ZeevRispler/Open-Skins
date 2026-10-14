@@ -655,42 +655,7 @@ body[data-coding-skin="ferrari"] .brand {
     animation: none;
   }
 }
-/* Matte cabinet: a single red accent, with legible transport in every state. */
-body[data-coding-skin="retro"][data-open-skins],
-body[data-coding-skin="retro"] [data-open-skins],
-.workspace-interface[data-interface="retro"] {
-  --skin-base: #151617;
-  --skin-panel: #202224;
-  --skin-raised: #303334;
-  --skin-line: #747d7d;
-  --skin-accent: #f0d67c;
-  --skin-secondary: #c93632;
-}
-body[data-coding-skin="retro"] .brand {
-  background: #17191a;
-  border-bottom: 3px solid #c93632;
-}
-.workspace-interface[data-interface="retro"] .dj-controls,
-.workspace-interface[data-interface="retro"] .dj-console {
-  background: #242627;
-  border-color: #51595b;
-}
-.workspace-interface[data-interface="retro"] .workspace-panels {
-  border-color: #080b0d;
-  box-shadow:
-    0 0 0 2px #51595b,
-    0 5px 0 #050708;
-}
-.workspace-interface[data-interface="retro"]
-  .dj-console
-  .dj-pads
-  button:first-child {
-  background: #c93632;
-  border-color: #c93632;
-  box-shadow:
-    0 4px 0 #70201e,
-    inset 0 2px 3px #ffffff55;
-}
+/* Keep the original cabinet palette; transport contrast is independent. */
 .workspace-interface[data-interface="retro"] .dj-console .dj-transport button {
   background: #e5e6dc;
   color: #182022;
@@ -742,40 +707,63 @@ body[data-coding-skin="retro"] .brand {
   --lever-roll: 27deg;
   --lever-pitch: 0deg;
 }
-/* A separate scenery window keeps animation out of messages and editor text. */
-.skin-atmosphere {
-  height: 22px;
-  flex-shrink: 0;
-  margin: 0 8px;
+/* Scenery lives inside the agent surface, behind opaque reading panels. */
+.workspace-interface:not([data-interface="standard"]) .agent {
+  position: relative;
+  isolation: isolate;
   overflow: hidden;
-  border: 1px solid var(--skin-line);
-  border-radius: 4px;
-  background: #101c23;
-  pointer-events: none;
 }
-.skin-atmosphere i {
+.conversation-atmosphere {
+  display: none;
+}
+.workspace-interface:not([data-interface="standard"]) .conversation-atmosphere {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse at 70% 30%,
+    var(--skin-raised),
+    var(--skin-base)
+  );
+  pointer-events: none;
+  opacity: 0.65;
+}
+.workspace-interface:not([data-interface="standard"]) .agent article,
+.workspace-interface:not([data-interface="standard"]) .agent .welcome {
+  background: var(--skin-panel);
+  opacity: 1;
+}
+.workspace-interface:not([data-interface="standard"]) .agent .welcome {
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--skin-line);
+}
+.conversation-atmosphere i {
   display: block;
   width: 100%;
   height: 100%;
   background-repeat: repeat-x;
-  background-size: 320px 100%;
+  background-size: 640px 180px;
+  background-position: 0 bottom;
   animation: skin-scenery 18s linear infinite;
   animation-play-state: paused;
 }
-.workspace-interface[data-agent-state="running"] .skin-atmosphere i {
+.workspace-interface[data-agent-state="running"] .conversation-atmosphere i {
   animation-play-state: running;
 }
-.workspace-interface[data-interface="retro"] .skin-atmosphere i {
+.workspace-interface[data-interface="retro"] .conversation-atmosphere i {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='24'%3E%3Cpath fill='%233a5557' d='M0 24V14h20V7h16v17h24V10h22v14h30V3h16v21h23V13h32V5h20v19h28V10h30V0h20v24h39z'/%3E%3Cpath fill='%23b9c7a1' d='M25 10h3v3h-3zm92-4h3v3h-3zm72 2h3v3h-3zm83-5h3v3h-3z'/%3E%3C/svg%3E");
   image-rendering: pixelated;
 }
-.workspace-interface[data-interface="cockpit"] .skin-atmosphere i {
+.workspace-interface[data-interface="cockpit"] .conversation-atmosphere i {
   background-image:
     radial-gradient(ellipse at 25% 110%, #97a9a0 0 22%, transparent 24%),
     radial-gradient(ellipse at 70% 120%, #556e6e 0 30%, transparent 32%);
   background-color: #203b48;
 }
-.workspace-interface[data-interface="dj"] .skin-atmosphere i {
+.workspace-interface[data-interface="dj"] .conversation-atmosphere i {
   background-image: repeating-linear-gradient(
     110deg,
     #16272e 0 50px,
@@ -785,10 +773,10 @@ body[data-coding-skin="retro"] .brand {
     #16272e 160px
   );
 }
-.workspace-interface[data-interface="flagship"] .skin-atmosphere i {
+.workspace-interface[data-interface="flagship"] .conversation-atmosphere i {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='24'%3E%3Cpath fill='%233d696e' d='M0 12Q40 0 80 12t80 0t80 0t80 0v24H0z'/%3E%3Cpath fill='none' stroke='%237c9d91' d='M0 16Q40 4 80 16t80 0t80 0t80 0'/%3E%3C/svg%3E");
 }
-.workspace-interface[data-interface="ferrari"] .skin-atmosphere i {
+.workspace-interface[data-interface="ferrari"] .conversation-atmosphere i {
   background-color: #191b1b;
   background-image: repeating-linear-gradient(
     90deg,
@@ -801,16 +789,16 @@ body[data-coding-skin="retro"] .brand {
 }
 @keyframes skin-scenery {
   to {
-    background-position-x: -320px;
+    background-position-x: -640px;
   }
 }
 @media (max-width: 800px) {
-  .skin-atmosphere {
-    display: none;
+  .conversation-atmosphere {
+    opacity: 0.3;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .skin-atmosphere i {
+  .conversation-atmosphere i {
     animation: none;
   }
 }

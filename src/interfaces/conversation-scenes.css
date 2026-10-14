@@ -1,0 +1,169 @@
+/* Slow scenery occupies the conversation surface; message cards stay opaque. */
+.workspace-interface:is(
+    [data-interface="cockpit"],
+    [data-interface="flagship"],
+    [data-interface="dj"]
+  )
+  .conversation-atmosphere
+  i {
+  position: relative;
+  background: none;
+  animation: none;
+}
+.workspace-interface:is(
+    [data-interface="cockpit"],
+    [data-interface="flagship"],
+    [data-interface="dj"]
+  )
+  .conversation-atmosphere
+  i::before,
+.workspace-interface:is(
+    [data-interface="cockpit"],
+    [data-interface="flagship"],
+    [data-interface="dj"]
+  )
+  .conversation-atmosphere
+  i::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  inset: -10%;
+  background-repeat: repeat-x;
+}
+/* Rounded cloud banks at two depths, without flashing or hard-edged stripes. */
+.workspace-interface[data-interface="cockpit"] .conversation-atmosphere {
+  background: linear-gradient(#11242e, #2a4148 65%, #59675a);
+}
+.workspace-interface[data-interface="cockpit"]
+  .conversation-atmosphere
+  i::before,
+.workspace-interface[data-interface="cockpit"]
+  .conversation-atmosphere
+  i::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='240' viewBox='0 0 760 240'%3E%3Cpath fill='%23b3c5be' d='M0 190Q20 158 65 166C52 125 106 105 136 132C137 72 236 65 249 125C286 95 330 123 328 153C381 125 422 155 422 180Q477 153 512 177C498 133 554 105 590 136C598 83 671 85 679 142C717 117 760 147 760 185V240H0Z'/%3E%3C/svg%3E");
+  background-size: 760px 240px;
+  background-position: 0 62%;
+  opacity: 0.19;
+  filter: blur(7px);
+  animation: cloud-drift 60s ease-in-out infinite alternate;
+}
+.workspace-interface[data-interface="cockpit"]
+  .conversation-atmosphere
+  i::after {
+  background-position: 250px 95%;
+  background-size: 1050px 330px;
+  opacity: 0.13;
+  filter: blur(12px);
+  animation-duration: 85s;
+  animation-direction: alternate-reverse;
+}
+/* Layered swells and thin foam lines roll across the lower half of the sea. */
+.workspace-interface[data-interface="flagship"] .conversation-atmosphere {
+  background: linear-gradient(#10252e, #1d4149 55%, #12333c);
+}
+.workspace-interface[data-interface="flagship"]
+  .conversation-atmosphere
+  i::before,
+.workspace-interface[data-interface="flagship"]
+  .conversation-atmosphere
+  i::after {
+  inset: 40% -10% -10%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='180'%3E%3Cpath fill='%233e7378' d='M0 75Q100 5 200 75T400 75T600 75T800 75V180H0Z'/%3E%3Cpath fill='none' stroke='%238bad9d' stroke-width='2' d='M0 75Q100 5 200 75T400 75T600 75T800 75'/%3E%3C/svg%3E");
+  background-size: 800px 180px;
+  background-position: 0 65%;
+  opacity: 0.22;
+  animation:
+    sea-drift 42s linear infinite,
+    sea-rise 12s ease-in-out infinite alternate;
+}
+.workspace-interface[data-interface="flagship"]
+  .conversation-atmosphere
+  i::after {
+  inset: 58% -10% -10%;
+  background-size: 600px 140px;
+  opacity: 0.17;
+  animation:
+    sea-near-drift 31s linear infinite reverse,
+    sea-rise 9s ease-in-out infinite alternate-reverse;
+}
+/* Broad theatrical beams sweep slowly through haze, with no strobe effect. */
+.workspace-interface[data-interface="dj"] .conversation-atmosphere {
+  background: radial-gradient(ellipse at 50% 95%, #263147, #0b111e 75%);
+}
+.workspace-interface[data-interface="dj"] .conversation-atmosphere i::before {
+  background: conic-gradient(
+    from 150deg at 22% 0%,
+    transparent 0deg,
+    #73c9d744 10deg,
+    transparent 22deg,
+    transparent 360deg
+  );
+  transform-origin: 22% 0;
+  filter: blur(12px);
+  animation: club-sweep 28s ease-in-out infinite alternate;
+}
+.workspace-interface[data-interface="dj"] .conversation-atmosphere i::after {
+  background:
+    conic-gradient(
+      from 182deg at 80% 0%,
+      transparent 0deg,
+      #b98be13d 14deg,
+      transparent 30deg,
+      transparent 360deg
+    ),
+    radial-gradient(ellipse at 65% 90%, #754c8425, transparent 65%);
+  transform-origin: 80% 0;
+  filter: blur(16px);
+  animation: club-sweep 37s ease-in-out infinite alternate-reverse;
+}
+@keyframes cloud-drift {
+  from {
+    transform: translateX(-4%);
+  }
+  to {
+    transform: translateX(4%);
+  }
+}
+@keyframes sea-drift {
+  to {
+    background-position-x: -800px;
+  }
+}
+@keyframes sea-near-drift {
+  to {
+    background-position-x: -600px;
+  }
+}
+@keyframes sea-rise {
+  from {
+    transform: translateY(-4px);
+  }
+  to {
+    transform: translateY(4px);
+  }
+}
+@keyframes club-sweep {
+  from {
+    transform: rotate(-12deg);
+  }
+  to {
+    transform: rotate(12deg);
+  }
+}
+@media (max-width: 800px) {
+  .workspace-interface:is(
+      [data-interface="cockpit"],
+      [data-interface="flagship"],
+      [data-interface="dj"]
+    )
+    .conversation-atmosphere {
+    opacity: 0.4;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-interface .conversation-atmosphere i::before,
+  .workspace-interface .conversation-atmosphere i::after {
+    animation: none !important;
+    filter: none;
+  }
+}

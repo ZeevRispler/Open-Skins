@@ -137,7 +137,7 @@ export function SkinConsole({
         )}
       </div>
       <div className="dj-pads">
-        {TOOL_PADS.map(({ id, label, icon: Icon }, padIndex) => (
+        {TOOL_PADS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             type="button"
@@ -154,9 +154,6 @@ export function SkinConsole({
           >
             <Icon aria-hidden="true" />
             <span>{t(label)}</span>
-            <span className="arcade-pad-code" aria-hidden="true">
-              {String.fromCharCode(65 + padIndex)}
-            </span>
             <span className="metal-toggle" aria-hidden="true">
               <i />
             </span>

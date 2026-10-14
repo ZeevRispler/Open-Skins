@@ -10,6 +10,7 @@ import "./cockpit-retro-activity.css";
 import "./ferrari.css";
 import "./arcade-instruments.css";
 import "./physical-skins.css";
+import "./conversation-scenes.css";
 import { muteSkinSound, playSkinSound } from "./skin-sound";
 import {
   WORKSPACE_INTERFACES,

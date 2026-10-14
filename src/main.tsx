@@ -59,6 +59,9 @@ function App() {
               </aside>
             )}
             <main className="agent">
+              <div className="conversation-atmosphere" aria-hidden="true">
+                <i />
+              </div>
               <header className="agent-heading">
                 <h1>{s.session?.title || "Your agent takes center stage"}</h1>
                 <span role="status">{s.snapshot.state}</span>
