@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-const skins = ["standard", "dj", "cockpit", "retro", "ferrari"];
+const skins = ["standard", "dj", "cockpit", "retro", "ferrari", "flagship"];
 test("every skin retains draft, tools, physical controls and conversation", async ({
   page,
 }) => {

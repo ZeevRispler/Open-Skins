@@ -1,6 +1,6 @@
 # Open Skins
 
-A lightweight companion workspace for **OpenHands** and **OpenCode**. Install your coding agent normally, run Open Skins beside it, and choose a DJ booth, pilot cockpit, retro arcade cabinet, Ferrari-inspired dashboard or standard workspace.
+A lightweight companion workspace for **OpenHands** and **OpenCode**. Install your coding agent normally, run Open Skins beside it, and choose a DJ booth, pilot cockpit, retro arcade cabinet, Ferrari-inspired dashboard, sailing-ship signal deck or standard workspace.
 
 The agent conversation stays central. Moving handles, switches, tool pads and optional sound packs control the same shared actions in every skin. Switching skins preserves your session and draft.
 
@@ -88,6 +88,10 @@ DJ platters rotate in opposite directions while the agent is working, with a rea
 
 The cockpit has a radar sweep during agent work and metallic ball-tip switches for history and tool panels. The blue arcade cabinet has a speckled control deck, black joystick, red/white/blue buttons, a marquee and A–D tool-button markings. Its retro character walks during work and celebrates completion. The cockpit and retro lever supports dragging or arrow keys: **left Files, up Terminal, down Changes, right Browser**. Clicking it still cycles through tools; clicking an active tool pad closes that panel.
 
+The Retro joystick now pivots around its socket while dragging or holding arrow keys, then springs back without losing the selected tool. Its cream marquee and green fourth button complement the blue cabinet.
+
+Flagship adds a timber-and-brass frame and a cloth signal flag that rises while working or awaiting a decision. Green sends the current draft or resumes where supported; red stops; amber focuses the pending approval; blue opens files; white appends an explanation request without sending it. The pirate flag starts a new session when no draft or task is active. On small screens the signals become a compact button rack.
+
 The Ferrari-inspired dashboard adds red bodywork, carbon-fiber panels, a gauge that reacts to agent activity, and a gearshift-shaped tool selector. It shares the same directional controls and opt-in sounds.
 
 DJ and Cockpit also have a narrow decorative instrument rack on wide screens: analog needles, compass motion, activity lights and patch cables. It follows agent activity without displaying invented telemetry, and disappears below 1100px to preserve workspace space.
@@ -99,6 +103,10 @@ The palette button opens a compact skin gallery. Sounds are **off by default**; 
 | ![Cockpit](docs/screenshots/open-skins/cockpit.png) | ![Retro](docs/screenshots/open-skins/retro.png) |
 
 ![Ferrari-inspired dashboard](docs/screenshots/open-skins/ferrari.png)
+
+![Flagship signal deck](docs/screenshots/open-skins/flagship.png)
+
+Interactive visual studies are available at `/design-studies/index.html` while the app is running.
 
 Screenshots above are captured from this app's browser regression tests, using the clearly labeled simulated demo.
 

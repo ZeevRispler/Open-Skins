@@ -406,5 +406,11 @@
   },
   "CONVERSATION$ARCADE_PROMPT": {
     "en": "PRESS SEND TO PLAY"
+  },
+  "CONVERSATION$FLAGSHIP_INTERFACE": {
+    "en": "Flagship"
+  },
+  "CONVERSATION$FLAGSHIP_MARQUEE": {
+    "en": "THE OPEN SKINS · SIGNAL DECK"
   }
 }

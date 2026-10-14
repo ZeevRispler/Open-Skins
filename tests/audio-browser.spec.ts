@@ -26,7 +26,7 @@ test("all sound packs schedule and finish real Web Audio tones", async ({
     window.AudioContext = ObservedAudio;
   });
   await page.goto("/");
-  for (const skin of ["dj", "cockpit", "retro", "ferrari"]) {
+  for (const skin of ["dj", "cockpit", "retro", "ferrari", "flagship"]) {
     await page.locator("summary").click();
     await page.locator(`[data-skin-option="${skin}"]`).click();
     const speaker = page.locator(".interface-switcher>button");
@@ -61,7 +61,7 @@ test("all sound packs schedule and finish real Web Audio tones", async ({
         }
       ).skinAudio,
   );
-  expect(audio.created).toBe(4);
+  expect(audio.created).toBe(5);
   expect(audio.started).toBe(audio.ended);
   expect(audio.states.every((state) => state === "running")).toBe(true);
 });

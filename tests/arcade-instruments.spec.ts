@@ -32,11 +32,11 @@ test("retro arcade marquee has distinct tokens and preserves a draft", async ({
   const marquee = page.locator(".arcade-marquee");
   await expect(marquee).toBeVisible();
   await expect(marquee).toContainText(/ARCADE|PIXEL|INSERT COIN/i);
-  await expect(marquee).toHaveCSS("color", "rgb(255, 248, 221)");
+  await expect(marquee).toHaveCSS("color", "rgb(20, 75, 72)");
   const marqueeBackground = await marquee.evaluate(
-    (element) => getComputedStyle(element).backgroundImage,
+    (element) => getComputedStyle(element).backgroundColor,
   );
-  expect(marqueeBackground).toContain("0, 137, 196");
+  expect(marqueeBackground).toContain("228, 229, 204");
   const legends = page.locator(".arcade-pad-code");
   await expect(legends).toHaveCount(4);
   await expect(legends).toHaveText(["A", "B", "C", "D"]);

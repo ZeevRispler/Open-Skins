@@ -40,6 +40,7 @@ export function playSkinSound(skin: WorkspaceInterface, cue: SoundCue) {
           cockpit: 420,
           retro: 660,
           ferrari: 260,
+          flagship: 320,
         }[skin];
         const notes =
           cue === "complete"
