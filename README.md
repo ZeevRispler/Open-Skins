@@ -112,8 +112,6 @@ The palette button opens a compact skin gallery. Sounds are **off by default**; 
 
 ![Flagship signal deck](docs/screenshots/open-skins/flagship.png)
 
-Interactive visual studies are available at `/design-studies/index.html` while the app is running.
-
 Small Easter eggs: insert three coins using the Retro coin-slot button for a star; watch for a passing aircraft in Cockpit or a dolphin in Flagship; Ferrari shows a checkered flag when a task completes. Coin counts are cosmetic and do not change provider credits. Reduced motion hides the passing visitors.
 
 Screenshots above are captured from this app's browser regression tests, using the clearly labeled simulated demo.
@@ -155,6 +153,6 @@ Unit tests cover sound lifecycle, stop/resume, permissions, adapter state normal
 
 ## Migration from the fork
 
-The earlier OpenHands fork is preserved on [`codex/openhands-fork-archive`](https://github.com/ZeevRispler/Open-Skins/tree/codex/openhands-fork-archive). This standalone branch retains the skins and license attribution, while removing the bundled OpenHands source, backend packaging and account onboarding. Existing installations remain separate and can be connected through the adapters.
+The earlier OpenHands branches are preserved separately in the private, read-only [Open-Skins-Archive](https://github.com/ZeevRispler/Open-Skins-Archive) repository. The current app contains the shared workspace, skins and adapters, without the bundled OpenHands backend or account onboarding. The main branch retains its existing commit history; the shallow Quick Start clone avoids downloading that historical code. Existing agent installations remain separate.
 
 MIT licensed. The original OpenHands license and attribution are retained in [LICENSE](LICENSE).

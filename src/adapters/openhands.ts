@@ -5,7 +5,7 @@ import {
   ServerClient,
 } from "@openhands/typescript-client/clients";
 import type { ConversationInfo } from "@openhands/typescript-client";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 import {
   emptySnapshot,
   textContent,

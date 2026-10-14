@@ -11,7 +11,7 @@ import {
   type ModelChoice,
   type Approval,
 } from "#/core/types";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 export function useWorkspaceController() {
   const adapter = useRef<AgentAdapter>(new DemoAdapter());
   const epoch = useRef(0);

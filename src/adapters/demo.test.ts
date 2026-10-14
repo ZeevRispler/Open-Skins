@@ -1,6 +1,6 @@
 import { afterEach, describe, it, expect, vi } from "vitest";
 import { DemoAdapter } from "./demo";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 afterEach(() => vi.useRealTimers());
 describe("shared demo contract", () => {
   it("stops a pending turn and resumes exactly once without losing history", async () => {

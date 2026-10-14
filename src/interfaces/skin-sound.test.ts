@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { agentSoundCue, muteSkinSound, playSkinSound } from "./skin-sound";
 import { useInterfaceStore } from "./interface-store";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 
 afterEach(() => {
   muteSkinSound();

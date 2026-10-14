@@ -1,5 +1,5 @@
 # Open Skins
-This checkout is an independent companion app. The old fork remains on `codex/openhands-fork-archive` and the existing working checkout remains untouched.
+This checkout is an independent companion app. Historical branches are preserved in the private, read-only `ZeevRispler/Open-Skins-Archive` repository; the existing local fork checkout remains untouched.
 - Keep official provider SDK calls inside `src/adapters/`. Skins depend only on `src/core/` contracts.
 - Never store provider credentials in the frontend, log secrets, or implement an arbitrary-URL proxy. Bridge targets and session credentials come from server environment.
 - Keep shared session state mounted across skin changes. Honor reduced motion and opt-in sounds.

@@ -14,11 +14,10 @@ import { I18nKey } from "#/i18n/declaration";
 import type { WorkspaceController } from "#/workspace-core/use-workspace-controller";
 import type { ToolTab } from "#/core/types";
 import { SkinModelControl } from "./skin-model-control";
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 import { useInterfaceStore } from "./interface-store";
 import { playSkinSound } from "./skin-sound";
 import { VinylDeck } from "./dj/vinyl-deck";
-import jogWheel from "./dj/assets/jog-wheel-v1.png";
 
 const STATUS_LABELS: Partial<Record<AgentState, I18nKey>> = {
   [AgentState.RUNNING]: I18nKey.AGENT_STATUS$RUNNING_TASK,
@@ -136,15 +135,13 @@ export function SkinConsole({
           commands.toggleHistory();
         }}
       >
-        {isDj ? (
+        {isDj && (
           <VinylDeck
             side="A"
             label={state.session?.title || "New session"}
             angle={scratch.A}
             scratching={scratch.side === "A"}
           />
-        ) : (
-          <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
         )}
         <History aria-hidden="true" />
         <span className="racing-dial" aria-hidden="true">
@@ -351,15 +348,13 @@ export function SkinConsole({
           commands.openTool(TOOL_PADS[(toolIndex + 1) % TOOL_PADS.length].id);
         }}
       >
-        {isDj ? (
+        {isDj && (
           <VinylDeck
             side="B"
             label={t(TOOL_PADS[toolIndex].label)}
             angle={scratch.B}
             scratching={scratch.side === "B"}
           />
-        ) : (
-          <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
         )}
         <Files aria-hidden="true" />
         <span

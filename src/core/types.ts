@@ -1,4 +1,4 @@
-import { AgentState } from "#/types/agent-state";
+import { AgentState } from "#/core/agent-state";
 export type BackendKind = "demo" | "openhands" | "opencode";
 export type ToolTab = "files" | "terminal" | "changes" | "browser";
 export interface Session {
