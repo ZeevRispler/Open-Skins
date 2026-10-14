@@ -4,6 +4,7 @@ import type { WorkspaceController } from "#/workspace-core/use-workspace-control
 import { useInterfaceStore } from "./interface-store";
 import { SkinConsole } from "./skin-console";
 import { SkinSwitcher } from "./skin-switcher";
+import { FlagshipRig } from "./flagship-rig";
 import { AmbientInstruments } from "./ambient-instruments";
 import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
@@ -12,9 +13,15 @@ import { I18nKey } from "#/i18n/declaration";
 export function WorkspaceInterfaceFrame({
   children,
   controller,
+  hasDraft,
+  sendDraft,
+  prepareExplanation,
 }: {
   children: ReactNode;
   controller: WorkspaceController;
+  hasDraft: boolean;
+  sendDraft: () => void;
+  prepareExplanation: () => void;
 }) {
   const { t } = useTranslation("open-skins");
   const interfaceId = useInterfaceStore((state) => state.interfaceId);
@@ -61,6 +68,11 @@ export function WorkspaceInterfaceFrame({
         <strong>{t(I18nKey.CONVERSATION$ARCADE_MARQUEE)}</strong>
         <span>{t(I18nKey.CONVERSATION$ARCADE_PROMPT)}</span>
       </header>
+      {interfaceId === "flagship" && (
+        <header className="ship-title">
+          {t(I18nKey.CONVERSATION$FLAGSHIP_MARQUEE)}
+        </header>
+      )}
       <div className="workspace-interface-body">
         <aside className="dj-controls" hidden={interfaceId === "standard"}>
           <SkinConsole controller={controller} />
@@ -68,6 +80,14 @@ export function WorkspaceInterfaceFrame({
         <div className="workspace-stage">
           <div className="workspace-panels">{children}</div>
           <AmbientInstruments />
+          {interfaceId === "flagship" && (
+            <FlagshipRig
+              controller={controller}
+              hasDraft={hasDraft}
+              sendDraft={sendDraft}
+              prepareExplanation={prepareExplanation}
+            />
+          )}
         </div>
       </div>
     </section>

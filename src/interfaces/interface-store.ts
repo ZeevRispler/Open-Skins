@@ -7,6 +7,7 @@ export const WORKSPACE_INTERFACES = [
   "cockpit",
   "retro",
   "ferrari",
+  "flagship",
 ] as const;
 export type WorkspaceInterface = (typeof WORKSPACE_INTERFACES)[number];
 const INTERFACE_STORAGE_KEY = "agent-canvas-workspace-interface";

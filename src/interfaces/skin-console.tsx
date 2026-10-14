@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import {
   Files,
   Terminal,
@@ -42,6 +42,7 @@ export function SkinConsole({
   const { state, commands } = controller;
   const gesture = useRef<{ x: number; y: number } | null>(null);
   const dragged = useRef(false);
+  const [lean, setLean] = useState({ x: 0, y: 0 });
   const directions: Record<string, ToolTab> = {
     ArrowLeft: "files",
     ArrowUp: "terminal",
@@ -184,8 +185,32 @@ export function SkinConsole({
           const tool = directions[event.key];
           if (tool) {
             event.preventDefault();
+            setLean({
+              x:
+                event.key === "ArrowLeft"
+                  ? -1
+                  : event.key === "ArrowRight"
+                    ? 1
+                    : 0,
+              y:
+                event.key === "ArrowUp"
+                  ? -1
+                  : event.key === "ArrowDown"
+                    ? 1
+                    : 0,
+            });
             commands.openTool(tool);
           }
+        }}
+        onKeyUp={() => setLean({ x: 0, y: 0 })}
+        onBlur={() => setLean({ x: 0, y: 0 })}
+        onPointerMove={(event) => {
+          const start = gesture.current;
+          if (start)
+            setLean({
+              x: Math.max(-1, Math.min(1, (event.clientX - start.x) / 30)),
+              y: Math.max(-1, Math.min(1, (event.clientY - start.y) / 30)),
+            });
         }}
         onPointerDown={(event) => {
           if (event.button !== 0) return;
@@ -194,10 +219,12 @@ export function SkinConsole({
           event.currentTarget.setPointerCapture(event.pointerId);
         }}
         onPointerCancel={() => {
+          setLean({ x: 0, y: 0 });
           gesture.current = null;
           dragged.current = false;
         }}
         onPointerUp={(event) => {
+          setLean({ x: 0, y: 0 });
           const start = gesture.current;
           gesture.current = null;
           if (!start) return;
@@ -227,7 +254,16 @@ export function SkinConsole({
       >
         <img src={jogWheel} alt="" aria-hidden="true" draggable={false} />
         <Files aria-hidden="true" />
-        <span data-hardware-handle aria-hidden="true" />
+        <span
+          data-hardware-handle
+          aria-hidden="true"
+          style={
+            {
+              "--lean-x": `${lean.x * 27}deg`,
+              "--lean-y": `${-lean.y * 32}deg`,
+            } as CSSProperties
+          }
+        />
         <span className="racing-gear" aria-hidden="true">
           <i />
           <b>{toolIndex + 1}</b>

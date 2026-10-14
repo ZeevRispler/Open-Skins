@@ -33,7 +33,20 @@ function App() {
           </button>
           <button onClick={a.openSettings}>Connection</button>
         </header>
-        <WorkspaceInterfaceFrame controller={c}>
+        <WorkspaceInterfaceFrame
+          controller={c}
+          hasDraft={!!draft.trim()}
+          sendDraft={async () => {
+            if (draft.trim() && (await a.send(draft))) setDraft("");
+          }}
+          prepareExplanation={() =>
+            setDraft((value) =>
+              value
+                ? value + "\n\nExplain your current approach before continuing."
+                : "Explain your current approach before continuing.",
+            )
+          }
+        >
           <div className="workarea" data-workspace-split>
             {s.historyOpen && (
               <aside className="history">
@@ -69,7 +82,7 @@ function App() {
                 ))}
               </div>
               {s.snapshot.approvals.map((p) => (
-                <section className="approval" key={p.id}>
+                <section tabIndex={-1} className="approval" key={p.id}>
                   <strong>{p.title}</strong>
                   {p.questions?.map((q, i) => (
                     <label key={q.text}>

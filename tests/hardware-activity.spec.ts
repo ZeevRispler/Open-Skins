@@ -46,7 +46,10 @@ test("cockpit radar and retro avatar animate only while their state calls for it
   await page.getByRole("textbox", { name: "Message agent" }).fill("slow demo");
   await page.getByRole("button", { name: "Send", exact: true }).click();
   await expect(avatar).toHaveCSS("animation-play-state", "running");
-  await page.locator(".dj-transport").getByRole("button", { name: "Stop", exact: true }).click();
+  await page
+    .locator(".dj-transport")
+    .getByRole("button", { name: "Stop", exact: true })
+    .click();
   await expect(avatar).toHaveCSS("animation-name", "none");
   await page.getByRole("button", { name: "Resume", exact: true }).click();
   await expect(page.locator(".workspace-interface")).toHaveAttribute(
@@ -91,11 +94,13 @@ test("tool wheel keys and drags map to tools and signed lever positions", async 
       await expect
         .poll(() =>
           handle.evaluate((el) => {
-            const matrix = new DOMMatrixReadOnly(getComputedStyle(el).transform);
+            const matrix = new DOMMatrixReadOnly(
+              getComputedStyle(el).transform,
+            );
             return [matrix.m41, matrix.m42];
           }),
         )
-        .toEqual([expected.x, expected.y]);
+        .toEqual(skin === "retro" ? [0, 0] : [expected.x, expected.y]);
     }
 
     const box = await wheel.boundingBox();

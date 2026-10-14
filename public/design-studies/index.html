@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Open Skins — physical design studies</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #10191d;
+      color: #edf4ed;
+      font: 15px system-ui;
+    }
+    button,
+    select,
+    textarea {
+      font: inherit;
+    }
+    button {
+      cursor: pointer;
+    }
+    button:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid #ffd95f;
+      outline-offset: 4px;
+    }
+    .toolbar {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding: 18px 28px;
+      background: #0a1115;
+      flex-wrap: wrap;
+    }
+    .toolbar strong {
+      margin-right: auto;
+    }
+    .toolbar button,
+    .toolbar select {
+      background: #25353c;
+      color: white;
+      border: 1px solid #68818c;
+      border-radius: 6px;
+      padding: 9px;
+    }
+    .study {
+      margin: 24px auto;
+      max-width: 1380px;
+      padding: 22px 28px 18px;
+      border-radius: 24px;
+      background: linear-gradient(
+        100deg,
+        #0574a2,
+        #03465e 6%,
+        #10252c 6%,
+        #162d32 94%,
+        #03465e 94%,
+        #0574a2
+      );
+      border: 3px solid #69b9c4;
+      box-shadow: 0 30px 70px #0008;
+    }
+    .marquee {
+      text-align: center;
+      background: #e9ead4;
+      color: #123f44;
+      border: 6px solid #0c252b;
+      padding: 12px;
+      font-weight: 950;
+      letter-spacing: 5px;
+      font-size: 28px;
+      text-shadow: 2px 2px #75b898;
+    }
+    .marquee small {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 4px;
+      margin-top: 6px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 130px minmax(0, 1fr) 130px;
+      gap: 18px;
+      margin: 18px 0;
+    }
+    .side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 8px;
+    }
+    .speaker {
+      height: 94px;
+      width: 75px;
+      background: repeating-linear-gradient(
+        0deg,
+        #061317 0 5px,
+        #34535b 6px 8px
+      );
+      border-radius: 40px;
+      box-shadow: inset 0 0 15px #000;
+    }
+    .badge {
+      border: 2px solid #e4d98f;
+      color: #e4d98f;
+      text-align: center;
+      padding: 12px 8px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      font-size: 11px;
+    }
+    .screen {
+      background: #101a20;
+      border: 12px solid #081015;
+      border-radius: 28px;
+      box-shadow:
+        inset 0 0 0 2px #46575a,
+        0 5px 0 #000;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .screen header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #34444a;
+      padding: 16px 22px;
+      color: #a8b9bf;
+      font-size: 12px;
+    }
+    .messages {
+      padding: 25px 28px;
+      flex: 1;
+      line-height: 1.7;
+    }
+    .user {
+      margin-left: 12%;
+      background: #263a42;
+      padding: 15px 20px;
+      border-radius: 14px;
+    }
+    .response {
+      margin-top: 26px;
+      max-width: 670px;
+    }
+    .response strong {
+      color: #8addb5;
+    }
+    .response pre {
+      background: #091216;
+      padding: 15px;
+      color: #d7e8da;
+      font-size: 13px;
+      overflow: auto;
+    }
+    .composer {
+      margin: 14px 22px 20px;
+      border: 1px solid #53676c;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+    }
+    .composer textarea {
+      flex: 1;
+      min-width: 0;
+      resize: vertical;
+      background: transparent;
+      color: white;
+      border: 0;
+      min-height: 38px;
+    }
+    .composer button {
+      background: #acd9bf;
+      border: 0;
+      border-radius: 6px;
+      padding: 10px;
+      color: #12382c;
+    }
+    .deck {
+      padding: 22px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      justify-content: center;
+      background: repeating-radial-gradient(
+        ellipse at 40% 60%,
+        #bac3b4 0 1px,
+        #394b48 2px 3px,
+        #d2d5bd 4px 5px
+      );
+      border: 5px solid #091c22;
+      border-radius: 8px 8px 18px 18px;
+    }
+    .stick-zone {
+      position: relative;
+      width: 150px;
+      height: 130px;
+      background: #15292c;
+      border-radius: 50%;
+      border: 4px solid #6f8781;
+      touch-action: none;
+      cursor: grab;
+      perspective: 500px;
+    }
+    .socket {
+      position: absolute;
+      width: 54px;
+      height: 28px;
+      border-radius: 50%;
+      background: #02090c;
+      left: 44px;
+      bottom: 18px;
+      border: 5px solid #53676a;
+    }
+    .stick {
+      position: absolute;
+      bottom: 32px;
+      left: 64px;
+      width: 14px;
+      height: 73px;
+      background: linear-gradient(90deg, #111, #94a7a6, #192226);
+      transform-origin: 50% 100%;
+      transform: rotateX(var(--rx, 0deg)) rotateZ(var(--rz, 0deg));
+      transition: transform 0.16s;
+      transform-style: preserve-3d;
+      pointer-events: none;
+    }
+    .stick:before {
+      content: "";
+      position: absolute;
+      width: 53px;
+      height: 53px;
+      border-radius: 50%;
+      left: -20px;
+      top: -24px;
+      background: radial-gradient(
+        circle at 32% 25%,
+        #6b7980,
+        #16222c 48%,
+        #03080c 78%
+      );
+      box-shadow: 5px 8px 10px #0007;
+    }
+    .tool-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .tool-buttons button {
+      width: 70px;
+      height: 70px;
+      border: 7px solid #172226;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 25%, #ff8977, #cb3028 65%);
+      box-shadow:
+        0 7px 0 #081417,
+        inset 0 2px 2px #fff9;
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      transition:
+        transform 0.1s,
+        box-shadow 0.1s;
+    }
+    .tool-buttons button:nth-child(2) {
+      background: radial-gradient(circle at 35% 25%, white, #c9d3c2 65%);
+      color: #123;
+    }
+    .tool-buttons button:nth-child(3) {
+      background: radial-gradient(circle at 35% 25%, #62b8ff, #065aaa 65%);
+    }
+    .tool-buttons button:nth-child(4) {
+      background: radial-gradient(circle at 35% 25%, #a8ec9d, #247f53 65%);
+    }
+    .tool-buttons button:active {
+      transform: translateY(6px);
+      box-shadow: 0 1px 0 #081417;
+    }
+    .caption {
+      text-align: center;
+      font-size: 12px;
+      color: #b1c6ca;
+      margin: 18px 0 0;
+    }
+    .pixel {
+      font-size: 34px;
+      filter: drop-shadow(3px 3px #000);
+      display: block;
+    }
+    [data-state="working"] .pixel {
+      animation: hop 0.45s infinite alternate;
+    }
+    @keyframes hop {
+      to {
+        transform: translateY(-12px) rotate(8deg);
+      }
+    }
+    .status-light {
+      height: 12px;
+      width: 12px;
+      display: inline-block;
+      border-radius: 50%;
+      background: #9be7b0;
+      margin-right: 8px;
+    }
+    [data-state="working"] .status-light {
+      animation: blink 1s infinite;
+    }
+    [data-state="approval"] .status-light {
+      background: #ffd16c;
+    }
+    @keyframes blink {
+      50% {
+        opacity: 0.3;
+      }
+    }
+    /* Ship materials, rigging and cloth live outside the readable screen. */
+    .ship {
+      background: repeating-linear-gradient(
+        0deg,
+        #34271d 0 65px,
+        #211a15 67px 70px,
+        #493124 72px 135px
+      );
+      border-color: #9c7a46;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+    .ship:before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 90px 0 120px;
+      background: radial-gradient(
+        ellipse at 20% 15%,
+        #9ab1a3,
+        #365d61 40%,
+        #142e3e 85%
+      );
+      opacity: 0.5;
+    }
+    .ship .marquee {
+      background: #1c2828;
+      color: #e6ce91;
+      border-color: #a3834c;
+      font-family: Georgia;
+      letter-spacing: 4px;
+    }
+    .ship .layout {
+      grid-template-columns: 150px minmax(0, 1fr) 120px;
+    }
+    .ship .screen {
+      border-color: #31251b;
+      box-shadow:
+        0 0 0 3px #a58a57,
+        0 8px 15px #0008;
+      border-radius: 9px;
+    }
+    .mast-area {
+      position: relative;
+      height: 410px;
+      width: 150px;
+    }
+    .mast {
+      position: absolute;
+      left: 19px;
+      top: 0;
+      bottom: 0;
+      width: 12px;
+      background: linear-gradient(90deg, #312319, #b78b54, #60422b);
+      border-radius: 5px;
+    }
+    .rope {
+      position: absolute;
+      left: 38px;
+      top: 8px;
+      bottom: 0;
+      width: 3px;
+      background: repeating-linear-gradient(
+        35deg,
+        #d0bb88 0 3px,
+        #6e5830 4px 6px
+      );
+    }
+    .pulley {
+      position: absolute;
+      left: 26px;
+      top: 0;
+      width: 23px;
+      height: 23px;
+      border: 5px solid #ad8a4b;
+      border-radius: 50%;
+      background: #211f18;
+    }
+    .flag-hoist {
+      position: absolute;
+      left: 33px;
+      top: 275px;
+      transition: top 1.4s cubic-bezier(0.3, 0.1, 0.2, 1);
+      perspective: 600px;
+    }
+    .flag {
+      width: 105px;
+      height: 72px;
+      position: relative;
+      display: flex;
+      filter: drop-shadow(2px 5px 3px #0006);
+      transform-origin: left center;
+      animation: cloth 3s ease-in-out infinite;
+    }
+    .flag span {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      background:
+        linear-gradient(100deg, #fff3, #0003 25%, #fff3 48%, #0004 72%, #fff2),
+        var(--flag-color, #27874c);
+      color: #fff5d7;
+      font-size: 32px;
+      text-shadow: 1px 2px #0007;
+      clip-path: polygon(0 0, 100% 8%, 93% 92%, 0 100%);
+      border-left: 3px solid #dfcf9c;
+    }
+    .flag:after {
+      content: "";
+      position: absolute;
+      left: -5px;
+      top: 0;
+      height: 100%;
+      width: 3px;
+      background: repeating-linear-gradient(
+        #d3c296 0 8px,
+        transparent 8px 18px
+      );
+    }
+    @keyframes cloth {
+      0%,
+      100% {
+        transform: rotateY(-10deg) skewY(-3deg) scaleX(0.96);
+      }
+      50% {
+        transform: rotateY(15deg) skewY(5deg) scaleX(1);
+      }
+    }
+    .ship .deck {
+      background: linear-gradient(90deg, #443120, #735439, #443120);
+      border-color: #a0844a;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .signal {
+      border: 1px solid #b69d66;
+      background: #182b2e;
+      color: #f1e0b8;
+      border-radius: 5px;
+      padding: 10px 15px;
+    }
+    .signal[aria-pressed="true"] {
+      outline: 2px solid #eac576;
+      background: #3b4d45;
+    }
+    .wheel {
+      font-size: 72px;
+      color: #c59c58;
+      text-shadow: 3px 5px #171713;
+      animation: wheel 12s ease-in-out infinite paused;
+    }
+    [data-state="working"] .wheel {
+      animation-play-state: running;
+    }
+    @keyframes wheel {
+      50% {
+        transform: rotate(30deg);
+      }
+    }
+    .lantern {
+      width: 40px;
+      height: 65px;
+      border: 5px solid #a6874c;
+      background: #353b2b;
+      border-radius: 16px;
+      box-shadow: 0 0 0 5px #241d16;
+    }
+    [data-state="approval"] .lantern {
+      background: #ffe392;
+      box-shadow: 0 0 30px #ffc762;
+    }
+    .ship .caption {
+      color: #e5cfa1;
+    }
+    .ship .badge {
+      font-family: Georgia;
+    }
+    .water {
+      position: absolute;
+      bottom: 0;
+      left: -10%;
+      width: 120%;
+      height: 18px;
+      background: repeating-linear-gradient(
+        105deg,
+        #47777b 0 40px,
+        #759698 70px,
+        #294a58 100px
+      );
+      opacity: 0.5;
+      animation: sea 8s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+    @keyframes sea {
+      to {
+        transform: translateX(6%);
+      }
+    }
+    [hidden] {
+      display: none !important;
+    }
+    @media (max-width: 760px) {
+      .study {
+        margin: 12px;
+        padding: 14px 12px;
+      }
+      .layout,
+      .ship .layout {
+        grid-template-columns: 70px minmax(0, 1fr);
+        gap: 10px;
+      }
+      .side:last-child {
+        display: none;
+      }
+      .side {
+        padding: 10px 0;
+      }
+      .speaker {
+        width: 45px;
+        height: 70px;
+      }
+      .marquee {
+        font-size: 18px;
+        letter-spacing: 2px;
+      }
+      .screen {
+        min-height: 480px;
+        border-width: 5px;
+      }
+      .messages {
+        padding: 16px;
+      }
+      .screen header {
+        padding: 10px;
+        gap: 8px;
+      }
+      .deck {
+        gap: 20px;
+        padding: 16px 10px;
+      }
+      .tool-buttons {
+        gap: 10px;
+      }
+      .tool-buttons button {
+        width: 56px;
+        height: 56px;
+        border-width: 5px;
+      }
+      .mast-area {
+        width: 70px;
+      }
+      .flag {
+        width: 60px;
+        height: 48px;
+      }
+      .flag span {
+        font-size: 22px;
+      }
+      .badge {
+        font-size: 9px;
+        padding: 8px 3px;
+      }
+      .composer {
+        margin: 8px;
+        flex-wrap: wrap;
+      }
+      .toolbar {
+        padding: 14px;
+      }
+      .ship .side {
+        overflow: visible;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *:before,
+      *:after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+  <nav class="toolbar">
+    <strong>OPEN SKINS / DESIGN LAB</strong
+    ><button id="retro" aria-pressed="true">Retro arcade</button
+    ><button id="ship" aria-pressed="false">Flagship</button
+    ><label
+      >Preview state
+      <select id="state">
+        <option value="ready">Ready</option>
+        <option value="working">Working</option>
+        <option value="approval">Needs input</option>
+      </select></label
+    >
+  </nav>
+  <main class="study" data-state="ready">
+    <div class="marquee">
+      <span id="title">OPEN SKINS ARCADE</span
+      ><small id="subtitle">PLAYER ONE · BUILD SOMETHING GREAT</small>
+    </div>
+    <div class="layout">
+      <aside class="side">
+        <div class="speaker arcade-only"></div>
+        <div class="badge arcade-only">ORIGINAL<br />CODE<br />CHAMPION</div>
+        <span class="pixel arcade-only" aria-hidden="true">▟▛▙</span>
+        <div class="mast-area ship-only" hidden aria-hidden="true">
+          <div class="mast"></div>
+          <div class="rope"></div>
+          <div class="pulley"></div>
+          <div class="flag-hoist">
+            <div class="flag"><span>➜</span></div>
+          </div>
+        </div>
+      </aside>
+      <section class="screen" aria-label="Agent conversation preview">
+        <header>
+          <span>● Local design preview · no agent connected</span
+          ><span id="status"><i class="status-light"></i>Ready</span>
+        </header>
+        <div class="messages">
+          <div class="user">
+            Add a search field to the project list. Keep it accessible.
+          </div>
+          <div class="response">
+            <strong>Agent</strong>
+            <p id="response">
+              Ready for your next instruction. The conversation stays here while
+              the controls and surrounding scene change.
+            </p>
+            <pre>src/components/ProjectList.tsx<br>tests/project-search.test.ts</pre>
+            <p id="detail">
+              Choose a preview state above to see the physical interface
+              respond.
+            </p>
+          </div>
+        </div>
+        <form class="composer">
+          <textarea
+            aria-label="Draft prompt"
+            placeholder="Your next instruction…"
+          ></textarea
+          ><button>Preview send</button>
+        </form>
+      </section>
+      <aside class="side">
+        <div class="speaker arcade-only"></div>
+        <div class="badge" id="tool">FILES<br />SELECTED</div>
+        <div class="wheel ship-only" hidden aria-hidden="true">☸</div>
+        <div class="lantern ship-only" hidden aria-hidden="true"></div>
+        <div class="badge arcade-only">1 CREDIT<br />∞ IDEAS</div>
+      </aside>
+    </div>
+    <div class="deck">
+      <div
+        class="stick-zone arcade-only"
+        tabindex="0"
+        role="button"
+        aria-label="Joystick: arrow keys or drag to select tools"
+      >
+        <div class="socket"></div>
+        <div class="stick"></div>
+      </div>
+      <div class="tool-buttons arcade-only">
+        <button data-tool="Files">FILES</button
+        ><button data-tool="Terminal">TERM</button
+        ><button data-tool="Changes">DIFF</button
+        ><button data-tool="Preview">VIEW</button>
+      </div>
+      <div class="ship-only" hidden id="signals">
+        <button
+          class="signal"
+          data-color="#27874c"
+          data-symbol="➜"
+          data-action="working"
+          aria-pressed="false"
+        >
+          Green · work
+        </button>
+        <button
+          class="signal"
+          data-color="#b63730"
+          data-symbol="■"
+          data-action="ready"
+          aria-pressed="false"
+        >
+          Red · stop
+        </button>
+        <button
+          class="signal"
+          data-color="#cc9432"
+          data-symbol="!"
+          data-action="approval"
+          aria-pressed="false"
+        >
+          Amber · input
+        </button>
+        <button
+          class="signal"
+          data-color="#dfdec8"
+          data-symbol="?"
+          data-action="explain"
+          aria-pressed="false"
+        >
+          White · explain
+        </button>
+        <button
+          class="signal"
+          data-color="#1c2327"
+          data-symbol="☠"
+          data-action="explore"
+          aria-pressed="false"
+        >
+          Pirate · explore
+        </button>
+      </div>
+    </div>
+    <p class="caption">
+      Interactive design study. Controls demonstrate presentation; they do not
+      operate a connected coding agent.
+    </p>
+    <div class="water ship-only" hidden></div>
+  </main>
+  <script>
+    const study = document.querySelector(".study"),
+      state = document.querySelector("#state"),
+      stick = document.querySelector(".stick"),
+      zone = document.querySelector(".stick-zone");
+    let skin = "retro",
+      timer;
+    function setState(value) {
+      state.value = value;
+      study.dataset.state = value;
+      document.querySelector("#status").innerHTML =
+        '<i class="status-light"></i>' +
+        { ready: "Ready", working: "Working", approval: "Needs your input" }[
+          value
+        ];
+      document.querySelector("#response").textContent = {
+        ready:
+          "Ready for your next instruction. The conversation stays here while the controls and surrounding scene change.",
+        working:
+          "I’m adding the search field and checking keyboard navigation. You can keep reading or drafting while the scene responds.",
+        approval:
+          "Please confirm whether the search should include archived projects before I continue.",
+      }[value];
+      document.querySelector("#detail").textContent =
+        value === "approval"
+          ? "The amber signal and lantern indicate a decision is needed."
+          : "The surrounding motion represents activity, not measured progress.";
+      if (skin === "ship")
+        hoist(
+          value === "approval"
+            ? "#cc9432"
+            : value === "working"
+              ? "#27874c"
+              : "#315f91",
+          value === "approval" ? "!" : value === "working" ? "➜" : "≈",
+          value === "ready" ? 170 : 35,
+        );
+    }
+    function hoist(color, symbol, top = 35) {
+      const flag = document.querySelector(".flag");
+      flag.style.setProperty("--flag-color", color);
+      flag.firstElementChild.textContent = symbol;
+      document.querySelector(".flag-hoist").style.top = top + "px";
+    }
+    for (const id of ["retro", "ship"])
+      document.querySelector("#" + id).onclick = () => {
+        skin = id;
+        study.classList.toggle("ship", id === "ship");
+        document
+          .querySelectorAll(".arcade-only")
+          .forEach((x) => (x.hidden = id === "ship"));
+        document
+          .querySelectorAll(".ship-only")
+          .forEach((x) => (x.hidden = id !== "ship"));
+        for (const key of ["retro", "ship"])
+          document
+            .querySelector("#" + key)
+            .setAttribute("aria-pressed", String(id === key));
+        document.querySelector("#title").textContent =
+          id === "ship" ? "THE OPEN SKINS · SIGNAL DECK" : "OPEN SKINS ARCADE";
+        document.querySelector("#subtitle").textContent =
+          id === "ship"
+            ? "CAPTAIN’S LOG · A CLEAR COURSE FOR YOUR CODE"
+            : "PLAYER ONE · BUILD SOMETHING GREAT";
+        setState(state.value);
+      };
+    state.onchange = () => setState(state.value);
+    function lean(x, y) {
+      stick.style.setProperty("--rz", x * 25 + "deg");
+      stick.style.setProperty("--rx", -y * 30 + "deg");
+      document.querySelector("#tool").innerHTML =
+        (Math.abs(x) > Math.abs(y)
+          ? x < 0
+            ? "FILES"
+            : "PREVIEW"
+          : y < 0
+            ? "TERMINAL"
+            : "CHANGES") + "<br>SELECTED";
+      clearTimeout(timer);
+    }
+    function center() {
+      timer = setTimeout(() => {
+        stick.style.setProperty("--rz", "0deg");
+        stick.style.setProperty("--rx", "0deg");
+      }, 180);
+    }
+    let start;
+    zone.onpointerdown = (e) => {
+      start = { x: e.clientX, y: e.clientY };
+      zone.setPointerCapture(e.pointerId);
+    };
+    zone.onpointermove = (e) => {
+      if (start)
+        lean(
+          Math.max(-1, Math.min(1, (e.clientX - start.x) / 35)),
+          Math.max(-1, Math.min(1, (e.clientY - start.y) / 35)),
+        );
+    };
+    zone.onpointerup = zone.onpointercancel = () => {
+      start = null;
+      center();
+    };
+    zone.onkeydown = (e) => {
+      const d = {
+        ArrowLeft: [-1, 0],
+        ArrowRight: [1, 0],
+        ArrowUp: [0, -1],
+        ArrowDown: [0, 1],
+      };
+      if (d[e.key]) {
+        e.preventDefault();
+        lean(...d[e.key]);
+      }
+    };
+    zone.onkeyup = center;
+    zone.onblur = () => {
+      start = null;
+      center();
+    };
+    document
+      .querySelectorAll("[data-tool]")
+      .forEach(
+        (b) =>
+          (b.onclick = () =>
+            (document.querySelector("#tool").innerHTML =
+              b.dataset.tool.toUpperCase() + "<br>SELECTED")),
+      );
+    document.querySelectorAll(".signal").forEach(
+      (b) =>
+        (b.onclick = () => {
+          document
+            .querySelectorAll(".signal")
+            .forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+          if (["ready", "working", "approval"].includes(b.dataset.action))
+            setState(b.dataset.action);
+          else
+            document.querySelector("textarea").value =
+              b.dataset.action === "explain"
+                ? "Explain your current approach before continuing."
+                : "Explore a fresh approach in a new session.";
+          hoist(b.dataset.color, b.dataset.symbol);
+        }),
+    );
+    document.querySelector("form").onsubmit = (e) => {
+      e.preventDefault();
+      setState("working");
+    };
+  </script>
+</html>
