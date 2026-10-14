@@ -11,6 +11,7 @@ import "./ferrari.css";
 import "./arcade-instruments.css";
 import "./physical-skins.css";
 import "./conversation-scenes.css";
+import "./workspace-polish.css";
 import { muteSkinSound, playSkinSound } from "./skin-sound";
 import {
   WORKSPACE_INTERFACES,
@@ -25,6 +26,15 @@ const SKIN_LABELS: Record<WorkspaceInterface, I18nKey> = {
   retro: I18nKey.CONVERSATION$RETRO_INTERFACE,
   ferrari: I18nKey.CONVERSATION$FERRARI_INTERFACE,
   flagship: I18nKey.CONVERSATION$FLAGSHIP_INTERFACE,
+};
+
+const SKIN_DESCRIPTIONS: Record<WorkspaceInterface, I18nKey> = {
+  standard: I18nKey.CONVERSATION$STANDARD_DESCRIPTION,
+  dj: I18nKey.CONVERSATION$DJ_DESCRIPTION,
+  cockpit: I18nKey.CONVERSATION$COCKPIT_DESCRIPTION,
+  retro: I18nKey.CONVERSATION$RETRO_DESCRIPTION,
+  ferrari: I18nKey.CONVERSATION$FERRARI_DESCRIPTION,
+  flagship: I18nKey.CONVERSATION$FLAGSHIP_DESCRIPTION,
 };
 
 // @spec CS-009 — The skin gallery stays hidden until requested.
@@ -86,6 +96,7 @@ export function SkinSwitcher() {
               key={id}
               type="button"
               onKeyDown={closeOnEscape}
+              aria-label={t(SKIN_LABELS[id])}
               aria-pressed={interfaceId === id}
               data-skin-option={id}
               onClick={() => {
@@ -99,7 +110,10 @@ export function SkinSwitcher() {
               }}
             >
               <span aria-hidden="true" data-skin-preview={id} />
-              {t(SKIN_LABELS[id])}
+              <span className="skin-option-copy">
+                <strong>{t(SKIN_LABELS[id])}</strong>
+                <small>{t(SKIN_DESCRIPTIONS[id])}</small>
+              </span>
               {interfaceId === id && <Check aria-hidden="true" />}
             </button>
           ))}

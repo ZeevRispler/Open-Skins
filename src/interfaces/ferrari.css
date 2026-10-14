@@ -13,7 +13,7 @@ body[data-coding-skin="ferrari"][data-open-skins],
 .racing-gear {
   display: none;
 }
-[data-skin-preview="ferrari"] {
+.interface-switcher [data-skin-preview="ferrari"] {
   background: linear-gradient(
     135deg,
     #e21e2d 45%,

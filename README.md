@@ -2,6 +2,8 @@
 
 A lightweight companion workspace for **OpenHands** and **OpenCode**. Install your coding agent normally, run Open Skins beside it, and choose a DJ booth, pilot cockpit, retro arcade cabinet, Ferrari-inspired dashboard, sailing-ship signal deck or standard workspace.
 
+Shared typography, readable message cards, a compact composer and plain-language status labels keep the workspace consistent across skins. The skin gallery includes a short description of each interface.
+
 The agent conversation stays central. Moving handles, switches, tool pads and optional sound packs control the same shared actions in every skin. Switching skins preserves your session and draft.
 
 ![DJ workspace](docs/screenshots/open-skins/dj.png)
