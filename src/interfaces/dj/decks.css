@@ -1,0 +1,386 @@
+.workspace-interface[data-interface="dj"] .dj-console {
+  position: relative;
+  display: grid;
+  grid-template-columns:
+    154px 78px minmax(120px, 190px) minmax(65px, 1fr)
+    auto 65px 58px 154px 34px;
+  gap: 12px;
+  padding: 14px 16px 28px;
+  background: linear-gradient(135deg, #27303b, #101820);
+  border: 1px solid #56616b;
+  border-radius: 9px;
+  min-height: 182px;
+}
+.workspace-interface[data-interface="dj"] .dj-console .skin-history,
+.workspace-interface[data-interface="dj"] .dj-console .skin-tool-wheel {
+  width: 154px;
+  height: 154px;
+  overflow: visible;
+  border: 2px solid #566471;
+  border-radius: 9px;
+  background: radial-gradient(circle, #0b111a 60%, #2a3540 61%);
+  padding: 4px;
+  touch-action: none;
+}
+.vinyl-scratch {
+  position: absolute;
+  inset: 7px;
+  display: block;
+  pointer-events: none;
+}
+.workspace-interface[data-interface="dj"] .vinyl-scratch img {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.workspace-interface[data-interface="dj"] .skin-tool-wheel .vinyl-scratch img {
+  filter: hue-rotate(60deg);
+}
+.vinyl-print {
+  position: absolute;
+  inset: 38%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0b2530;
+  font: bold 7px/1.1 monospace;
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+.vinyl-tonearm {
+  position: absolute;
+  right: 8px;
+  top: 12px;
+  width: 10px;
+  height: 76px;
+  transform-origin: 50% 7px;
+  transform: rotate(-5deg);
+  transition: transform 850ms ease-in-out;
+  pointer-events: none;
+  background: linear-gradient(90deg, #515b62, #e1e2d8 45%, #7c868a);
+  border: 1px solid #222b31;
+  border-radius: 5px;
+  box-shadow: 3px 3px 5px #0008;
+}
+.vinyl-tonearm:before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -7px;
+  width: 22px;
+  height: 22px;
+  border: 4px ridge #87949c;
+  border-radius: 50%;
+  background: #23303b;
+}
+.vinyl-tonearm i {
+  position: absolute;
+  bottom: -8px;
+  left: -2px;
+  width: 12px;
+  height: 22px;
+  background: #ccd3ce;
+  border: 2px solid #43515d;
+  border-radius: 2px;
+  transform: rotate(-18deg);
+}
+.workspace-interface[data-interface="dj"][data-agent-state="running"]
+  .vinyl-tonearm {
+  transform: rotate(25deg);
+}
+.workspace-interface[data-interface="dj"]
+  .vinyl-scratch[data-scratching="true"]
+  img {
+  animation-play-state: paused;
+}
+.workspace-interface[data-interface="dj"]
+  :is(.skin-history, .skin-tool-wheel)
+  > svg {
+  display: none;
+}
+.vinyl-caption {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+  text-align: left;
+  pointer-events: none;
+}
+.vinyl-caption b {
+  font: 7px monospace;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  color: #8fa6b5;
+}
+.vinyl-caption > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 9px system-ui;
+  color: #d2dce1;
+}
+.workspace-interface[data-interface="dj"] .skin-history {
+  grid-column: 1;
+  grid-row: 1;
+}
+.workspace-interface[data-interface="dj"] .dj-transport {
+  grid-column: 2;
+  grid-row: 1;
+}
+.workspace-interface[data-interface="dj"] .dj-model {
+  grid-column: 3;
+  grid-row: 1;
+  width: 100%;
+}
+.workspace-interface[data-interface="dj"] .dj-status {
+  grid-column: 4;
+  grid-row: 1;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.workspace-interface[data-interface="dj"] .dj-pads {
+  grid-column: 5;
+  grid-row: 1;
+}
+.workspace-interface[data-interface="dj"] .dj-tool-selector {
+  grid-column: 6;
+  grid-row: 1;
+}
+.workspace-interface[data-interface="dj"] .skin-tool-wheel {
+  grid-column: 8;
+  grid-row: 1;
+}
+.workspace-interface[data-interface="dj"] .dj-settings {
+  grid-column: 9;
+  grid-row: 1;
+}
+.dj-light-fader {
+  grid-column: 7;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  font: 9px monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #adc2c9;
+}
+.dj-light-fader input {
+  appearance: slider-vertical;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 24px;
+  height: 84px;
+  accent-color: #91c9ce;
+  padding: 0;
+  cursor: ns-resize;
+}
+.workspace-interface[data-interface="dj"] .conversation-atmosphere {
+  opacity: var(--dj-lights, 0.65);
+}
+@media (max-width: 1200px) {
+  .workspace-interface[data-interface="dj"] .dj-console {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 150px;
+  }
+  .workspace-interface[data-interface="dj"] .dj-console .skin-history,
+  .workspace-interface[data-interface="dj"] .dj-console .skin-tool-wheel {
+    width: 104px;
+    height: 104px;
+  }
+  .workspace-interface[data-interface="dj"] .dj-model {
+    width: 140px;
+  }
+  .vinyl-tonearm {
+    height: 54px;
+  }
+  .dj-light-fader input {
+    height: 56px;
+  }
+}
+@media (max-width: 620px) {
+  .workspace-interface[data-interface="dj"] .dj-console {
+    gap: 8px;
+    padding: 10px 8px 24px;
+  }
+  .workspace-interface[data-interface="dj"] .dj-console .skin-history,
+  .workspace-interface[data-interface="dj"] .dj-console .skin-tool-wheel {
+    width: 66px;
+    height: 66px;
+  }
+  .vinyl-tonearm {
+    height: 32px;
+    right: 5px;
+    top: 8px;
+    width: 6px;
+  }
+  .vinyl-tonearm:before {
+    width: 13px;
+    height: 13px;
+    left: -4px;
+    top: -3px;
+    border-width: 2px;
+  }
+  .vinyl-tonearm i {
+    height: 13px;
+    width: 8px;
+    left: -1px;
+  }
+  .vinyl-print {
+    font-size: 4px;
+    letter-spacing: 0;
+  }
+  .vinyl-caption b {
+    font-size: 6px;
+  }
+  .vinyl-caption > span {
+    font-size: 7px;
+  }
+  .dj-light-fader {
+    gap: 3px;
+  }
+  .dj-light-fader input {
+    height: 40px;
+  }
+  .workspace-interface[data-interface="dj"] .dj-status {
+    min-width: 55px;
+    flex: 1;
+  }
+  .workspace-interface[data-interface="dj"] .dj-model {
+    max-width: 160px;
+  }
+  .workspace-interface[data-interface="dj"] .dj-transport {
+    flex-direction: column;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vinyl-tonearm {
+    transition: none;
+  }
+}
+@media (min-width: 1201px) {
+  .workspace-interface[data-interface="dj"] .dj-console:before {
+    content: "";
+    position: absolute;
+    left: 182px;
+    right: 208px;
+    top: 10px;
+    bottom: 13px;
+    background: linear-gradient(#121c25, #1a2530);
+    border: 1px solid #3c4c5b;
+    border-radius: 7px;
+    pointer-events: none;
+  }
+  .workspace-interface[data-interface="dj"] .dj-console > * {
+    position: relative;
+  }
+  .workspace-interface[data-interface="dj"] .dj-tool-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .workspace-interface[data-interface="dj"] .dj-tool-selector:before {
+    content: "TOOLS";
+    font: 9px monospace;
+    letter-spacing: 1px;
+    color: #adc2c9;
+  }
+  .workspace-interface[data-interface="dj"] .dj-tool-selector input {
+    appearance: slider-vertical;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    height: 84px;
+    width: 24px;
+    padding: 0;
+    accent-color: #b8acdf;
+    cursor: ns-resize;
+  }
+}
+.workspace-interface[data-interface="dj"] .vinyl-print {
+  animation: dj-platter 4s linear infinite;
+  animation-play-state: paused;
+}
+.workspace-interface[data-interface="dj"] .skin-tool-wheel .vinyl-print {
+  animation-direction: reverse;
+}
+.workspace-interface[data-interface="dj"][data-agent-state="running"]
+  .vinyl-print {
+  animation-play-state: running;
+}
+.workspace-interface[data-interface="dj"]
+  .vinyl-scratch[data-scratching="true"]
+  .vinyl-print {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-interface[data-interface="dj"] .vinyl-print {
+    animation: none;
+  }
+}
+@media (max-width: 620px) {
+  .workspace-interface[data-interface="dj"] .dj-console {
+    display: grid;
+    grid-template-columns: 66px minmax(80px, 1fr) 66px 32px;
+    grid-template-rows: 66px 34px 28px;
+    gap: 16px 8px;
+    padding: 10px 8px 12px;
+    min-height: 0;
+  }
+  .workspace-interface[data-interface="dj"] .skin-history {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .workspace-interface[data-interface="dj"] .skin-tool-wheel {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .workspace-interface[data-interface="dj"] .dj-settings {
+    grid-column: 4;
+    grid-row: 1;
+  }
+  .workspace-interface[data-interface="dj"] .dj-model {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+  .workspace-interface[data-interface="dj"] .dj-transport {
+    grid-column: 1;
+    grid-row: 2/4;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .workspace-interface[data-interface="dj"] .dj-pads {
+    grid-column: 2/4;
+    grid-row: 2;
+    justify-content: center;
+  }
+  .workspace-interface[data-interface="dj"] .dj-status {
+    grid-column: 2;
+    grid-row: 3;
+    min-width: 0;
+    font-size: 9px;
+  }
+  .workspace-interface[data-interface="dj"] .dj-tool-selector {
+    grid-column: 3;
+    grid-row: 3;
+  }
+  .workspace-interface[data-interface="dj"] .dj-light-fader {
+    grid-column: 4;
+    grid-row: 2/4;
+    font-size: 7px;
+  }
+  .workspace-interface[data-interface="dj"] .dj-equalizer {
+    display: none;
+  }
+}
