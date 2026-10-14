@@ -73,6 +73,11 @@ export function WorkspaceInterfaceFrame({
           {t(I18nKey.CONVERSATION$FLAGSHIP_MARQUEE)}
         </header>
       )}
+      {interfaceId !== "standard" && (
+        <div className="skin-atmosphere" aria-hidden="true">
+          <i />
+        </div>
+      )}
       <div className="workspace-interface-body">
         <aside className="dj-controls" hidden={interfaceId === "standard"}>
           <SkinConsole controller={controller} />

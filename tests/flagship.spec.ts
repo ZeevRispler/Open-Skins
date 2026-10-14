@@ -63,7 +63,7 @@ test("flag signals operate the shared agent and preserve drafts across skins", a
   await expect(input).toHaveValue("keep this");
 });
 
-test("retro joystick physically pivots during dragging and springs back", async ({
+test("retro joystick pivots during dragging and stays in the selected detent", async ({
   page,
 }) => {
   await page.goto("/");
@@ -88,7 +88,7 @@ test("retro joystick physically pivots during dragging and springs back", async 
     .poll(() =>
       handle.evaluate((e) => new DOMMatrix(getComputedStyle(e).transform).b),
     )
-    .toBe(0);
+    .toBeGreaterThan(0.4);
   await wheel.focus();
   await page.keyboard.down("ArrowUp");
   await expect
@@ -101,7 +101,7 @@ test("retro joystick physically pivots during dragging and springs back", async 
     .poll(() =>
       handle.evaluate((e) => new DOMMatrix(getComputedStyle(e).transform).m23),
     )
-    .toBe(0);
+    .toBeGreaterThan(0.4);
 });
 
 test("flagship stays readable at desktop and mobile and respects reduced motion", async ({
@@ -144,29 +144,22 @@ test("mast carries multiple flags while commands stay on the deck", async ({
   expect(controls.y).toBeGreaterThanOrEqual(mast.y + mast.height);
 });
 
-test("racing wheel rotates and selects tools without touching the draft", async ({
+test("scenery moves only during work and the racing toolbar has no steering wheel", async ({
   page,
 }) => {
   await page.goto("/");
   await page.locator("summary").click();
-  await page.locator('[data-skin-option="ferrari"]').click();
-  const input = page.getByRole("textbox", { name: "Message agent" });
-  await input.fill("keep racing draft");
-  const wheel = page.getByRole("button", {
-    name: "Steering wheel: select tool",
-  });
-  await wheel.click();
-  await expect(page.locator(".tools h2")).toHaveText("terminal");
-  await wheel.press("ArrowRight");
-  await expect(page.locator(".tools h2")).toHaveText("browser");
-  await expect
-    .poll(() =>
-      wheel
-        .locator("svg")
-        .evaluate((e) => new DOMMatrix(getComputedStyle(e).transform).b),
-    )
-    .toBeGreaterThan(0.5);
-  await expect(input).toHaveValue("keep racing draft");
+  await page.locator('[data-skin-option="retro"]').click();
+  const scene = page.locator(".skin-atmosphere i");
+  await expect(scene).toHaveCSS("animation-play-state", "paused");
+  await page.getByRole("textbox", { name: "Message agent" }).fill("slow demo");
+  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(scene).toHaveCSS("animation-play-state", "running");
+  await page.getByRole("button", { name: "Stop", exact: true }).last().click();
+  await expect(scene).toHaveCSS("animation-play-state", "paused");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(wheel.locator("svg")).toHaveCSS("transition-duration", "0s");
+  await expect(scene).toHaveCSS("animation-name", "none");
+  await page.locator("summary").click();
+  await page.locator('[data-skin-option="ferrari"]').click();
+  await expect(page.locator(".racing-steering")).toHaveCount(0);
 });

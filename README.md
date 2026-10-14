@@ -86,15 +86,17 @@ The companion is deliberately smaller than a full IDE: no embedded code editor, 
 
 DJ platters rotate in opposite directions while the agent is working, with a reactive equalizer beside its status light. They pause when work stops, finishes, or needs approval. These decorative indicators follow agent activity.
 
-The cockpit has a radar sweep during agent work and metallic ball-tip switches for history and tool panels. The blue arcade cabinet has a speckled control deck, black joystick, red/white/blue buttons, a marquee and A–D tool-button markings. Its retro character walks during work and celebrates completion. The cockpit and retro lever supports dragging or arrow keys: **left Files, up Terminal, down Changes, right Browser**. Clicking it still cycles through tools; clicking an active tool pad closes that panel.
+The cockpit has a radar sweep during agent work and metallic ball-tip switches for history and tool panels. The matte-black arcade cabinet has a black joystick, one consistent red accent, white/blue/green buttons, a cream marquee and A–D tool-button markings. Resume and Stop remain readable when disabled. Its retro character walks during work and celebrates completion. The cockpit and retro lever supports dragging or arrow keys: **left Files, up Terminal, down Changes, right Browser**. Clicking it still cycles through tools; clicking an active tool pad closes that panel.
 
-The Retro joystick now pivots around its socket while dragging or holding arrow keys, then springs back without losing the selected tool. Its cream marquee and green fourth button complement the blue cabinet.
+The Retro joystick now pivots around its socket while dragging or holding arrow keys, then holds the selected direction like the cockpit lever. Its cream marquee and green fourth button complement the matte cabinet.
 
 Flagship adds a timber-and-brass frame and a cloth signal flag that rises while working or awaiting a decision. Green sends the current draft or resumes where supported; red stops; amber focuses the pending approval; blue opens files; white appends an explanation request without sending it. The pirate flag starts a new session when no draft or task is active. Signal controls span the lower deck, while the side mast carries up to three waving flags for status, the ship pennant, and draft or workspace context. On small screens the signals become a compact button rack.
 
-The Ferrari-inspired dashboard adds red bodywork, carbon-fiber panels, a gauge that reacts to agent activity, and a gearshift-shaped tool selector. A black steering wheel with a yellow center and alignment stripe cycles tools or selects them with arrow keys. Yellow trim complements the red bodywork. It shares the same directional controls and opt-in sounds.
+The Ferrari-inspired dashboard adds red bodywork, carbon-fiber panels, a gauge that reacts to agent activity, and a gearshift-shaped tool selector. Yellow trim complements the red bodywork. It shares the same directional controls and opt-in sounds.
 
 DJ and Cockpit have distinct decorative racks on wide screens. DJ uses twin VU meters, level bars, faders and patch leads; Cockpit uses an attitude indicator, compass, annunciators and a round activity dial. It follows agent activity without displaying invented telemetry, and disappears below 1100px to preserve workspace space.
+
+A thin scenery window outside the reading surface adds a pixel skyline, cockpit clouds, DJ lighting, ship waves or racing road markings. Scenery moves only during agent work, pauses otherwise, hides on mobile and respects reduced motion.
 
 The palette button opens a compact skin gallery. Sounds are **off by default**; enable them with the speaker button. Each skin has synthesized local press, completion, permission and error cues. Background tabs stay quiet, and motion respects the operating system's reduced-motion preference.
 
