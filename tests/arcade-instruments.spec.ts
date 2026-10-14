@@ -54,7 +54,7 @@ test("retro arcade marquee has distinct tokens and preserves a draft", async ({
   const padBackgrounds = await pads.evaluateAll((buttons) =>
     buttons.map((button) => getComputedStyle(button).backgroundImage),
   );
-  expect(padBackgrounds[0]).toContain("227, 57, 43");
+  await expect(pads.first()).toHaveCSS("background-color", "rgb(201, 54, 50)");
   expect(padBackgrounds[1]).toContain("255, 255, 255");
   expect(padBackgrounds[2]).toContain("8, 127, 209");
   await expect(input).toHaveValue("keep this arcade draft");
@@ -133,4 +133,31 @@ test("ambient rail hides on mobile and follows agent state without motion", asyn
     await expect(instrumentNeedle).toHaveCSS("animation-name", "none");
     await expect(instrumentNeedle).toHaveCSS("transition-duration", "0s");
   }
+});
+
+test("retro transport stays legible when disabled, running and paused", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.locator("summary").click();
+  await page.locator('[data-skin-option="retro"]').click();
+  const transport = page.locator(".dj-transport");
+  const resume = transport.getByRole("button", {
+    name: "Resume the agent task",
+    exact: true,
+  });
+  const stop = transport.getByRole("button", { name: "Stop", exact: true });
+  await expect(resume).toHaveCSS("opacity", "1");
+  await expect(resume).toHaveCSS("color", "rgb(203, 209, 205)");
+  await page.getByRole("textbox", { name: "Message agent" }).fill("slow demo");
+  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(stop).toBeEnabled();
+  await expect(stop).toHaveCSS("color", "rgb(24, 32, 34)");
+  await stop.click();
+  await expect(resume).toBeEnabled();
+  await resume.click();
+  await expect(page.locator(".workspace-interface")).toHaveAttribute(
+    "data-agent-state",
+    "running",
+  );
 });

@@ -281,32 +281,6 @@ export function SkinConsole({
         Terminal, down Changes, right Browser.
       </span>
       <button
-        className="racing-steering"
-        type="button"
-        aria-label="Steering wheel: select tool"
-        title="Turn to next tool; arrow keys select direction"
-        onClick={() =>
-          commands.openTool(TOOL_PADS[(toolIndex + 1) % TOOL_PADS.length].id)
-        }
-        onKeyDown={(event) => {
-          const tool = directions[event.key];
-          if (tool) {
-            event.preventDefault();
-            commands.openTool(tool);
-          }
-        }}
-      >
-        <svg viewBox="0 0 100 100" aria-hidden="true">
-          <circle cx="50" cy="50" r="40" />
-          <path d="M50 49 18 32M50 49 82 32M50 49V88" />
-          <path className="wheel-stripe" d="M50 6V17" />
-          <circle className="wheel-hub" cx="50" cy="49" r="13" />
-          <text x="50" y="53" textAnchor="middle">
-            OS
-          </text>
-        </svg>
-      </button>
-      <button
         className="dj-settings"
         type="button"
         disabled={!state.canConfigure}
